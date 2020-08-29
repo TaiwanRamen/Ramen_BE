@@ -1,0 +1,60 @@
+<%-include ("../partials/header")  -%>
+<h1 style="text-align: center;">Edit <%= menya.name  %> </h1>
+<div style="width:30%; margin:25px auto">
+    <form action="/menyas/<%= menya._id %>/?_method=PUT " method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <p>Name:</p>
+            <input class="form-control" type="text" name="menya[name]" value=<%= menya.name %>>
+        </div>
+        <div class="form-group">
+            <p>Price ($/night):</p>
+            <input class="form-control" type="number" name="menya[price]" value=<%= menya.price %> min="0.01" step="0.01">
+        </div>
+
+        <div class="form-group">
+            <label for="uploadImage" class="btn btn-sm btn-secondary">
+                Image
+                <input style="display: none;" type="file" id="uploadImage" name="image" accept="image/*">
+            </label>
+            <span style="word-break: break-all;" id="fileDescription"> Upload Image less than 6MB. </span>
+            <i style="display: none; color: steelblue; cursor: pointer" class="fas fa-trash-alt" id="deleteIcon"></i>
+
+        </div>
+
+        <div class="form-group">
+            <p>Description:</p>
+            <textarea class="form-control" name="menya[description]" cols="30" rows="5"><%= menya.description %></textarea>
+            <!-- <input class="form-control" type="text" name="menya[description]" value=< %= menya.description %>> -->
+        </div>
+        <div class="form-group">
+            <button class="class= btn btn-lg btn-primary btn-block">Submit!</button>
+        </div>
+
+    </form>
+    <a href="/menyas">Go Back to Menyas!</a>
+</div>
+<script>
+    const image = document.getElementById("uploadImage");
+    const fileDescription = document.getElementById("fileDescription");
+    const deleteIcon = document.getElementById("deleteIcon");
+    image.onchange = function() {
+        if (this.files[0].size > 6291456) {
+            alert("File is too big! Must be less than 6MB!");
+            this.value = "";
+            fileDescription.innerText = "Upload Image less than 6MB.";
+            submitBtn.setAttribute('disabled', 'disabled');
+        } else {
+            fileDescription.innerText = this.files[0].name;
+            console.log(this.files[0].name);
+            deleteIcon.style.display = 'inline';
+        }
+    };
+    deleteIcon.onclick = function() {
+        image.value = "";
+        fileDescription.innerText = "Upload Image less than 6MB.";
+        deleteIcon.style.display = 'none'
+    }
+</script>
+
+
+<%-include ("../partials/footer")  -%>

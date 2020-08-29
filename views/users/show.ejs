@@ -1,0 +1,29 @@
+<%-include ("../partials/header")  -%>
+<div class="container">
+
+    <h1 class="mt-4">Dashboard</h1>
+    <p class="lead mb-3">Welcome <%= user.username  %></p>
+    <p class="lead mb-3"><%= user._id  %></p>
+    <p class="lead mb-3"><%= user.email  %></p>
+    <a id="btn" href="/users/<%= user._id  %>/edit" class="btn btn-secondary">
+        <span id="edit">Edit</span>
+        <img style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">
+    </a>
+    <a id="logoutBtn" href="/users/logout" class="btn btn-secondary">
+        <span id="logoutMsg">Log out</span>
+        <img id="loading" style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">
+    </a>
+    <img src="" alt="">
+</div>
+
+<script>
+    const logoutBtn = document.querySelector("#logoutBtn");
+    const loading = document.querySelector("#loading");
+    const logoutMsg = document.querySelector("#logoutMsg");
+    logoutBtn.addEventListener('click', () => {
+        btn.classList.add("disabled");
+        loading.style.display = "inline-block";
+        logoutMsg.textContent = "Logging out ...";
+    })
+</script>
+<%-include ("../partials/footer")  -%>

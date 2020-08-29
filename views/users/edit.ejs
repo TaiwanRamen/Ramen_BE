@@ -1,0 +1,274 @@
+<%-include ("../partials/header")  -%>
+<link rel="stylesheet" href="/stylesheets/user.css">
+<div style="width:70%; margin:40px auto">
+    <form action="/users/<%= user._id %>/?_method=PUT " method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <!--<label class="avatar-wrapper">
+                        <img id="imageShow" class="profile-pic" src="https://dr18.com.tw/wp-content/uploads/2018/07/portrait-square-03-300x300.jpg" alt="">
+                        <div class="upload-button">
+                            <img id="uploadIcon" class="arror-up" aria-hidden=" true" src="../../public/images/cloud-backup-up-arrow.svg" alt="">
+                            <input style="display: none;" type="file" id="uploadImage" name="image" accept="image/*">
+                        </div>
+                    </label> -->
+                    <!-- Trigger modal Large modal -->
+                    <div class="avatar-wrapper" data-toggle="modal" data-target=".bd-example-modal-lg">
+                        <img id="imageShow" class="profile-pic" src="https://dr18.com.tw/wp-content/uploads/2018/07/portrait-square-03-300x300.jpg" alt="">
+                        <div class="upload-button">
+                            <img id="uploadIcon" class="arror-up" aria-hidden=" true" src="../../public/images/cloud-backup-up-arrow.svg" alt="">
+                            <input style="display: none;" type="file" id="uploadImage" name="image" accept="image/*">
+                        </div>
+                    </div>
+
+                    <p class="lead mt-2" id="userNameShow"> <%= user.username   %></p>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action active">Info 1</a>
+                        <a href="#" class="list-group-item list-group-item-action">Info 2</a>
+                        <a href="#" class="list-group-item list-group-item-action">Info 3</a>
+                        <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">Info 4</a>
+                    </div>
+                    <i style="display: none; color: steelblue; cursor: pointer" class="fas fa-trash-alt" id="deleteIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-8">
+                <h3 class="mb-3" style="text-align: center;"><i class="fas fa-user-edit"></i> Edit <%= user.username   %>'s user profile </h1>
+                    <div class="form-group">
+                        <p>Username:</p>
+                        <input class="form-control" type="text" name="user[name]" value=<%= user.username  %>>
+                    </div>
+                    <div class="form-group">
+                        <p>First Name:</p>
+                        <input class="form-control" type="text" name="user[firstName]" value=<%= user.firstName  %>>
+                    </div>
+                    <div class="form-group">
+                        <p>First Name:</p>
+                        <input class="form-control" type="text" name="user[lastName]" value=<%= user.lastName  %>>
+                    </div>
+
+                    <input style="display: none;" type="text" id="avatar" name="user[avatar]">
+
+                    <div class="form-group">
+                        <button class="class= btn btn-lg btn-primary btn-block">Submit!</button>
+                    </div>
+            </div>
+        </div>
+    </form>
+
+    <a class="mt-2" href="/users">Go Back to user profile!</a>
+</div>
+
+<!-- Popup Modal Start -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Image Cropper</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cropCancel();">
+                    <span aria-hidden=" true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+                <script src="https://cdn.bootcss.com/croppie/2.6.2/croppie.js"></script>
+                <div id="img-crop">
+                    <div id="upload">
+                        <h3 style="text-align: center;">01. Upload</h3>
+                        <p>Image should be less than 1MB.</p>
+                        <div class="block">
+                            <div class="stage"><label id="filedrag"><input type="file" id="fileselect" name="fileselect" accept="image/*" /></label></div>
+                        </div>
+                    </div>
+                    <div id="crop">
+                        <h3>02. Crop / Preview</h3>
+                        <div class="block">
+                            <div class="stage">
+                                <button class="btn" id="prev" onclick="cropCancel();">PREV</button>
+                                <button class="btn" id="next" onclick="cropResult();">NEXT</button>
+                                <div id="croppie"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="result">
+                        <h3>03. Result</h3>
+                        <div class="block">
+                            <div class="stage"><img id="imageCroped" src="" /></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cropCancel()">Cancel</button>
+                <button style="display:none" type="button" data-dismiss="modal" aria-label="Close" id="saveCroppedBtn" class="btn btn-primary">Save</button>
+            </div>
+            <script>
+                const $upload = $('#upload'),
+                    $crop = $('#crop'),
+                    $result = $('#result'),
+                    $croppie = $('#croppie');
+
+                var cr,
+                    cr_img = '',
+                    img_w = 300,
+                    img_h = 300,
+                    isCrop = 0;
+
+                //支援上傳檔案判斷
+                $(function() {
+                    if (window.File && window.FileList && window.FileReader)
+                        fileInit();
+                    else
+                        alert('您的裝置不支援圖片上傳');
+                });
+
+                //********* file select/drop *********
+                var fileselect = document.getElementById("fileselect"),
+                    filedrag = document.getElementById("filedrag");
+
+                function fileInit() {
+                    // file select
+                    fileselect.addEventListener("change", FileSelectHandler, false);
+                    // is XHR2 available?
+                    var xhr = new XMLHttpRequest();
+                    // file drop
+                    if (xhr.upload) {
+                        filedrag.addEventListener("dragover", FileDragHover, false);
+                        filedrag.addEventListener("dragleave", FileDragHover, false);
+                        filedrag.addEventListener("drop", FileSelectHandler, false);
+                    }
+                }
+
+                // file selection
+                function FileSelectHandler(e) {
+                    // cancel event and hover styling
+                    FileDragHover(e);
+                    // fetch FileList object
+                    var files = e.target.files || e.dataTransfer.files;
+                    if (files[0] && files[0].type.match('image.*')) {
+                        if (files[0].size > 1048576) {
+                            alert("File is too big! Must be less than 1MB!");
+                            files.value = "";
+                        } else {
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                $upload.hide();
+                                if (cr_img == '') { //第一次上傳
+                                    cr_img = e.target.result;
+                                    cropInit();
+                                } else { // 綁定照片
+                                    cr_img = e.target.result;
+                                    bindCropImg();
+                                }
+                                $crop.fadeIn(300);
+                            }
+                            reader.readAsDataURL(files[0]);
+                        }
+
+                    }
+                }
+
+                // file drag hover
+                function FileDragHover(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    filedrag.className = (e.type == "dragover" ? "hover" : "");
+                }
+
+                //********* crop *********
+                //裁切設定
+                function cropInit() {
+                    cr = $croppie.croppie({
+                        viewport: {
+                            width: img_w,
+                            height: img_h
+                        },
+                        boundary: {
+                            width: img_w,
+                            height: img_h
+                        },
+                        mouseWheelZoom: false,
+                        enableOrientation: true
+                    });
+
+                    //$(".cr-slider-wrap").append('<button id="cr-rotate" class="btn" onClick="cropRotate(-90);"> ↻ Rotate</button>');
+
+                    bindCropImg();
+                }
+
+                //綁定圖片
+                function bindCropImg() {
+                    cr.croppie('bind', {
+                        url: cr_img
+                    });
+                }
+
+                /*   //旋轉按鈕
+                  function cropRotate(deg) {
+                      cr.croppie('rotate', parseInt(deg));
+                  } */
+
+                //取消裁切
+                function cropCancel() {
+                    if ($upload.is(':hidden')) {
+                        $upload.fadeIn(300).siblings().hide();
+                        fileselect.value = "";
+                        isCrop = 0;
+                    }
+                }
+
+                //圖片裁切
+                function cropResult() {
+                    if (!isCrop) {
+                        isCrop = 1;
+                        cr.croppie('result', {
+                            type: 'canvas', // canvas(base64)|html
+                            size: { width: img_w, height: img_h }, //'viewport'|'original'|{width:500, height:500}
+                            format: 'jpeg', //'jpeg'|'png'|'webp'
+                            quality: 1 //0~1
+                        }).then(function(resp) {
+                            $crop.hide();
+                            $result.find('img').attr('src', resp);
+                            console.log(resp)
+                            $result.fadeIn(300);
+                            $('#saveCroppedBtn').show()
+                        });
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Popup Modal End -->
+
+<script>
+    const uploadImage = document.getElementById("uploadImage");
+    const uploadIcon = document.getElementById("uploadIcon");
+    const imageShow = document.getElementById("imageShow");
+    const deleteIcon = document.getElementById("deleteIcon");
+    const saveCroppedBtn = document.getElementById("saveCroppedBtn");
+    const imageCroped = document.getElementById("imageCroped");
+    const avatar = document.getElementById("avatar");
+    saveCroppedBtn.onclick = function() {
+        let newImage = imageCroped.src;
+        cropCancel();
+        imageShow.setAttribute('src', newImage);
+        saveCroppedBtn.style.display = 'none';
+        avatar.setAttribute('value', newImage)
+    }
+
+    uploadImage.onchange = function() {
+        if (this.files[0].size > 1048576) {
+            alert("File is too big! Must be less than 1MB!");
+            this.value = "";
+            fileDescription.innerText = "Upload Image less than 6MB.";
+            submitBtn.setAttribute('disabled', 'disabled');
+        } else {
+            readURL(this);
+            console.log(this.files[0].name);
+
+        }
+    };
+</script>
+<%-include ("../partials/footer")  -%>

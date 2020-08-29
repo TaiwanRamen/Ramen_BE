@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yelp Camp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/landing.css">
+    <!-- check browser version -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+
+
+            <div id="landing-header">
+                <div style="width: 500px;" class="container">
+                    <%-include ("./partials/messages")  -%>
+                </div>
+                <h1>歡迎來到台灣拉麵愛好會</h1>
+                <h4>台湾ラーメン愛好会/Taiwan Ramen Club</h4>
+                <hr>
+                <a href="auth/facebook" class="btn btn-lg btn-primary"><span class="fa fa-facebook"></span> &nbsp; 請使用Facebook登入以繼續</a>
+            </div>
+
+            <ul class="slideshow">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+
+            <%-include ("./partials/footer") -%>
+            <!-- updated syntax in ejs v3.0.1 -->
