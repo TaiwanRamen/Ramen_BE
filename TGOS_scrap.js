@@ -32,7 +32,7 @@ performance.mark('A');
 
         // set viewport and user agent (just in case for nice viewing)
         await page.setViewport({ width: 1366, height: 768 });
-        const address = '桃園市興仁路二段15號'
+        const address = '新北市中和區秀峰街103巷6弄1號'
         // go to the target web
         await page.goto("https://map.tgos.tw/TGOSCloud/Web/Map/TGOSViewer_Map.aspx?addr=" + address);
         await page.waitForXPath('//*[@id="MapBox"]/div[1]/div[2]/div/p[1]')

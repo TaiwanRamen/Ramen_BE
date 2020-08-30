@@ -17,13 +17,4 @@ router.get('/facebook/callback', (req, res, next) => {
     })(req, res, next);
 });
 
-//LOGOUT
-router.get("/logout", (req, res) => {
-    //req.logout();
-    req.flash("success_msg", "Logged out");
-    req.session.destroy((err) => {
-        res.redirect('/') // will always fire after session is destroyed
-    })
-});
-
 module.exports = router
