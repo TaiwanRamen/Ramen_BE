@@ -72,8 +72,10 @@ app.use(async (req, res, next) => {
             console.log(error.message)
         }
     }
+    //res.locals.error = req.flash('error');
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error'); //msg from passport.js will put error in req.flash('error)
     next();
 })
 
@@ -84,8 +86,8 @@ app.locals.moment = require('moment');
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
 app.use('/users', require('./routes/users'))
-app.use('/menyas/:id/comments', require('./routes/comments'))
-app.use('/menyas', require('./routes/menyas'))
+app.use('/stores/:id/comments', require('./routes/comments'))
+app.use('/stores', require('./routes/stores'))
 
 app.get('/:else', (req, res) => {
     res.send("No such pass exist.")

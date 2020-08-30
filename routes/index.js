@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 });
 router.get('/index', middleware.isLoggedIn, (req, res) => {
     console.log(req.user)
-    res.redirect('menyas/index', { user: req.user, menya })
+    res.redirect('stores/index')
 });
 
 

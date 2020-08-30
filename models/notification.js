@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const notificationSchema = mongoose.Schema({
     username: String,
-    menyaId: String,
+    storeId: String,
     isRead: {
         type: Boolean,
         default: false

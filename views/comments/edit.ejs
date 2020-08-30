@@ -3,7 +3,7 @@
 
 <h1 style="text-align: center">Edit Comment </h1>
 <div style="width:30%; margin:25px auto">
-    <form action="/menyas/<%= menya_id %>/comments/<%= comment._id  %>?_method=PUT " method="POST">
+    <form action="/stores/<%= store_id %>/comments/<%= comment._id  %>?_method=PUT " method="POST">
         <div class="form-group">
             <!-- when submitted form text and author will be nested inside req.body.comment  -->
             <!-- looks like:  {text: 'some text', author:'some author'} -->
@@ -16,7 +16,7 @@
         </div>
 
     </form>
-    <a href="/menyas">Go Back to Menyas!</a>
+    <a href="/stores">Go Back to Stores!</a>
 </div>
 
 

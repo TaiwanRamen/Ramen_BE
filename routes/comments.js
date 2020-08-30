@@ -1,34 +1,34 @@
 const express = require('express');
-//mergeParams: true是為了讓'/menyas/:id/comments'裡面的:id可以被傳進來comment route，
-//而不是只待在menya route。
+//mergeParams: true是為了讓'/stores/:id/comments'裡面的:id可以被傳進來comment route，
+//而不是只待在store route。
 const router = express.Router({ mergeParams: true })
-const Menya = require('../models/menya');
+const Store = require('../models/store');
 const Comment = require('../models/comment');
 const middleware = require('../middleware') //will automaticlly include index.js
 
 //comment create
 router.get('/new', middleware.isLoggedIn, (req, res) => {
-    //find menya by id
-    Menya.findById(req.params.id, (err, menya) => {
+    //find store by id
+    Store.findById(req.params.id, (err, store) => {
         if (err) {
             console.log(err)
         } else {
             //send to render
 
-            console.log(menya)
-            res.render('comments/new', { menya: menya });
+            console.log(store)
+            res.render('comments/new', { store: store });
         }
     })
 
 });
 //comment create
 router.post('/', middleware.isLoggedIn, (req, res) => {
-    //lookup menya using ID
-    Menya.findById(req.params.id, (err, menya) => {
+    //lookup store using ID
+    Store.findById(req.params.id, (err, store) => {
         if (err) {
             console.log(err);
-            req.flash("error", "Menya not found.")
-            res.redirect("/menyas")
+            req.flash("error", "Store not found.")
+            res.redirect("/stores")
         } else {
             Comment.create(req.body.comment, (err, comment) => {
                 if (err) {
@@ -41,29 +41,29 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
                     comment.author.username = req.user.username;
                     comment.save()
 
-                    //associate comment with menya
-                    menya.comments.push(comment);
-                    //save comment in the menya
-                    menya.save()
+                    //associate comment with store
+                    store.comments.push(comment);
+                    //save comment in the store
+                    store.save()
                     console.log(comment)
                     req.flash("success", "Successfully added comment");
-                    res.redirect('/menyas/' + menya._id);
+                    res.redirect('/stores/' + store._id);
                 }
 
             })
         }
         //create new Comment
-        //connect new comment to menya
-        //redirect menya show page
+        //connect new comment to store
+        //redirect store show page
     });
 });
 //COMMENT EDIT
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => {
-    //to prevent sb from maliciously typing wrong menya id and break our application, we need to
+    //to prevent sb from maliciously typing wrong store id and break our application, we need to
     //first check the id is valid, then check the comment_id is valid.
-    Menya.findById(req.params.id, (err, foundMenya) => {
-        if (err || !foundMenya) {
-            req.flash("error", "No Menya find");
+    Store.findById(req.params.id, (err, foundStore) => {
+        if (err || !foundStore) {
+            req.flash("error", "No Store find");
             return res.redirect("back");
         }
         Comment.findById(req.params.comment_id, (err, foundComment) => {
@@ -71,9 +71,9 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => 
                 res.redirect("back")
             } else {
                 res.render("comments/edit", {
-                    menya_id: req.params.id,
+                    store_id: req.params.id,
                     comment: foundComment
-                }) //之前在"/menyas/:id/comments" route就有:id(menya的)
+                }) //之前在"/stores/:id/comments" route就有:id(store的)
             }
         });
     });
@@ -85,7 +85,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
         if (err) {
             res.redirect("back");
         } else {
-            res.redirect("/menyas/" + req.params.id);
+            res.redirect("/stores/" + req.params.id);
         }
     });
 
@@ -97,7 +97,7 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
             res.redirect("back");
         } else {
             req.flash("success", "Comment deleted.");
-            res.redirect("/menyas/" + req.params.id);
+            res.redirect("/stores/" + req.params.id);
         }
     })
 

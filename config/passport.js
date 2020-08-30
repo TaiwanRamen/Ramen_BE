@@ -18,14 +18,14 @@ module.exports = (passport) => {
 
             // if no user match, return done
             if (!user) {
-                return done(null, false, { message: 'That email is not registered' });
+                return done(null, false, { message: '該電子信箱未註冊' });
             }
 
             try {
                 if (await bcrypt.compare(password, user.password)) {
                     return done(null, user)
                 } else {
-                    return done(null, false, { message: 'Password incorrect' })
+                    return done(null, false, { message: '密碼錯誤' })
                 }
             } catch (e) {
                 return done(e)

@@ -1,14 +1,14 @@
 <%-include ("../partials/header")  -%>
-<h1 style="text-align: center;">Edit <%= menya.name  %> </h1>
+<h1 style="text-align: center;">Edit <%= store.name  %> </h1>
 <div style="width:30%; margin:25px auto">
-    <form action="/menyas/<%= menya._id %>/?_method=PUT " method="POST" enctype="multipart/form-data">
+    <form action="/stores/<%= store._id %>/?_method=PUT " method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <p>Name:</p>
-            <input class="form-control" type="text" name="menya[name]" value=<%= menya.name %>>
+            <input class="form-control" type="text" name="store[name]" value=<%= store.name %>>
         </div>
         <div class="form-group">
             <p>Price ($/night):</p>
-            <input class="form-control" type="number" name="menya[price]" value=<%= menya.price %> min="0.01" step="0.01">
+            <input class="form-control" type="number" name="store[price]" value=<%= store.price %> min="0.01" step="0.01">
         </div>
 
         <div class="form-group">
@@ -23,15 +23,15 @@
 
         <div class="form-group">
             <p>Description:</p>
-            <textarea class="form-control" name="menya[description]" cols="30" rows="5"><%= menya.description %></textarea>
-            <!-- <input class="form-control" type="text" name="menya[description]" value=< %= menya.description %>> -->
+            <textarea class="form-control" name="store[description]" cols="30" rows="5"><%= store.description %></textarea>
+            <!-- <input class="form-control" type="text" name="store[description]" value=< %= store.description %>> -->
         </div>
         <div class="form-group">
             <button class="class= btn btn-lg btn-primary btn-block">Submit!</button>
         </div>
 
     </form>
-    <a href="/menyas">Go Back to Menyas!</a>
+    <a href="/stores">Go Back to Stores!</a>
 </div>
 <script>
     const image = document.getElementById("uploadImage");

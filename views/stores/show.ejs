@@ -16,21 +16,21 @@
         </div>
         <div id="map" style="margin-top:40px; height:400px; border-radius:10px">
         </div>
-        <p>location: <%= menya.location.coordinates[0] %>, <%= menya.location.coordinates[1] %> </p>
+        <p>location: <%= store.location.coordinates[0] %>, <%= store.location.coordinates[1] %> </p>
     </div>
     <div class="col-md-9">
         <div class="thumbnail">
-            <img class="img-responsive" src="<%= menya.image %>">
+            <img class="img-responsive" src="<%= store.image %>">
             <div class="caption-full">
-                <h4 class="float-sm-right">$<%= menya.price %>/night</h4>
-                <h4><a href=""><%=menya.name %></a></h4>
-                <p><%=menya.description %> </p>
+                <h4 class="float-sm-right">$<%= store.price %>/night</h4>
+                <h4><a href=""><%=store.name %></a></h4>
+                <p><%=store.description %> </p>
                 <p>
-                    <em>Submitted by: <%= menya.author.username %>, <%= moment(menya.createdAt).fromNow() %></em>
+                    <em>Submitted by: <%= store.author.username %>, <%= moment(store.createdAt).fromNow() %></em>
                 </p>
-                <%  if (currentUser && menya.author.id.equals(currentUser._id)) { %>
-                <a class="btn btn-xs btn-warning" href="/menyas/<%=menya._id  %>/edit ">Edit</a>
-                <form class="delete-form" action="/menyas/<%=menya._id  %>?_method=DELETE" method="POST">
+                <%  if (currentUser && store.author.id.equals(currentUser._id)) { %>
+                <a class="btn btn-xs btn-warning" href="/stores/<%=store._id  %>/edit ">Edit</a>
+                <form class="delete-form" action="/stores/<%=store._id  %>?_method=DELETE" method="POST">
                     <button class="btn btn-xs btn-danger">Delete</button>
                 </form>
                 <% } %>
@@ -39,13 +39,13 @@
         <div class="well">
             <%  if (currentUser){%>
             <div class="text-right">
-                <a class="btn btn-success" href="/menyas/<%= menya._id %>/comments/new">Add New
+                <a class="btn btn-success" href="/stores/<%= store._id %>/comments/new">Add New
                     Comment
                 </a>
             </div>
             <% } %>
             <hr>
-            <% menya.comments.forEach(function(comment){ %>
+            <% store.comments.forEach(function(comment){ %>
             <div class="row">
                 <div class="col-md-12">
                     <strong><%= comment.author.username  %></strong>
@@ -54,10 +54,10 @@
                         <%= comment.text  %>
                     </p>
                     <%  if (currentUser && comment.author.id.equals(currentUser._id)) { %>
-                    <a href="/menyas/<%= menya._id  %>/comments/<%=comment._id  %>/edit  " class="btn btn-xs btn-warning">
+                    <a href="/stores/<%= store._id  %>/comments/<%=comment._id  %>/edit  " class="btn btn-xs btn-warning">
                         Edit
                     </a>
-                    <form class="delete-form" action="/menyas/<%= menya._id  %>/comments/<%=comment._id  %>?_method=DELETE" method="POST">
+                    <form class="delete-form" action="/stores/<%= store._id  %>/comments/<%=comment._id  %>?_method=DELETE" method="POST">
                         <button class="btn btn-xs btn-danger">Delete</button>
                     </form>
                     <% } %>
@@ -81,12 +81,12 @@
         style: 'mapbox://styles/mapbox/streets-v11',
         zoom: 15,
         //longitude 經度, latitude緯度 
-        center: [ <%= menya.location.coordinates[0] %> , <%= menya.location.coordinates[1] %> ]
+        center: [ <%= store.location.coordinates[0] %> , <%= store.location.coordinates[1] %> ]
 
     });
 
     var marker = new mapboxgl.Marker()
-        .setLngLat([<%= menya.location.coordinates[0] %> , <%= menya.location.coordinates[1] %>])
+        .setLngLat([<%= store.location.coordinates[0] %> , <%= store.location.coordinates[1] %>])
         .addTo(map);
     /* beautify preserve:end */
 </script>

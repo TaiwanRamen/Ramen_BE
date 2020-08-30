@@ -1,8 +1,8 @@
 <%-include ("../partials/header")  -%>
 
-<h1 style="text-align: center;">Add New Comment to <%= menya.name %> </h1>
+<h1 style="text-align: center;">Add New Comment to <%= store.name %> </h1>
 <div style="width:30%; margin:25px auto">
-    <form action="/menyas/<%= menya._id %>/comments" method="POST">
+    <form action="/stores/<%= store._id %>/comments" method="POST">
         <div class="form-group">
             <!-- when submitted form text and author will be nested inside req.body.comment  -->
             <!-- looks like:  {text: 'some text', author:'some author'} -->
@@ -15,7 +15,7 @@
         </div>
 
     </form>
-    <a href="/menyas">Go Back to Menyas!</a>
+    <a href="/stores">Go Back to Stores!</a>
 </div>
 
 

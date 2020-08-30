@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 //Schema Setup
-const menyaSchema = new mongoose.Schema({
+const storeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please ass a store ID'], //error message
@@ -37,6 +37,6 @@ const menyaSchema = new mongoose.Schema({
     }]
 });
 
-const Menya = mongoose.model("Menya", menyaSchema);
+const Store = mongoose.model("Store", storeSchema);
 
-module.exports = Menya
+module.exports = Store

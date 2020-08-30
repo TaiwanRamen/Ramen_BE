@@ -36,14 +36,29 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
     res.redirect('/users/' + req.user._id);
 });
 
-
 /* ========================= 
-    SIGN UP EMAIL VERIFY 
+           LOG IN
 ============================*/
 
 router.get("/login", (req, res) => {
     res.render("users/login", { page: "login" });
 });
+
+//Login Handle
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/users',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    })(req, res, next);
+});
+
+
+
+/* ========================= 
+    SIGN UP EMAIL VERIFY 
+============================*/
+
 
 //SIGH UP ROUTES
 //render signup form
@@ -177,46 +192,34 @@ router.get('/activate/:token', async (req, res) => {
             } catch (err) {
                 console.log("Error in signup while account activation: ", err);
                 req.flash('error_msg', 'Error in signup while account activation, please try again later.');
-                res.redirect('/users/login');
+                res.redirect('/');
             }
 
         } catch (error) {
             console.log(error)
             req.flash('error_msg', 'Incorrect or Expire link');
-            res.redirect('/users/login');
+            res.redirect('/');
         }
 
     } else {
         req.flash('error_msg', 'Something went wrong :(');
-        res.redirect('/users/login');
+        res.redirect('/');
     }
 })
 
 
 /* ========================= 
-           LOG IN
-============================*/
-
-//Login Handle
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/users',
-        failureRedirect: '/users/login',
-        failureFlash: true
-    })(req, res, next);
-});
-
-
-/* ========================= 
            LOG OUT
 ============================*/
-
 //LOGOUT
 router.get("/logout", (req, res) => {
-    req.logout();
-    req.flash("success_msg", "Logged out");
-    res.redirect("/users/login");
+    //req.logout();
+    req.flash("success_msg", "成功登出!");
+    req.session.destroy((err) => {
+        res.redirect('/') // will always fire after session is destroyed
+    })
 });
+
 
 /* ========================= 
         RECOVER PWD

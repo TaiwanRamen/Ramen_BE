@@ -1,5 +1,5 @@
 //all the middle goes here
-const Menya = require('../models/menya');
+const Store = require('../models/store');
 const Comment = require('../models/comment');
 const User = require('../models/user');
 
@@ -14,8 +14,8 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                 req.flash("error_msg", "Comment not found");
                 res.redirect("back");
             } else {
-                //if logged in, is he owned the menya
-                //foundMenya.autho.id is a mongoose object
+                //if logged in, is he owned the store
+                //foundStore.autho.id is a mongoose object
                 //req.user._id is a string
                 //even if they looks the same, they are essentially different,
                 // so we have to use mongoose method .equals()
@@ -34,20 +34,20 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
 }
 
 
-middlewareObj.checkMenyaOwnership = function(req, res, next) {
+middlewareObj.checkStoreOwnership = function(req, res, next) {
     if (req.isAuthenticated()) {
 
-        Menya.findById(req.params.id, (err, foundMenya) => {
-            if (err || !foundMenya) {
-                req.flash("error_msg", "Menya not found");
+        Store.findById(req.params.id, (err, foundStore) => {
+            if (err || !foundStore) {
+                req.flash("error_msg", "Store not found");
                 res.redirect("back");
             } else {
-                //if logged in, is he owned the menya
-                //foundMenya.autho.id is a mongoose object
+                //if logged in, is he owned the store
+                //foundStore.autho.id is a mongoose object
                 //req.user._id is a string
                 //even if they looks the same, they are essentially different,
                 // so we have to use mongoose method .equals()
-                if (foundMenya.author.id.equals(req.user._id)) {
+                if (foundStore.author.id.equals(req.user._id)) {
                     next();
                 } else {
                     req.flash("error_msg", "You don't have permission to do that.");
@@ -72,18 +72,18 @@ middlewareObj.checkUserOwnership = async (req, res, next) => {
                 next();
             } else {
                 req.flash("error_msg", "You are not the correct user, please log in !");
-                res.redirect("/users/login")
+                res.redirect("/")
             }
 
         } catch (error) {
             console.log(error)
             req.flash('error_msg', 'You are not the correct user, please log in!')
-            res.redirect("/users/login");
+            res.redirect("/");
         }
 
     } else {
         req.flash("error_msg", "You need to be logged in to do that.");
-        res.redirect("/users/login"); //send to where the user originally from.
+        res.redirect("/"); //send to where the user originally from.
     }
 
 };
