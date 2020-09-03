@@ -90,13 +90,16 @@ body {
     font-size: 50%;
 }
 
+
 .card-body {
-    overflow: hidden !important;
-    text-overflow: ellipsis;
+
+    overflow-y: scroll !important;
+
 }
 
 hr {
-    border-top: 1px solid #007bff;
+    border-top: 1px solid #003269;
+    opacity: 20%
 }
 
 .card {
@@ -116,4 +119,8 @@ hr {
 .card:hover {
     box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
     color: black;
+}
+
+.card-footer a {
+    color: white
 }

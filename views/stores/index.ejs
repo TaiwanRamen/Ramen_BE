@@ -35,29 +35,26 @@
 <div class="container-fluid">
     <div class="row">
         <% stores.forEach((store)=>{ %>
-        <div class="col-sm-6 col-lg-4 mt-5 ">
+        <div class="col-sm-6 col-lg-4 mt-4 ">
 
             <div class="card" style="height: 500px;">
-                <a href="/stores/<%= store._id %>"></a>
+
                 <img id="card-image" class="card-img-top" src="<%= store.imageSmall[0] %>" alt="Card image cap" height="200px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
 
-                <a href="http://localhost:3000/stores?search=<%= store.city  %>">
+                <a href="/stores?search=<%= store.city  %>">
                     <div class="topleft btn city">
                         <%=store.city %>
                     </div>
                 </a>
+                <h5 class="card-header text-center"><%= store.name %></h5>
 
                 <div class="card-body">
-                    <h5 class="card-title text-center"><%= store.name %></h5>
-                    <hr>
-
-                    <p><%- store.descriptionText.substring(0,90) -%>...</p>
-
+                    <p><%- store.descriptionHTML -%></p>
                 </div>
                 <div class="card-footer text-muted text-right">
                     <a href="/stores/<%= store._id %>" class="btn btn-primary">更多資訊</a>
                 </div>
-                </a>
+
             </div>
 
 

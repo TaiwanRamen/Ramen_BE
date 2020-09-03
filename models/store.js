@@ -61,8 +61,10 @@ const storeSchema = new mongoose.Schema({
         ref: "Comment"
     }],
     stillOpen: Boolean
+}, {
+    // if timestamps are set to true, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
+    timestamps: true
 });
 
-const Store = mongoose.model("Store", storeSchema);
 
-module.exports = Store
+module.exports = mongoose.model("Store", storeSchema);
