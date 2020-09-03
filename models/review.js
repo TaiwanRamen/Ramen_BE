@@ -28,7 +28,7 @@ var reviewSchema = new mongoose.Schema({
         },
         username: String
     },
-    // store associated with the review
+    // campground associated with the review
     store: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Store"

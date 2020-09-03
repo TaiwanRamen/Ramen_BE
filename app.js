@@ -69,7 +69,7 @@ app.use(async (req, res, next) => {
             let user = await User.findById(req.user._id).populate('notifications', null, { isRead: false }).exec();
             res.locals.notifications = user.notifications.reverse();
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
     }
     //res.locals.error = req.flash('error');
@@ -78,21 +78,23 @@ app.use(async (req, res, next) => {
     res.locals.error = req.flash('error'); //msg from passport.js will put error in req.flash('error)
     next();
 })
-
-app.locals.moment = require('moment');
+const moment = require('moment');
+moment.locale('zh-tw');
+app.locals.moment = moment;
 
 //Routes
 //pertain the route from the index
-app.use('/', require('./routes/index'))
-app.use('/auth', require('./routes/auth'))
-app.use('/users', require('./routes/users'))
-app.use('/stores/:id/comments', require('./routes/comments'))
-app.use('/stores', require('./routes/stores'))
+app.use('/', require('./routes/index'));
+app.use('/auth', require('./routes/auth'));
+app.use('/users', require('./routes/users'));
+app.use('/stores/:id/comments', require('./routes/comments'));
+app.use("/stores/:id/reviews", require('./routes/reviews'));
+app.use('/stores', require('./routes/stores'));
 
 app.get('/:else', (req, res) => {
-    res.send("No such pass exist.")
+    res.send("No such pass exist.");
 })
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`))
+app.listen(PORT, console.log(`Server started on port ${PORT}`));

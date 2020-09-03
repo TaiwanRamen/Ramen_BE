@@ -1,0 +1,72 @@
+<%- include ("../partials/header") -%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 style="text-align: center">Review Page: <%= store.name %></h1>
+            <a href="/stores/<%= store._id %>">Go back to the store page</a>
+            <div class="thumbnail">
+                <div class="caption-full">
+
+                    <%-include ("../partials/showrating")  -%>
+                    <div id="review">
+                        <%-include ("../partials/showreview")  -%>
+                    </div>
+
+                    <% if (store.rating === 0) { %>
+                    <h5>
+                        <em>No reviews yet.</em>
+                    </h5>
+                    <% } else { %>
+                    <p>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star <% if (store.rating > 1.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (store.rating > 2.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (store.rating > 3.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (store.rating > 4.5) { %> checked <% } %>"></span>
+                        <em>(total reviews: <%= store.reviews.length %>)</em>
+                    </p>
+                    <p>
+                        Current store rating: <strong><%= store.rating.toFixed(2) %></strong>
+                    </p>
+                    <p>
+                        <h4>All reviews for this store:</h4>
+                    </p>
+                    <hr style="margin-top: 0;">
+                    <% store.reviews.forEach(function(review){ %>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+                            <div>Review by: <strong><%= review.author.username %></strong></div>
+                            <span><em><%= review.updatedAt.toDateString() %></em></span>
+                        </div>
+                        <div class="col-md-9">
+                            <p style="text-align: justify; word-wrap: break-word;">
+                                <%= review.text %>
+                            </p>
+                            <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+                            <a class="btn btn-xs btn-warning" href="/stores/<%=store._id %>/reviews/<%=review._id %>/edit">Edit</a>
+                            <form id="delete-form" action="/stores/<%=store._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                            </form>
+                            <% } %>
+                        </div>
+                    </div>
+                    <hr>
+                    <% }); %>
+                    <% } %>
+                    <div>
+                        <a class="btn btn-primary <% if (currentUser && store.reviews.some(function (review) {return review.author.id.equals(currentUser._id)})) { %> disabled <% } %>" href="/stores/<%= store._id %>/reviews/new">
+                            Write a New Review</a>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-default" href="/stores/<%= store._id %>"><i class="fa fa-arrow-left"></i> Go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Review section-->
+</div>
+
+<%-include ("../partials/footer") -%>

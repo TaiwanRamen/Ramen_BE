@@ -6,7 +6,8 @@ const express = require('express'),
     multer = require('multer'),
     fs = require("fs"),
     request = require("request-promise-native"),
-    User = require("../models/user");
+    User = require("../models/user"),
+    Review = require("../models/review");
 
 //set filename to multer 
 const storage = multer.diskStorage({
@@ -25,39 +26,71 @@ let imageFilter = function(req, file, cb) {
 let upload = multer({ storage: storage, fileFilter: imageFilter })
 
 
-router.get('/', middleware.isLoggedIn, (req, res) => {
-    //fuzzy search
-    if (req.query.search) {
-        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-        //get all stores from DB
-        Store.find({ name: regex }, (err, allstores) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (allstores.length < 1) {
-                    req.flash("error", "Store no found");
-                    return res.redirect("back");
-                }
-                res.render("stores/index", {
-                    stores: allstores,
-                    page: 'stores'
-                }); //傳入stores property to ejs file
+router.get('/', middleware.isLoggedIn, async (req, res) => {
+    try {
+        //fuzzy search
+        if (req.query.search) {
+            const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+            //get all stores from DB
+            const allStores = await Store.find({
+                $or: [
+                    { name: regex },
+                    { city: regex },
+                    { descriptionText: regex },
+                ],
+            })
+            if (allStores.length < 1) {
+                req.flash("error", "Store no found");
+                return res.redirect("back");
             }
-        })
-    } else {
-        //get all stores from DB
-        Store.find({}, (err, allstores) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.render("stores/index", {
-                    stores: allstores,
-                    page: 'stores'
-                }); //傳入stores property to ejs file
-            }
-        })
+            res.render("stores/index", {
+                stores: allStores,
+                page: 'stores'
+            });
+
+        } else {
+            //get all stores from DB
+            const allStores = await Store.find({});
+            res.render("stores/index", {
+                stores: allStores,
+                page: 'stores'
+            });
+        }
+    } catch (error) {
+        console.log(error)
     }
 });
+
+//====================================================
+// location test
+//====================================================
+router.get('/location', middleware.isLoggedIn, async (req, res) => {
+    try {
+        //found the nearest store 
+        if (req.query.lat && req.query.lng) {
+
+            console.log(req.query.lat, req.query.lng)
+            let foundStore = await Store.aggregate([{
+                '$geoNear': {
+                    'near': {
+                        'type': 'Point',
+                        'coordinates': [req.query.lng, req.query.lat]
+                    },
+                    'spherical': true,
+                    'distanceField': 'dist',
+                    'maxDistance': 15000 //in meter
+                }
+            }])
+            console.log(foundStore)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+
+
+
+
 //Create == add new store to DB
 //you can upload the image
 router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res) => {
@@ -142,7 +175,10 @@ router.get('/:id', middleware.isLoggedIn, (req, res) => {
     //retreving one store with the right id
     //we populate the comments array on it (we get the real comments from the comments DB, so it is not just ids) 
     //and we exec the function
-    Store.findById(req.params.id).populate("comments").exec(function(err, foundStore) {
+    Store.findById(req.params.id).populate("comments").populate({
+        path: "reviews",
+        options: { sort: { createdAt: -1 } }
+    }).exec(function(err, foundStore) {
         if (err || !foundStore) {
             req.flash("error", "Store not found!");
             return res.redirect("back");
@@ -168,7 +204,7 @@ router.get('/:id/edit', middleware.checkStoreOwnership, (req, res) => {
     })
 
 })
-// UPDATE CAMPGROUND
+// UPDATE 
 router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async (req, res) => {
 
     try {
@@ -181,7 +217,6 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
             //======================
             //imgur request setting
             //======================
-
             //發request
             await request(request_options, function(error, response) {
                 if (error) throw new Error(error);
@@ -195,6 +230,7 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
             fs.unlinkSync(req.file.path);
 
         }
+        delete req.body.campground.rating;
         let data = req.body.store; //在ejs裡面包好了store[name, image, author]
         //find and update
         await Store.findByIdAndUpdate(req.params.id, data);
@@ -208,18 +244,24 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
 })
 
 // DESTROY CAMPGROUND
-router.delete('/:id', middleware.checkStoreOwnership, (req, res) => {
-    Store.findByIdAndRemove(req.params.id, (err) => {
-        if (err) {
-            res.redirect("/stores")
-        } else {
-            res.redirect("/stores")
-        }
-    })
+router.delete('/:id', middleware.checkStoreOwnership, async (req, res) => {
+    try {
+        let store = await Store.findById(req.params.id);
+        await Comment.remove({ "_id": { $in: store.comments } });
+        await Review.remove({ "_id": { $in: store.reviews } })
+        store.remove();
+        req.flash("success", "Campground deleted successfully!");
+        res.redirect("/stores");
+
+    } catch (error) {
+        console.log(err);
+        res.redirect("/stores");
+    }
+
 })
 
 function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "||$&")
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
 }
 
 module.exports = router

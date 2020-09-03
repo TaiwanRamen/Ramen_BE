@@ -6,9 +6,11 @@ const middleware = require('../middleware'); //will automaticlly include index.j
 //facebook 驗證。
 router.get('/facebook', (req, res, next) => {
     passport.authenticate('facebook', {
-        scope: 'email'
+        scope: ['email']
     })(req, res, next)
 });
+
+
 router.get('/facebook/callback', (req, res, next) => {
     passport.authenticate('facebook', {
         successRedirect: '/stores',

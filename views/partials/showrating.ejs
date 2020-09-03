@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="/stylesheets/rating-show.css">
+
+<% if (store.rating === 0) { %>
+<h5>
+    <em>No reviews yet.</em>
+</h5>
+<div class="back-stars">
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star" aria-hidden="true"></i>
+</div>
+<% } else { %>
+
+<span><strong><%= store.rating.toFixed(1) %></strong></span>
+<div class="star-rating">
+
+    <div class="back-stars">
+        <i class="fa fa-star" aria-hidden="true"></i>
+        <i class="fa fa-star" aria-hidden="true"></i>
+        <i class="fa fa-star" aria-hidden="true"></i>
+        <i class="fa fa-star" aria-hidden="true"></i>
+        <i class="fa fa-star" aria-hidden="true"></i>
+
+        <div class="front-stars" style="width: <%= store.rating*20 %>%">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+<em>(<%= store.reviews.length %>)</em>
+<% } %>

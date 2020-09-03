@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/stylesheets/rating-new.css">
+<form action="/stores/<%= store._id %>/reviews" method="POST">
+    <div class="form-group">
+        <div class="show-result">尚未評分！</div>
+        <input id="rating" name="review[rating]" type="hidden" value="">
+        <div class="rating">
+            <i class="star fa fa-star" data-rating="5" style='order:5'></i>
+            <i class="star fa fa-star" data-rating="4" style='order:4'></i>
+            <i class="star fa fa-star" data-rating="3" style='order:3'></i>
+            <i class="star fa fa-star" data-rating="2" style='order:2'></i>
+            <i class="star fa fa-star" data-rating="1" style='order:1'></i>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <textarea id="review" class="form-control" type="text" name="review[text]" placeholder="Write a review for this store..." rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary btn-block">發佈</button>
+    </div>
+</form>
+<!-- <a href="/stores/< %= store._id %>">Go Back</a> -->
+
+<script>
+    $('.rating').on('click', '.star', function() {
+        //cancel rating
+        if ($(this).index() === 5 - $('#rating').val()) {
+            $('.star').each(function(index) {
+                $(this).removeClass('selected');
+                $('#rating').val(0);
+                $('.show-result').text("No stars selected yet.");
+            });
+        } else {
+            let point = $(this).index();
+            $('.star').each(function(index) {
+                return index >= point ? $(this).addClass('selected') : $(this).removeClass('selected'); //A
+            });
+            $('#rating').val($(this).data('rating'));
+            console.log($('#rating').val());
+            var numStars = $('#rating').val();
+            $('.show-result').text(numStars + (numStars == 1 ? " star" : " 顆星！"));
+        }
+
+    });
+</script>

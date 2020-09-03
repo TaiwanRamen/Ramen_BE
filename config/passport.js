@@ -44,6 +44,7 @@ module.exports = (passport) => {
                 console.log(user)
                 return done(null, user); // user found, return that user
             } else {
+                console.log(profile)
                 // if there is no user found with that facebook id, create them
                 let newUser = new User();
                 // set all of the facebook information in our user model
@@ -53,6 +54,9 @@ module.exports = (passport) => {
                 if (!!profile.emails) {
                     newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                 }
+                if (!!profile.email) {
+                    newUser.email = profile.email[0].value; // facebook can return multiple emails so we'll take the first
+                }
                 newUser.avatar = profile.photos[0].value
                 // save our user to the database
                 await newUser.save()
@@ -60,6 +64,7 @@ module.exports = (passport) => {
                 return done(null, newUser);
             }
         } catch (err) {
+            console.log(err)
             return done(err);
         }
     }

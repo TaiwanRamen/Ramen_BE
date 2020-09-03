@@ -1,0 +1,57 @@
+<%- include ("../partials/header") -%>
+<link rel="stylesheet" href="/stylesheets/rating-new.css">
+<div class="container">
+    <div class="row">
+
+        <div style="width: 40%; margin: 25px auto;">
+            <h5 style="text-align: center">New Review: <%= store.name %></h5>
+            <form action="/stores/<%= store._id %>/reviews" method="POST">
+                <div class="form-group">
+                    <label for="rating">Leave a rating: <span class="show-result"></span></label>
+
+                    <input id="rating" name="review[rating]" type="hidden" value="">
+                    <div class="rating">
+                        <i class="star fa fa-star" data-rating="5" style='order:5'></i>
+                        <i class="star fa fa-star" data-rating="4" style='order:4'></i>
+                        <i class="star fa fa-star" data-rating="3" style='order:3'></i>
+                        <i class="star fa fa-star" data-rating="2" style='order:2'></i>
+                        <i class="star fa fa-star" data-rating="1" style='order:1'></i>
+                    </div>
+                    <div class="show-result">No stars selected yet.</div>
+
+                </div>
+                <div class="form-group">
+                    <textarea id="review" class="form-control" type="text" name="review[text]" placeholder="Write a review for this store..." rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block">Submit a Review</button>
+                </div>
+            </form>
+            <a href="/stores/<%= store._id %>">Go Back</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.rating').on('click', '.star', function() {
+        //cancel rating
+        if ($(this).index() === 5 - $('#rating').val()) {
+            $('.star').each(function(index) {
+                $(this).removeClass('selected');
+                $('#rating').val(0);
+                $('.show-result').text("No stars selected yet.");
+            });
+        } else {
+            let point = $(this).index();
+            $('.star').each(function(index) {
+                return index >= point ? $(this).addClass('selected') : $(this).removeClass('selected'); //A
+            });
+            $('#rating').val($(this).data('rating'));
+            console.log($('#rating').val());
+            var numStars = $('#rating').val();
+            $('.show-result').text(numStars + (numStars == 1 ? " star" : " stars!"));
+        }
+
+    });
+</script>
+<%-include ("../partials/footer") -%>

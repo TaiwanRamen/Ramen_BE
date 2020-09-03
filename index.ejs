@@ -1,0 +1,169 @@
+<%-include ("../partials/header")  -%>
+<!-- updated syntax in ejs v3.0.1 -->
+
+<header class="jumbotron">
+    <div class="container">
+        <h1>Welcome to YelpCamp!</h1>
+        <p>View our hankpicked Stores from all over the world</p>
+        <%-include ("../partials/messages")  -%>
+        <!-- will pack in res.query -->
+        <form action="/stores" method="GET" class="form-inline ">
+            <div class="form-group">
+                <input type="text" name="search" placeholder="Store search..." class="form-control form-control-sm">
+                <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
+            </div>
+
+        </form>
+
+
+
+        <form action="/stores/location" method="GET" class="form-inline ">
+            <div class="form-group">
+
+                <input type="text" name="lng" placeholder="longitude" class="form-control form-control-sm">
+                <input type="text" name="lat" placeholder="latitude" class="form-control form-control-sm">
+                <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
+            </div>
+
+        </form>
+        <p>
+            <a class="btn btn-primary btn-large" href="/stores/new">Add New Store</a>
+        </p>
+
+    </div>
+</header>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <script src="https://unpkg.com/colcade@0/colcade.js"></script>
+        <!-- 別人的 -->
+        <div class="col-12 col-sm-3 col-md-3 col-lg-2 sidebar">
+            <nav class="d-none d-sm-block">
+                <ul class="nav nav-vertical flex-column mt-4 mb-4 ml-3 mr-3">
+                    <li class="nav-item mb-3"> <a title="Take me home" href="/"> <img class="img img-responsive img-rounded" alt="Personal photo" src="/assets/portrait-e7f6495cc59341586ff863ed7c508d1daa9bffbe0ab6a27db54560bb6ead4822.jpg"> </a> </li>
+                    <li class="nav-item">
+                        <h2 class="text-uppercase"> <a title="Software developer passionate about using technology for social change" aria-label="Homepage" href="/">Dale Zak</a> </h2>
+                    </li>
+                    <li class="nav-item">
+                        <p>Software developer passionate about using technology for social change</p>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link " title="View my past projects" aria-label="Projects" href="/projects"> <i class="fa fa-laptop"></i> Projects </a> </li>
+                    <li class="nav-item"> <a class="nav-link active" title="Read my blog posts" aria-label="Posts" href="/posts"> <i class="fa fa-pencil-alt"></i> Posts </a> </li>
+                    <li class="nav-item"> <a class="nav-link " title="View my tweets" aria-label="Tweets" href="/tweets"> <i class="fa fab fa-twitter"></i> Tweets </a> </li>
+                    <li class="nav-item"> <a class="nav-link " title="Watch my travel videos" aria-label="Videos" href="/videos"> <i class="fa fab fa-youtube"></i> Videos </a> </li>
+                    <li class="nav-item"> <a class="nav-link " title="See my travel photos" aria-label="Photos" href="/albums"> <i class="fa fa-image"></i> Photos </a> </li>
+                    <li class="nav-item"> <a class="nav-link " title="View books I've read" aria-label="Books" href="/books"> <i class="fa fa-book"></i> Books </a> </li>
+                    <li class="nav-item"> <a class="nav-link " title="Browse articles I've liked" aria-label="Links" href="/links"> <i class="fa fab fa-flipboard"></i> Links </a> </li>
+                    <li class="nav-item"> <a class="nav-link " title="See my favorite quotes" aria-label="Quotes" href="/quotes"> <i class="fa fa-quote-left"></i> Quotes </a> </li>
+                    <li class="nav-item"> <a class="nav-link" title="Find me on Twitter" aria-label="Dale Zak on Twitter" target="_blank" rel="noopener nofollow noindex" href="https://www.twitter.com/dalezak"> <i class="fa fab fa-twitter-square"></i> Twitter </a> </li>
+                    <li class="nav-item"> <a class="nav-link" title="Find me on GitHub" aria-label="Dale Zak on GitHub" target="_blank" rel="noopener nofollow noindex" href="https://github.com/dalezak"> <i class="fa fab fa-github-square"></i> GitHub </a> </li>
+                    <li class="nav-item"> <a class="nav-link" title="Find me on LinkedIn" aria-label="Dale Zak on LinkedIn" target="_blank" rel="noopener nofollow noindex" href="https://www.linkedin.com/in/dalezak/"> <i class="fa fab fa-linkedin"></i> LinkedIn </a> </li>
+                    <li class="nav-item"> <a class="nav-link" title="Find me on Facebook" aria-label="Dale Zak on Facebook" target="_blank" rel="noopener nofollow noindex" href="https://www.facebook.com/dalezak"> <i class="fa fab fa-facebook-square"></i> Facebook </a> </li>
+                    <li class="nav-item"> <a class="nav-link" title="Download my resume" aria-label="Download my Resume" target="_blank" rel="noopener nofollow noindex" href="/resume.pdf"> <i class="fa fa-file-alt"></i> Resume </a> </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- 別人的 -->
+        <% stores.forEach((store)=>{ %>
+        <div class="col-sm-6 col-md-4 mt-5 ">
+            <div class="card" style="height: 500px;">
+                <img class="card-img-top" src="https://picsum.photos/1900/1080?image=235" alt="Card image cap">
+
+                <a id="city" href="http://localhost:3000/stores?search=<%= store.city  %>">
+                    <div class="topleft btn TNK ">
+                        <%=store.city %>
+                    </div>
+                </a>
+
+                <div class="card-body">
+                    <h5 class="card-title text-center"><%= store.name %></h5>
+                    <hr>
+
+                    <p><%- store.descriptionText.substring(0,90) -%>...</p>
+
+                </div>
+                <div class="card-footer text-muted text-right">
+                    <a href="/stores/<%= store._id %>" class="btn btn-primary">更多資訊</a>
+                </div>
+            </div>
+        </div>
+        <%})  %>
+    </div>
+</div>
+
+
+<!-- 
+<div class="row" style="display:flex; flex-wrap: wrap">
+
+    < % stores.forEach((store)=>{ %>
+    <div class="col-sm-6 col-md-3">
+        <div class="card" style="width: 18rem;">
+            <div class="thumbnail">
+
+                <a id="city" href="http://localhost:3000/stores?search=< %= store.city  %>">< %= store.city  %> </a>
+
+                <img src="< %= store.image %>" style="height:180px;width:100%;display: block">
+                <div class="caption">
+                    <h4>< %= store.name %> </h4>
+                </div>
+                <p>< %- store.address.substring(0,10) %>...</p>
+
+
+
+
+                <p>
+                    <a href="/stores/< %= store._id %>" class="btn btn-primary">More Info</a>
+                    <a id="city" href="http://localhost:3000/stores?search=< %= store.city  %>" class="btn TNK">< %= store.city  %> </a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+    < %})  %>
+</div> -->
+<script>
+    /*     
+switch (city.innerText) {
+            case '台北市' || '臺北市' || '新北市' || '基隆市':
+                city.classList.add('TNK')
+            case '桃園市' || '新竹市' || '苗栗縣':
+                city.classList.add('TCM')
+            case '台中市' || '彰化縣' || '南投縣':
+                city.classList.add('CCT')
+            case '雲林縣' || '嘉義縣' || '台南市' || '臺南市':
+                city.classList.add('YCN')
+            case '高雄市' || '屏東縣':
+                city.classList.add('KP')
+            case '宜蘭縣' || '花蓮縣' || '台東縣' || '臺東縣':
+                city.classList.add('YCN')
+            default:
+                city.classList.add('PCM')
+        }
+        } */
+    /*  for (city of cities) {
+         if (city.innerText === '基隆市' || '台北市' || '臺北市' || '新北市') {
+             city.classList.add('TNK')
+         } else if (city.innerText === '桃園市' || '新竹市' || '苗栗縣') {
+             city.classList.add('TCM')
+         }
+         if (city.innerText === '台中市' || '彰化縣' || '南投縣') {
+             city.classList.add('CCT')
+         }
+         if (city.innerText === '雲林縣' || '嘉義縣' || '台南市' || '臺南市') {
+             city.classList.add('YCN')
+         }
+         if (city.innerText === '高雄市' || '屏東縣') {
+             city.classList.add('KP')
+         }
+         if (city.innerText === '宜蘭縣' || '花蓮縣' || '台東縣' || '臺東縣') {
+             city.classList.add('YCN')
+         } else {
+             city.classList.add('PCM')
+         }
+     } */
+</script>
+
+<%-include ("../partials/footer") -%>
+<!-- updated syntax in ejs v3.0.1 -->

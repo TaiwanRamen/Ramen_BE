@@ -3,13 +3,28 @@ const mongoose = require('mongoose');
 const storeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Please ass a store ID'], //error message
+        required: [true, 'Please add a store ID'], //error message
         unique: true,
     },
-    image: String,
-    description: String,
+    imageLarge: [{
+        type: String
+    }],
+    imageSmall: [{
+        type: String
+    }],
+    region: {
+        type: String
+    },
+    city: {
+        type: String
+    },
+    descriptionHTML: {
+        type: String
+    },
+    descriptionText: {
+        type: String
+    },
     address: String,
-    price: String,
     location: {
         type: {
             type: String, // Don't do `{ location: { type: String } }`
@@ -21,6 +36,16 @@ const storeSchema = new mongoose.Schema({
         },
         formattedAddress: String
     },
+    rating: {
+        type: Number,
+        "default": 0,
+        min: 0,
+        max: 5
+    },
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review"
+    }],
     createdAt: { type: Date, default: Date.now() },
     author: {
         id: {
@@ -34,7 +59,8 @@ const storeSchema = new mongoose.Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
-    }]
+    }],
+    stillOpen: Boolean
 });
 
 const Store = mongoose.model("Store", storeSchema);

@@ -5,7 +5,7 @@
     <div class="container">
         <h1>Welcome to YelpCamp!</h1>
         <p>View our hankpicked Stores from all over the world</p>
-
+        <%-include ("../partials/messages")  -%>
         <!-- will pack in res.query -->
         <form action="/stores" method="GET" class="form-inline ">
             <div class="form-group">
@@ -15,33 +15,76 @@
 
         </form>
 
+
+
+        <form action="/stores/location" method="GET" class="form-inline ">
+            <div class="form-group">
+
+                <input type="text" name="lng" placeholder="longitude" class="form-control form-control-sm">
+                <input type="text" name="lat" placeholder="latitude" class="form-control form-control-sm">
+                <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
+            </div>
+
+        </form>
         <p>
             <a class="btn btn-primary btn-large" href="/stores/new">Add New Store</a>
         </p>
 
     </div>
 </header>
+<div class="container-fluid">
+    <div class="row">
+        <% stores.forEach((store)=>{ %>
+        <div class="col-sm-6 col-lg-4 mt-5 ">
 
-<div class="row" style="display:flex; flex-wrap: wrap">
+            <div class="card" style="height: 500px;">
+                <a href="/stores/<%= store._id %>"></a>
+                <img id="card-image" class="card-img-top" src="<%= store.imageSmall[0] %>" alt="Card image cap" height="200px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
 
+                <a href="http://localhost:3000/stores?search=<%= store.city  %>">
+                    <div class="topleft btn city">
+                        <%=store.city %>
+                    </div>
+                </a>
 
-    <% stores.forEach((store)=>{ %>
-    <div class="col-sm-6 col-md-3">
-        <div class="thumbnail">
-            <img src="<%= store.image %>" style="height:180px;width:100%;display: block">
-            <div class="caption">
-                <h4><%= store.name %> </h4>
+                <div class="card-body">
+                    <h5 class="card-title text-center"><%= store.name %></h5>
+                    <hr>
+
+                    <p><%- store.descriptionText.substring(0,90) -%>...</p>
+
+                </div>
+                <div class="card-footer text-muted text-right">
+                    <a href="/stores/<%= store._id %>" class="btn btn-primary">更多資訊</a>
+                </div>
+                </a>
             </div>
-            <p>
-                <a href="/stores/<%= store._id %>" class="btn btn-primary">More Info</a>
-                <!-- mongoDB ID -->
-            </p>
+
+
         </div>
-
+        <%})  %>
     </div>
-    <%});  %>
 </div>
-
+<script>
+    let cities = document.querySelectorAll('.city');
+    for (city of cities) {
+        if (/台北市|新北市|基隆市/.test(city.innerText)) {
+            city.classList.add("TNK");
+        } else if (/桃園縣|新竹縣|苗栗縣/.test(city.innerText)) {
+            city.classList.add("TCM");
+        } else if (/台中市|彰化縣|南投縣/.test(city.innerText)) {
+            city.classList.add("CCT");
+        } else if (/雲林縣|嘉義縣|台南市/.test(city.innerText)) {
+            city.classList.add("YCN");
+        } else if (/高雄市|屏東縣/.test(city.innerText)) {
+            city.classList.add("KP");
+        } else if (/宜蘭縣|花蓮縣|台東縣/.test(city.innerText)) {
+            city.classList.add("YHT");
+        } else {
+            city.classList.add("PCM");
+        }
+    }
+</script>
 
 <%-include ("../partials/footer") -%>
 <!-- updated syntax in ejs v3.0.1 -->

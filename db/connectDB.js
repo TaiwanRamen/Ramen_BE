@@ -1,3 +1,4 @@
+require('dotenv').config()
 const mongoose = require('mongoose');
 
 //DB Config
@@ -8,7 +9,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_LOCAL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useFindAndModify: true,
+        useFindAndModify: false,
         useCreateIndex: true
     })
     .then(() => console.log('MongoDB Connected...'))

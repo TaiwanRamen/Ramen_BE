@@ -10,6 +10,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
+    <!-- Icons made by https://www.flaticon.com/authors/monkik-->
+    <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png">
     <link rel="stylesheet" href="/stylesheets/main.css">
 </head>
 
@@ -17,7 +19,7 @@
 
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a class="navbar-brand" href="/">YelpCamp</a>
+            <a class="navbar-brand" href="/stores"><img src="/images/ramen.png" alt="" width="32px" height="32px" class="mx-2">台灣拉麵俱樂部</a>
             <!-- collape resposive button -->
             <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -65,7 +67,11 @@
                     </li>
 
                     <li class="nav-item ">
+                        <% if(currentUser.fbName) { %>
+                        <a class="nav-link" href="/users"> Hi, <%= currentUser.fbName %></a>
+                        <% }else{ %>
                         <a class="nav-link" href="/users"> Hi, <%= currentUser.username %></a>
+                        <% } %>
                     </li>
                     <li class=" nav-item">
                         <a class="nav-link" href="/users/logout">Logout</a>
