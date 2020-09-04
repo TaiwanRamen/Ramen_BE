@@ -49,6 +49,7 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, functio
             } else {
                 review.author.username = req.user.username;
             }
+            review.author.avatar = req.user.avatar;
             review.store = store;
             //save review
             review.save();
@@ -65,6 +66,12 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, functio
 
 // Reviews Edit
 router.get("/:review_id/edit", middleware.checkReviewOwnership, function(req, res) {
+    Store.findById(req.params.id, (err, foundStore) => {
+        if (err || !foundStore) {
+            req.flash("error", "No Store find");
+            return res.redirect("back");
+        }
+    })
     Review.findById(req.params.review_id, function(err, foundReview) {
         if (err) {
             req.flash("error", err.message);

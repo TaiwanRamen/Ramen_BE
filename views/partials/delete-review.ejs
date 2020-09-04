@@ -1,0 +1,23 @@
+ <!-- Review Delete Modal -->
+ <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deletModalTitle" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="deleteModalLongTitle">Modal title</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                 <button type="button" class="btn btn-danger">刪除</button>
+                 <form id="delete-form" action="/stores/<%=store._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                     <input type="submit" value="Delete" class="dropdown-item" id="delete-input">
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>

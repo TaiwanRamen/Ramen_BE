@@ -24,34 +24,40 @@ router.get('/new', middleware.isLoggedIn, (req, res) => {
 //comment create
 router.post('/', middleware.isLoggedIn, (req, res) => {
     //lookup store using ID
-    Store.findById(req.params.id, (err, store) => {
+    Store.findById(req.params.id).populate("reviews").exec((err, store) => {
         if (err) {
             console.log(err);
             req.flash("error", "Store not found.")
-            res.redirect("/stores")
-        } else {
-            Comment.create(req.body.comment, (err, comment) => {
-                if (err) {
-                    req.flash("error", "Something went wrong.");
-                    console.log(err);
-                } else {
-                    //add username and id to comment
-                    //console.log("created by " + req.user.username) // if the user is logged in, req.user must be valid
-                    comment.author.id = req.user._id;
-                    comment.author.username = req.user.username;
-                    comment.save()
-
-                    //associate comment with store
-                    store.comments.push(comment);
-                    //save comment in the store
-                    store.save()
-                    console.log(comment)
-                    req.flash("success", "Successfully added comment");
-                    res.redirect('/stores/' + store._id);
-                }
-
-            })
+            return res.redirect("/stores")
         }
+
+        Comment.create(req.body.comment, (err, comment) => {
+            if (err) {
+                req.flash("error", err.message);
+                console.log(err);
+                return res.redirect("back");
+            }
+            //add username and id to comment
+            //console.log("created by " + req.user.username) // if the user is logged in, req.user must be valid
+            comment.author.id = req.user._id;
+            if (req.user.fbName) {
+                comment.author.username = req.user.fbName;
+            } else {
+                comment.author.username = req.user.username;
+            };
+            comment.author.avatar = req.user.avatar;
+
+            comment.save()
+
+            //associate comment with store
+            store.comments.push(comment);
+            //save comment in the store
+            store.save()
+            console.log(comment)
+            req.flash("success", "Successfully added comment");
+            res.redirect('/stores/' + store._id);
+        })
+
         //create new Comment
         //connect new comment to store
         //redirect store show page
@@ -83,12 +89,20 @@ router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
     let data = req.body.comment;
     Comment.findByIdAndUpdate(req.params.comment_id, data, (err, updatedComment) => {
         if (err) {
-            res.redirect("back");
-        } else {
-            res.redirect("/stores/" + req.params.id);
+            req.flash("error", err.message);
+            return res.redirect("back");
         }
-    });
+        Store.findById(req.params.id).populate("comments").exec(function(err, store) {
+            if (err) {
+                req.flash("error", err.message);
+                return res.redirect("back");
+            }
+            store.save();
+            req.flash("success", "Your review was successfully edited.");
+            res.redirect('/stores/' + store._id);
+        });
 
+    })
 })
 //COMMENT DESTROY
 router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {

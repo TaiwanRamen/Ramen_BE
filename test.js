@@ -1,16 +1,24 @@
-const mongoose = require('mongoose');
 const Store = require('./models/store');
-require("./db/connectDB")
+
+//connect DB
+require("./db/connectDB");
 async function go() {
-    let stores = await Store.find({});
-    for (const store of stores) {
-        if (/[\s\S]*\(/.test(store.name)) {
-            let toDelete = store.name.match(/\([\s\S]*\)/);
-            name = store.name.replace(toDelete, '')
-            await console.log(name)
-        } else {
-            await console.log(store.name)
+
+    let lng = 121.519;
+    let lat = 25.027;
+
+    let foundStore = await Store.aggregate([{
+        '$geoNear': {
+            'near': {
+                'type': 'Point',
+                'coordinates': [lng, lat]
+            },
+            'spherical': true,
+            'distanceField': 'dist',
+            'maxDistance': 800 //in meter
         }
-    }
+    }])
+    console.log(foundStore)
+
 }
-go();
+go()

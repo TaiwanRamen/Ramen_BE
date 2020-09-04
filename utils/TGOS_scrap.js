@@ -54,7 +54,7 @@ performance.mark('A');
 
         let x = parseFloat(getMsg[1])
         let y = parseFloat(getMsg[2])
-        const tw97tolatlon = require('./utils/tw97tolatlon')
+        const tw97tolatlon = require('./tw97tolatlon')
         console.log(tw97tolatlon(x, y))
         await browser.close();
 

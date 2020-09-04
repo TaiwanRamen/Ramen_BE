@@ -20,7 +20,6 @@
             </a>
         </p>
 
-
     </div>
     <div class="col-md-9">
         <div class="thumbnail">
@@ -42,9 +41,9 @@
                 <!-- 標籤按鈕開始 -->
                 <nav class="my-4">
                     <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-intro-tab" data-toggle="tab" href="#nav-intro" role="tab" aria-controls="nav-intro" aria-selected="true">簡介
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">簡介
                         </a>
-                        <a class="nav-item nav-link" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="false">
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
                             評論/食記 ( <span><%= store.reviews.length %> </span> )
                         </a>
 
@@ -52,7 +51,7 @@
                 </nav>
                 <!-- 標籤按鈕結束 -->
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-intro" role="tabpanel" aria-labelledby="nav-intro-tab">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <!-- 店家照片開始 -->
                         <div id="carouselControls" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
@@ -132,55 +131,40 @@
                         <div class="well">
                             <%  if (currentUser){%>
                             <div class="text-left">
-                                <a class="btn btn-success" role="button" data-toggle="collapse" href="#collapseComment" aria-expanded="false" aria-controls="collapseComment">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                    留言
+                                <a class="btn btn-success" href="/stores/<%= store._id %>/comments/new">留言
                                 </a>
                             </div>
                             <% } %>
                             <hr>
-                            <!--Comment section title-->
-                            <h4><strong>留言 <span class="glyphicon glyphicon glyphicon-comment" aria-hidden="true"></span></strong></h4>
-                            <!--Collapse Add a comment form START-->
-                            <div class="collapse" id="collapseComment">
-                                <div class="well">
-                                    <!-- Commetn Form -->
-                                    <form id="add-comment-form" action="/stores/<%= store._id %>/comments" method="POST">
-                                        <div class="form-group">
-                                            <input class="form-control" type="text" disabled value="<%= currentUser.fbName %>">
-                                        </div>
-                                        <div class="form-group">
-                                            <textarea class="form-control" name="comment[text]" placeholder="Write your comment..." form="add-comment-form" rows="5" cols="70"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-success btn-sm">Comment <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
-                                        </div>
+                            <% store.comments.forEach(function(comment){ %>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong><%= comment.author.username  %></strong>
+                                    <span class="float-sm-right"><%= moment(comment.createdAt).fromNow() %></span>
+                                    <p class="mt-2">
+                                        <%= comment.text  %>
+                                    </p>
+                                    <%  if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+                                    <a href="/stores/<%= store._id  %>/comments/<%=comment._id  %>/edit  " class="btn btn-xs btn-warning">
+                                        Edit
+                                    </a>
+                                    <form class="delete-form" action="/stores/<%= store._id  %>/comments/<%=comment._id  %>?_method=DELETE" method="POST">
+                                        <button class="btn btn-xs btn-danger">Delete</button>
                                     </form>
-
+                                    <% } %>
+                                    <hr class="mt-2">
                                 </div>
-                            </div>
-                            <!--Collapse Add a comment form END-->
 
-                            <hr>
-
-                            <!--Check if there are comments, if there are none say no comments.-->
-                            <% if (store.comments.length === 0) { %>
-                            <em style="color: grey;">尚無留言</em>
-                            <% } %>
-
-
-                            <div id="comment">
-                                <%-include ("../partials/showcomment")  -%>
                             </div>
 
-
+                            <%  })  %>
                         </div>
 
 
 
                     </div>
                     <!-- Review Tab -->
-                    <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
                         <div id="review">
                             <%-include ("../partials/showreview")  -%>
@@ -216,7 +200,7 @@
             </div>
             <div class=" modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <form class="delete-review-form" action="/stores/<%=store._id  %>?_method=DELETE" method="POST">
+                <form class="delete-form" action="/stores/<%=store._id  %>?_method=DELETE" method="POST">
                     <button id="deleteStoreBtn" class="btn btn-danger" disabled="disabled">確定刪除店家</button>
                 </form>
             </div>
@@ -256,7 +240,6 @@
     })
     /* beautify preserve:end */
 </script>
-
 
 <%-include ("../partials/footer") -%>
 <!-- updated syntax in ejs v3.0.1 -->

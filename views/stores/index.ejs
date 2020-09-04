@@ -19,9 +19,10 @@
 
         <form action="/stores/location" method="GET" class="form-inline ">
             <div class="form-group">
-
+                <p>給之後找最近店家用的</p>
                 <input type="text" name="lng" placeholder="longitude" class="form-control form-control-sm">
                 <input type="text" name="lat" placeholder="latitude" class="form-control form-control-sm">
+                <input type="text" name="meter" placeholder="meter" class="form-control form-control-sm">
                 <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
             </div>
 
@@ -46,10 +47,17 @@
                         <%=store.city %>
                     </div>
                 </a>
+                <div class="topright">
+                    <%-include ("../partials/showrating", {item:store})  -%>
+                </div>
                 <h5 class="card-header text-center"><%= store.name %></h5>
 
                 <div class="card-body">
-                    <p><%- store.descriptionHTML -%></p>
+                    <% if(store.descriptionText.length > 200){  %>
+                    <p><%- store.descriptionText.substring(0, 200)-%>...</p>
+                    <% } else { %>
+                    <p><%= store.descriptionText -%></p>
+                    <% }  %>
                 </div>
                 <div class="card-footer text-muted text-right">
                     <a href="/stores/<%= store._id %>" class="btn btn-primary">更多資訊</a>
@@ -67,11 +75,11 @@
     for (city of cities) {
         if (/台北市|新北市|基隆市/.test(city.innerText)) {
             city.classList.add("TNK");
-        } else if (/桃園縣|新竹縣|苗栗縣/.test(city.innerText)) {
+        } else if (/桃園市|新竹縣|新竹市|苗栗縣/.test(city.innerText)) {
             city.classList.add("TCM");
         } else if (/台中市|彰化縣|南投縣/.test(city.innerText)) {
             city.classList.add("CCT");
-        } else if (/雲林縣|嘉義縣|台南市/.test(city.innerText)) {
+        } else if (/雲林縣|嘉義縣|嘉義市|台南市/.test(city.innerText)) {
             city.classList.add("YCN");
         } else if (/高雄市|屏東縣/.test(city.innerText)) {
             city.classList.add("KP");

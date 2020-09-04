@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/stylesheets/rating-new.css">
 <form action="/stores/<%= store._id %>/reviews" method="POST">
     <div class="form-group">
-        <div class="show-result">尚未評分！</div>
+
         <input id="rating" name="review[rating]" type="hidden" value="">
         <div class="rating">
             <i class="star fa fa-star" data-rating="5" style='order:5'></i>
@@ -9,11 +9,14 @@
             <i class="star fa fa-star" data-rating="3" style='order:3'></i>
             <i class="star fa fa-star" data-rating="2" style='order:2'></i>
             <i class="star fa fa-star" data-rating="1" style='order:1'></i>
-        </div>
 
+        </div>
+        <strong>
+            <div class="show-result mt-1">尚未評分！</div>
+        </strong>
     </div>
     <div class="form-group">
-        <textarea id="review" class="form-control" type="text" name="review[text]" placeholder="Write a review for this store..." rows="3"></textarea>
+        <textarea id="review" class="form-control" type="text" name="review[text]" placeholder="Write a review for this store..." rows="5"></textarea>
     </div>
     <div class="form-group">
         <button class="btn btn-primary btn-block">發佈</button>

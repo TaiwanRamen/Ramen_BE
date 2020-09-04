@@ -385,7 +385,8 @@ router.post('/recover/:token', async (req, res) => {
 //User Profile
 router.get("/:id", middleware.checkUserOwnership, async (req, res) => {
     try {
-        let user = await User.findById(req.params.id).populate('followers').exec();
+
+        let user = await User.findById(req.params.id).populate('followers').populate('reviews').exec();
         res.render("users/show", { user })
 
     } catch (error) {

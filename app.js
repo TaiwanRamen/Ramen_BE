@@ -29,7 +29,7 @@ require('./config/passport')(passport);
 require("./db/connectDB");
 
 //config email
-//require("./config/smtp");
+require("./config/smtp");
 
 
 //PASSPORT CONFIGURATION

@@ -7,7 +7,9 @@ const express = require('express'),
     fs = require("fs"),
     request = require("request-promise-native"),
     User = require("../models/user"),
-    Review = require("../models/review");
+    Review = require("../models/review"),
+    Comment = require("../models/comment"),
+    geocoder = require('../utils/here')
 
 //set filename to multer 
 const storage = multer.diskStorage({
@@ -69,18 +71,19 @@ router.get('/location', middleware.isLoggedIn, async (req, res) => {
         //found the nearest store 
         if (req.query.lat && req.query.lng) {
 
-            console.log(req.query.lat, req.query.lng)
+            console.log(typeof(req.query.lat))
             let foundStore = await Store.aggregate([{
                 '$geoNear': {
                     'near': {
                         'type': 'Point',
-                        'coordinates': [req.query.lng, req.query.lat]
+                        'coordinates': [parseFloat(req.query.lng), parseFloat(req.query.lat)]
                     },
                     'spherical': true,
                     'distanceField': 'dist',
-                    'maxDistance': 15000 //in meter
+                    'maxDistance': 800 //in meter
                 }
             }])
+
             console.log(foundStore)
         }
     } catch (error) {
@@ -100,10 +103,6 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
         //add location to store
         if (Math.abs(parseFloat(req.body.longitude)) > 180 || Math.abs(parseFloat(req.body.latitude)) > 90) {
             throw new Error('Location coordination out of range.')
-        }
-        req.body.store.location = {
-            type: 'Point',
-            coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
         }
 
         //去node server暫存區找圖片在哪
@@ -132,19 +131,29 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
         const imgurURLToJSON2 = JSON.parse(imgurURL).data.link
         console.log(imgurURLToJSON2)
         // add imgur url for the image to the store object under image property
-        req.body.store.image = imgurURLToJSON2;
+        req.body.store.imageSmall = [imgurURLToJSON2];
 
         // add author to store
         req.body.store.author = {
             id: req.user._id,
-            username: req.user.username
+            username: req.user.fbName
         }
 
         //把暫存區的圖片砍掉
         fs.unlinkSync(req.file.path);
+
+        //console.log(req.body.store)
+        let locObj = await geocoder(req.body.store.address); //from geocoder here
+        req.body.store.address = locObj.address;
+        req.body.store.city = locObj.city;
+        req.body.store.location = {
+            type: 'Point',
+            coordinates: [locObj.longitude, locObj.latitude]
+        }
+        console.log(req.body.store)
         //塞到db裡面
         let store = await Store.create(req.body.store);
-        //讓我的follower 知道你上傳了campgorund
+        //讓我的follower 知道你上傳了
         let user = await User.findById(req.user._id).populate('followers').exec();
         let newNotification = {
             username: req.user.username,
@@ -192,7 +201,7 @@ router.get('/:id', middleware.isLoggedIn, (req, res) => {
     });
 });
 
-//EDIT CAMPGROUND
+//EDIT Store
 router.get('/:id/edit', middleware.checkStoreOwnership, (req, res) => {
     //if user logged in?
     Store.findById(req.params.id, (err, foundStore) => {
@@ -226,11 +235,10 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
             const imgurURLToJSON2 = JSON.parse(imgurURL).data.link
             //console.log(imgurURLToJSON2)
             // add imgur url for the image to the store object under image property
-            req.body.store.image = imgurURLToJSON2;
+            req.body.store.imageSmall = [imgurURLToJSON2];
             fs.unlinkSync(req.file.path);
 
         }
-        delete req.body.campground.rating;
         let data = req.body.store; //在ejs裡面包好了store[name, image, author]
         //find and update
         await Store.findByIdAndUpdate(req.params.id, data);
@@ -238,7 +246,7 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
 
     } catch (error) {
         console.log(error);
-        req.flash('error_msg', err.message);
+        req.flash('error_msg', error.message);
         return res.redirect('back');
     }
 })
@@ -254,7 +262,7 @@ router.delete('/:id', middleware.checkStoreOwnership, async (req, res) => {
         res.redirect("/stores");
 
     } catch (error) {
-        console.log(err);
+        console.log(error);
         res.redirect("/stores");
     }
 

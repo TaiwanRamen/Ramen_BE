@@ -35,10 +35,11 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
 }
 
 
-middlewareObj.checkStoreOwnership = function(req, res, next) {
+middlewareObj.checkStoreOwnership = async function(req, res, next) {
     if (req.isAuthenticated()) {
+        let foundUser = await User.findById(req.user._id);
 
-        Store.findById(req.params.id, (err, foundStore) => {
+        await Store.findById(req.params.id, (err, foundStore) => {
             if (err || !foundStore) {
                 req.flash("error_msg", "Store not found");
                 res.redirect("back");
@@ -48,7 +49,7 @@ middlewareObj.checkStoreOwnership = function(req, res, next) {
                 //req.user._id is a string
                 //even if they looks the same, they are essentially different,
                 // so we have to use mongoose method .equals()
-                if (foundStore.author.id.equals(req.user._id)) {
+                if (foundUser.isAdmin || foundStore.author.id.equals(req.user._id)) {
                     next();
                 } else {
                     req.flash("error_msg", "You don't have permission to do that.");

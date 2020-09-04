@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="/stylesheets/comment-grid.css">
+
+<% store.comments.forEach(function(comment){ %>
+<div class="row">
+
+    <!-- 作者 -->
+    <div class="comment-grid-container">
+        <div class="comment-avatar">
+            <img class="img-responsive" src="<%= comment.author.avatar %> " alt="" style="border-radius: 50%;">
+        </div>
+        <div class="comment-userName">
+            <h5><strong><%= comment.author.username %></strong></h5>
+        </div>
+        <div class="comment-userRating">
+            <span><%= moment(comment.createdAt).fromNow() %></span>
+
+        </div>
+
+        <div class="comment-functionBtn">
+
+            <div class="btn-group dropleft">
+                <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                <button type="button" class="btn btn-light " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <!--Edit button used for collapsing the edit comment form-->
+                    <a class="dropdown-item" role="button" data-toggle="collapse" href="#collapseEdit<%= comment._id %>" aria-expanded="false" aria-controls="collapse<%= comment._id %>">
+                        編輯</a>
+
+                    <button id="delete-btn" type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteCommentModal">
+                        刪除
+                    </button>
+
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <div class="comment-text">
+            <span class="show collapse" id="collapseEdit<%= comment._id %>"><%= comment.text  %></span>
+        </div>
+
+    </div>
+    <!--Edit comment form-->
+    <div class="collapse" id="collapseEdit<%= comment._id %>">
+
+        <form id="edit-comment-form<%= comment._id %>" action="/stores/<%= store._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <textarea class="form-control" name="comment[text]" placeholder="Your comment text..." form="edit-comment-form<%= comment._id %>" rows="5" cols="70"><%= comment.text %></textarea>
+            </div>
+
+            <div class="form-group ">
+
+                <button class="btn btn-warning btn-sm float-right">確認編輯 </button>
+            </div>
+        </form>
+        <button class="btn btn-secondary btn-sm mx-2 float-right " data-toggle="collapse" href="#collapseEdit<%= comment._id %>">取消編輯</button>
+    </div>
+
+</div>
+
+
+<!-- 確認刪除modal -->
+<div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteCommentModalTitle">刪除評論/食記 </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>即將刪除：</h5>
+
+                <p style="text-align: justify; word-wrap: break-word;">
+                    <% if(comment.text.length > 100){  %>
+                    <%= comment.text.substring(0, 100) %>
+                    <%}else{  %>
+                    <%= comment.text %>
+                    <% }  %>
+                </p>
+            </div>
+            <div class=" modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <form id="delete-comment-form" action="/stores/<%=store._id %>/comments/<%=comment._id %>?_method=DELETE" method="POST">
+                    <input type="submit" value="刪除" class="btn btn-danger" id="delete-comment-input">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #ccc, #333, #ccc);">
+<%  })  %>

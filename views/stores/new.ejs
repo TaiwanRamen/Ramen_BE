@@ -1,6 +1,6 @@
 <%-include ("../partials/header")  -%>
 
-<h1 style="text-align: center">Create a New Store</h1>
+<h1 style="text-align: center">增加新店</h1>
 <div style="width: 35%; margin: 30px auto;">
     <form action="/stores" method="POST" enctype="multipart/form-data">
         <div class="form-group">
@@ -11,24 +11,18 @@
                 Image
                 <input style="display: none;" type="file" id="uploadImage" name="image" accept="image/*">
             </label>
-            <span style="word-break: break-all;" id="fileDescription"> Upload Image less than 6MB. </span>
+            <span style="word-break: break-all;" id="fileDescription"> 上傳圖片(不能超過6MB) </span>
             <i style="display: none; color: steelblue; cursor: pointer" class="fas fa-trash-alt" id="deleteIcon"></i>
         </div>
+
         <div class="form-group">
-            <label for="uploadPrice">Price:</label>
-            <input class="form-control" type="number" id="uploadPrice" name="store[price]" placeholder="$/day" min="0.01" step="0.01" required>
+            <label for="address">地址：</label>
+            <input class="form-control" id="address" name="store[address]" placeholder="地址" required>
         </div>
+
         <div class="form-group">
-            <label for="longitude">Longitude: ex: &pm;121.5647698</label>
-            <input class="form-control" type="number" step="1e-8" min="-180" max="180" id="longitude" name="longitude" placeholder="longitude" required>
-        </div>
-        <div class="form-group">
-            <label for="longitude">Longitude: ex: &pm;25.0333285</label>
-            <input class="form-control" type="number" step="1e-8" min="-90" max="90" id="latitude" name="latitude" placeholder="latitude" required>
-        </div>
-        <div class="form-group">
-            <label for="longitude">Description: </label>
-            <textarea class="form-control" id="uploadDescription" name="user[description]" cols="30" rows="5">Description</textarea>
+            <label for="Description">介紹： </label>
+            <textarea class="form-control" id="description" name="store[descriptionText]" cols="30" rows="5">Description</textarea>
             <!--<input class="form-control" type="text" id="uploadDescription" name="store[description]" placeholder="description" required>-->
         </div>
         <div class="form-group">
@@ -42,10 +36,8 @@
 <script type="text/javascript">
     const image = document.getElementById("uploadImage");
     const name = document.getElementById("uploadName");
-    const price = document.getElementById("uploadPrice");
-    const longitude = document.getElementById("longitude");
-    const latitude = document.getElementById("latitude");
-    const description = document.getElementById("uploadDescription");
+    const address = document.getElementById("address");
+    const description = document.getElementById("description");
     const fileDescription = document.getElementById("fileDescription");
     const deleteIcon = document.getElementById("deleteIcon");
     //file should not exceed 6 MB
@@ -54,9 +46,9 @@
 
     image.onchange = function() {
         if (this.files[0].size > 6291456) {
-            alert("File is too big! Must be less than 6MB!");
+            alert("檔案太大！上傳圖片不能超過6MB");
             this.value = "";
-            fileDescription.innerText = "Upload Image less than 6MB.";
+            fileDescription.innerText = "上傳圖片不能超過6MB";
             submitBtn.setAttribute('disabled', 'disabled')
 
         } else if (this.value != "") {
@@ -67,20 +59,20 @@
     };
     deleteIcon.onclick = function() {
         image.value = "";
-        fileDescription.innerText = "Upload Image less than 6MB.";
+        fileDescription.innerText = "上傳圖片不能超過6MB";
         deleteIcon.style.display = 'none';
     }
 
     window.addEventListener('mousemove', function() {
 
-        if (name.value && price.value && description.value && image.value && longitude.value && latitude.value) {
+        if (name.value && description.value && image.value) {
             submitBtn.removeAttribute('disabled')
         } else {
             submitBtn.setAttribute('disabled', 'disabled')
         }
     });
     window.addEventListener('keyup', function() {
-        if (name.value && price.value && description.value && image.value && longitude.value && latitude.value) {
+        if (name.value && description.value && image.value) {
             submitBtn.removeAttribute('disabled')
         } else {
             submitBtn.setAttribute('disabled', 'disabled')
