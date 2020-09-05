@@ -9,6 +9,10 @@ const Notification = require("../models/notification");;
 router.get('/', (req, res) => {
     res.render("landing");
 });
+
+router.get('/privacy', (req, res) => {
+    res.render("privacy");
+});
 router.get('/index', middleware.isLoggedIn, (req, res) => {
     console.log(req.user)
     res.redirect('stores/index')
