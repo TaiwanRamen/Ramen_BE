@@ -30,32 +30,54 @@ let upload = multer({ storage: storage, fileFilter: imageFilter })
 
 router.get('/', middleware.isLoggedIn, async (req, res) => {
     try {
+        let perPage = 9;
+        let pageQuery = parseInt(req.query.page);
+        let pageNumber = pageQuery ? pageQuery : 1;
+        let noMatch = null;
         //fuzzy search
         if (req.query.search) {
             const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-            //get all stores from DB
+
+
+            //search from all the fields included in $or
             const allStores = await Store.find({
                 $or: [
                     { name: regex },
                     { city: regex },
                     { descriptionText: regex },
                 ],
-            })
+            }).sort({ 'updated_At': 1 }).exec()
+            const count = await Store.countDocuments({
+                $or: [
+                    { name: regex },
+                    { city: regex },
+                    { descriptionText: regex },
+                ],
+            }).exec()
+
             if (allStores.length < 1) {
                 req.flash("error", "Store no found");
                 return res.redirect("back");
             }
             res.render("stores/index", {
                 stores: allStores,
-                page: 'stores'
+                current: pageNumber,
+                pages: Math.ceil(count / perPage),
+                noMatch: noMatch,
+                search: req.query.search
             });
 
         } else {
             //get all stores from DB
-            const allStores = await Store.find({});
+            const allStores = await Store.find({}).sort({ 'updated_At': 1 }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
+            const count = await Store.countDocuments().exec();
+
             res.render("stores/index", {
                 stores: allStores,
-                page: 'stores'
+                current: pageNumber,
+                pages: Math.ceil(count / perPage),
+                noMatch: noMatch,
+                search: false
             });
         }
     } catch (error) {
@@ -71,7 +93,6 @@ router.get('/location', middleware.isLoggedIn, async (req, res) => {
         //found the nearest store 
         if (req.query.lat && req.query.lng) {
 
-            console.log(typeof(req.query.lat))
             let foundStore = await Store.aggregate([{
                 '$geoNear': {
                     'near': {
@@ -150,7 +171,7 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
             type: 'Point',
             coordinates: [locObj.longitude, locObj.latitude]
         }
-        console.log(req.body.store)
+        //console.log(req.body.store)
         //塞到db裡面
         let store = await Store.create(req.body.store);
         //讓我的follower 知道你上傳了
