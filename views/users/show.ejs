@@ -2,9 +2,18 @@
 <div class="container">
 
     <h1 class="mt-4">Dashboard</h1>
+    <img src="<%= user.avatar %> " alt="">
+    <% if(user.fbName){  %>
+    <p class="lead mb-3">Welcome <%= user.fbName  %></p>
+    <% }else{  %>
     <p class="lead mb-3">Welcome <%= user.username  %></p>
-    <p class="lead mb-3"><%= user._id  %></p>
+    <%}  %>
+    <p class="lead mb-3">user ID: <%= user._id  %></p>
+    <% if(user.email){  %>
     <p class="lead mb-3"><%= user.email  %></p>
+    <% }else{  %>
+    <p class="lead mb-3">目前無email，請盡速上傳email</p>
+    <%}  %>
     <a id="btn" href="/users/<%= user._id  %>/edit" class="btn btn-secondary">
         <span id="edit">Edit</span>
         <img style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">

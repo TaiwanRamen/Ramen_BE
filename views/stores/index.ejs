@@ -3,36 +3,45 @@
 
 <header class="jumbotron">
     <div class="container">
-        <h1>Welcome to YelpCamp!</h1>
-        <p>View our hankpicked Stores from all over the world</p>
-        <%-include ("../partials/messages")  -%>
-        <!-- will pack in res.query -->
-        <form action="/stores" method="GET" class="form-inline ">
-            <div class="form-group">
-                <input type="text" name="search" placeholder="Store search..." class="form-control form-control-sm">
-                <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
+        <div class="row">
+            <div class="col-md-9">
+                <h1>歡迎來到拉麵社團</h1>
+                <p>查看全台各地的拉麵店家！</p>
+                <%-include ("../partials/messages")  -%>
+                <!-- will pack in res.query -->
+                <form action="/stores" method="GET" class="form-inline ">
+                    <div class="form-group">
+                        <label for="search">搜尋店家：</label>
+                        <input type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control form-control-sm">
+                        <input style="margin-left: 0.1em;" type="submit" value="搜尋" class="btn btn-sm btn-light ">
+                    </div>
+
+                </form>
+
+
+
+                <form action="/stores/location" method="GET" class="form-inline " style="display:none">
+                    <div class="form-group">
+                        <p>給之後找最近店家用的</p>
+                        <input type="text" name="lng" placeholder="longitude" class="form-control form-control-sm">
+                        <input type="text" name="lat" placeholder="latitude" class="form-control form-control-sm">
+                        <input type="text" name="meter" placeholder="meter" class="form-control form-control-sm">
+                        <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
+                    </div>
+
+                </form>
             </div>
 
-        </form>
-
-
-
-        <form action="/stores/location" method="GET" class="form-inline ">
-            <div class="form-group">
-                <p>給之後找最近店家用的</p>
-                <input type="text" name="lng" placeholder="longitude" class="form-control form-control-sm">
-                <input type="text" name="lat" placeholder="latitude" class="form-control form-control-sm">
-                <input type="text" name="meter" placeholder="meter" class="form-control form-control-sm">
-                <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
+            <div class="col-md-3 d-flex align-items-center justify-content-center">
+                <%  if (currentUser && currentUser.isAdmin){ %>
+                <a class="p-4 btn btn-danger btn-large " href="/stores/new">管理員新增店家</a>
+                <%}  %>
             </div>
-
-        </form>
-        <p>
-            <a class="btn btn-primary btn-large" href="/stores/new">Add New Store</a>
-        </p>
-
+        </div>
     </div>
+
 </header>
+
 <div class="container-fluid">
     <div class="row">
         <% stores.forEach((store)=>{ %>
