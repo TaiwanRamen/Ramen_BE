@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 //process.env.DATABASE = 'mongodb://localhost:27017/acc_activate'
 
 
-mongoose.connect(process.env.DATABASE_LOCAL, {
+mongoose.connect(process.env.DATABASE, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
