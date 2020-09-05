@@ -38,7 +38,6 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
         if (req.query.search) {
             const regex = new RegExp(escapeRegex(req.query.search), 'gi');
 
-
             //search from all the fields included in $or
             const allStores = await Store.find({
                 $or: [
@@ -46,7 +45,7 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
                     { city: regex },
                     { descriptionText: regex },
                 ],
-            }).sort({ 'updated_At': 1 }).exec()
+            }).sort({ 'updated_At': 1 }).skip((perPage * pageNumber) - perPage).limit(perPage).exec()
             const count = await Store.countDocuments({
                 $or: [
                     { name: regex },

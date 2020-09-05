@@ -2,6 +2,7 @@
 v Image corousel  
 v show page info => SPA 
 v  store edit, add page fix and put route fix 
+*  notification route not found
 *  edit and add  page can add multiple images
 *  index page map show
 *  navbar to sidebar?
