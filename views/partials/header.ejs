@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
 
-                    <li class="nav-item <%= typeof page !== 'undefined' && page === 'stores' ? 'active' : '' %>"><a class="nav-link" href="/stores">Home</a></li>
+                    <li class="nav-item <%= typeof page !== 'undefined' && page === 'stores' ? 'active' : '' %>"><a class="nav-link" href="/stores">首頁</a></li>
                     <!--<li class="nav-item"><a class="nav-link" href="#">Features</a></li>
 
                     <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li> -->
@@ -39,17 +39,17 @@
 
                     <% if(!currentUser){ %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/login">Login</a>
+                        <a class="nav-link" href="/users/login">登入</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/users/register">Sign Up</a>
+                        <a class="nav-link" href="/users/register">註冊</a>
                     </li>
 
                     <% } else { %>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Notifications
+                            通知
                             <span class="badge"><%= notifications.length  %> </span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -74,7 +74,7 @@
                         <% } %>
                     </li>
                     <li class=" nav-item">
-                        <a class="nav-link" href="/users/logout">Logout</a>
+                        <a class="nav-link" href="/users/logout">登出</a>
                     </li>
                     <% } %>
                 </ul>
