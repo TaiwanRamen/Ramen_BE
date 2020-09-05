@@ -8,10 +8,10 @@ const smtpTransport = nodemailer.createTransport({
     secure: true,
     auth: {
         type: "OAuth2",
-        user: process.env.ACCOUNT,
-        clientId: process.env.CLINENTID,
-        clientSecret: process.env.CLINENTSECRET,
-        refreshToken: process.env.REFRESHTOKEN,
+        user: process.env.SMTP_ACCOUNT,
+        clientId: process.env.SMTP_CLINENTID,
+        clientSecret: process.env.SMTP_CLINENTSECRET,
+        refreshToken: process.env.SMTP_REFRESHTOKEN,
     }
 });
 
