@@ -60,13 +60,29 @@ To see the app in action, go to [https://ramen-group.herokuapp.com/](https://ram
 
 * Responsive web design
 
+## Technologies Used:
+* HTML5 - markup language for creating web pages and web applications
+* CSS3 - used for describing the presentation of a document written in a markup language
+* Bootstrap4 - free and open-source front-end web framework for designing websites and web applications quickly
+* jQuery - cross-platform JavaScript library designed to simplify the client-side scripting of HTML
+* DOM Manipulation - is a platform and language-neutral interface that allows programs and scripts to dynamically access and update the content, structure, and style of a document
+* Node.js - pen-source, cross-platform JavaScript run-time environment for executing JavaScript code server-side
+* Express.js - for building web applications and APIs and connecting middleware
+* REST - REST (REpresentational State Transfer) is an architectural style for developing web services
+* MongoDB - open-source cross-platform document-oriented NoSQL database program to store details like users info, campgrounds info and comments
+* NodeMailer - module for Node.js applications to allow easy as cake email sending. Used with gmail smtp survice to send email to user.
+* PassportJS - authentication middleware for Node.js. Extremely flexible and modular, Passport can be unobtrusively dropped in to any Express-based web application
+* Data Associations - associating user data with the respective campgrounds and comments using reference method
+* Heroku - cloud platform as a service used as a web application deployment model
+and more...
+
 ## Built with
 
 ### Front-end
 
 * [ejs](http://ejs.co/)
-* [Google Maps APIs](https://developers.google.com/maps/)
-* [Bootstrap](https://getbootstrap.com/docs/3.3/)
+* [mapbox map api](https://docs.mapbox.com/api/)
+* [Bootstrap](https://getbootstrap.com/docs/4/)
 
 ### Back-end
 
@@ -74,30 +90,33 @@ To see the app in action, go to [https://ramen-group.herokuapp.com/](https://ram
 * [mongoDB](https://www.mongodb.com/)
 * [mongoose](http://mongoosejs.com/)
 * [async](http://caolan.github.io/async/)
-* [crypto](https://nodejs.org/api/crypto.html#crypto_crypto)
-* [helmet](https://helmetjs.github.io/)
+* [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 * [passport](http://www.passportjs.org/)
 * [passport-local](https://github.com/jaredhanson/passport-local#passport-local)
+* [passport-facebook](https://github.com/jaredhanson/passport-facebook)
 * [express-session](https://github.com/expressjs/session#express-session)
 * [method-override](https://github.com/expressjs/method-override#method-override)
 * [nodemailer](https://nodemailer.com/about/)
 * [moment](https://momentjs.com/)
-* [cloudinary](https://cloudinary.com/)
-* [geocoder](https://github.com/wyattdanger/geocoder#geocoder)
+* [imgur](https://api.imgur.com/)
+* [here-geocoder](https://developer.here.com/)
 * [connect-flash](https://github.com/jaredhanson/connect-flash#connect-flash)
+
+### Database
+
+* [mongoDB Atlas](https://cloud.mongodb.com/)
 
 ### Platforms
 
-* [Cloudinary](https://cloudinary.com/)
+* [imgur](https://api.imgur.com/)
 * [Heroku](https://www.heroku.com/)
-* [Cloud9](https://aws.amazon.com/cloud9/?origin=c9io)
-## License
 
-#### [MIT](./LICENSE)
 ## Undos
 v Image corousel  
 v show page info => SPA 
 v  store edit, add page fix and put route fix 
+v  mongoDB ip restriction
+*  sanitize and escape any input
 *  notification route not found
 *  edit and add  page can add multiple images
 *  index page map show
@@ -109,4 +128,8 @@ v  store edit, add page fix and put route fix
 *  showpage review put into infoBtn for long review with pictures
 *  pagenation
 *  click review arthor can see all his reviews
-*  store unsent review inside browser sessionStorage https://www.w3schools.com/html/html5_webstorage.asp
+*  store unsent review inside browser sessionStorage or localStorage? https://www.w3schools.com/html/html5_webstorage.asp
+*  find store througe navigating through map
+## License
+
+#### [MIT](./LICENSE)
