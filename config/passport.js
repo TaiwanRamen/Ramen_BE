@@ -57,6 +57,7 @@ module.exports = (passport) => {
                 if (!!profile.email) {
                     newUser.email = profile.email[0].value; // facebook can return multiple emails so we'll take the first
                 }
+                newUser.uuid = uuidv4();
                 newUser.avatar = profile.photos[0].value
                 // save our user to the database
                 await newUser.save()
