@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         trim: true,
-        unique: true,
+        sparse: true,
         lowercase: true
     },
     password: {
@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
     },
     uuid: {
         type: String,
-        unique: true
+        sparse: true
     },
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
