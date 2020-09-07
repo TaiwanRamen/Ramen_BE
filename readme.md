@@ -123,7 +123,8 @@ v  mongoDB ip restriction
 *  navbar to sidebar?
 *  index page city tag search
 *  index page soup taste search
-*  fig edit review ui
+*  store open time
+*  fit edit review ui
 *  add new store proximity search($near)
 *  showpage review put into infoBtn for long review with pictures
 *  pagenation

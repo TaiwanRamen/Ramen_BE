@@ -1,5 +1,6 @@
 node_modules/
 safe-zone/
+SSL/
 data/
 databases/
 .env

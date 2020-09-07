@@ -1,5 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
+    require('dotenv').config();
+
 }
 const express = require('express'),
     app = express(),
@@ -12,7 +13,7 @@ const express = require('express'),
     flash = require("connect-flash"),
     User = require("./models/user"),
     settings = require("./settings");
-//seedDB = require("./seeds")
+
 
 app.use(express.static(__dirname + '/public')) //dirname是你現在script跑的位置。
 

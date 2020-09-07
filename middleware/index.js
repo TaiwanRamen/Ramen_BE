@@ -12,7 +12,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
 
         Comment.findById(req.params.comment_id, (err, foundComment) => {
             if (err || !foundComment) {
-                req.flash("error_msg", "Comment not found");
+                req.flash("error_msg", "留言不存在");
                 res.redirect("back");
             } else {
                 //if logged in, is he owned the store
@@ -23,7 +23,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                 if (foundComment.author.id.equals(req.user._id)) {
                     next();
                 } else {
-                    req.flash("error_msg", "You don't have permission to do that.");
+                    req.flash("error_msg", "您並沒有權限執行此操作。如果您認為這是個錯誤，請聯絡網站管理員mepowenlin@gmail.com");
                     res.redirect("back")
                 }
 
@@ -41,7 +41,7 @@ middlewareObj.checkStoreOwnership = async function(req, res, next) {
 
         await Store.findById(req.params.id, (err, foundStore) => {
             if (err || !foundStore) {
-                req.flash("error_msg", "Store not found");
+                req.flash("error_msg", "店家不存在");
                 res.redirect("back");
             } else {
                 //if logged in, is he owned the store
@@ -52,14 +52,14 @@ middlewareObj.checkStoreOwnership = async function(req, res, next) {
                 if (foundUser.isAdmin || foundStore.author.id.equals(req.user._id)) {
                     next();
                 } else {
-                    req.flash("error_msg", "You don't have permission to do that.");
+                    req.flash("error_msg", "您並沒有權限執行此操作。如果您認為這是個錯誤，請聯絡網站管理員mepowenlin@gmail.com");
                     res.redirect("back")
                 }
 
             }
         });
     } else {
-        req.flash("error_msg", "You need to be logged in to do that.");
+        req.flash("error_msg", "使用者必須登入才能檢視內容");
         res.redirect("back"); //send to where the user originally from.
     }
 
@@ -73,18 +73,18 @@ middlewareObj.checkUserOwnership = async (req, res, next) => {
             if (foundUser._id.equals(req.user._id)) {
                 next();
             } else {
-                req.flash("error_msg", "You are not the correct user, please log in !");
+                req.flash("error_msg", "您並非正確的使用者，請登入");
                 res.redirect("/")
             }
 
         } catch (error) {
             console.log(error)
-            req.flash('error_msg', 'You are not the correct user, please log in!')
+            req.flash('error_msg', '您並非正確的使用者，請登入')
             res.redirect("/");
         }
 
     } else {
-        req.flash("error_msg", "You need to be logged in to do that.");
+        req.flash("error_msg", "使用者必須登入才能檢視內容");
         res.redirect("/"); //send to where the user originally from.
     }
 
@@ -102,13 +102,13 @@ middlewareObj.checkReviewOwnership = function(req, res, next) {
                 if (foundReview.author.id.equals(req.user._id)) {
                     next();
                 } else {
-                    req.flash("error", "You don't have permission to do that");
+                    req.flash("error", "您並沒有權限執行此操作。如果您認為這是個錯誤，請聯絡網站管理員mepowenlin@gmail.com");
                     res.redirect("back");
                 }
             }
         });
     } else {
-        req.flash("error", "You need to be logged in to do that");
+        req.flash("error", "使用者必須登入才能檢視內容");
         res.redirect("back");
     }
 };
@@ -117,7 +117,7 @@ middlewareObj.checkReviewExistence = function(req, res, next) {
     if (req.isAuthenticated()) {
         Store.findById(req.params.id).populate("reviews").exec(function(err, foundStore) {
             if (err || !foundStore) {
-                req.flash("error", "Store not found.");
+                req.flash("error", "店家不存在");
                 res.redirect("back");
             } else {
                 // check if req.user._id exists in foundStore.reviews
@@ -125,7 +125,7 @@ middlewareObj.checkReviewExistence = function(req, res, next) {
                     return review.author.id.equals(req.user._id);
                 });
                 if (foundUserReview) {
-                    req.flash("error", "You already wrote a review.");
+                    req.flash("error", "您已經填寫過評論了");
                     return res.redirect("/stores/" + foundStore._id);
                 }
                 // if the review was not found, go to the next middleware
@@ -133,7 +133,7 @@ middlewareObj.checkReviewExistence = function(req, res, next) {
             }
         });
     } else {
-        req.flash("error", "You need to login first.");
+        req.flash("error", "使用者必須登入才能檢視內容");
         res.redirect("back");
     }
 };
@@ -142,7 +142,7 @@ middlewareObj.isLoggedIn = function(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    req.flash("error_msg", "使用者必須登入才能檢視內容。");
+    req.flash("error_msg", "使用者必須登入才能檢視內容");
     res.redirect("/");
 }
 module.exports = middlewareObj;

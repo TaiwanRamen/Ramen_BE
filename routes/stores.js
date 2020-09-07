@@ -28,7 +28,7 @@ let imageFilter = function(req, file, cb) {
 let upload = multer({ storage: storage, fileFilter: imageFilter })
 
 
-router.get('/', middleware.isLoggedIn, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let perPage = 9;
         let pageQuery = parseInt(req.query.page);
@@ -87,7 +87,7 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
 //====================================================
 // location test
 //====================================================
-router.get('/location', middleware.isLoggedIn, async (req, res) => {
+router.get('/location', async (req, res) => {
     try {
         //found the nearest store 
         if (req.query.lat && req.query.lng) {
@@ -199,7 +199,7 @@ router.get('/new', middleware.isLoggedIn, (req, res) => {
     res.render('stores/new');
 });
 // SHOW- Shows more info about one store
-router.get('/:id', middleware.isLoggedIn, (req, res) => {
+router.get('/:id', (req, res) => {
     //用ID找就不會重複。
     //retreving one store with the right id
     //we populate the comments array on it (we get the real comments from the comments DB, so it is not just ids) 

@@ -106,7 +106,7 @@ router.post('/register', async (req, res) => {
             //if user already exist
             //render register again with previously typed in information
             if (user) {
-                errors.push({ msg: 'Email is already registered' });
+                errors.push({ msg: '使用此email的用戶已存在！請使用另外的電子郵件或是登入' });
                 res.render('users/register', { errors, username, email, password, password2 })
             } else {
 
@@ -126,19 +126,22 @@ router.post('/register', async (req, res) => {
                 const mail_data = {
                     //from: 'noreply@hello.com',
                     to: email,
-                    subject: "Please Verify your Email Account For YelpCamp!",
+                    subject: "驗證您在台灣拉麵俱樂部的帳戶電子郵件",
                     html: `
-                        <h3> You're almost ready to get started! </h2>
+                        <h2>您即將完成在台灣拉麵俱樂部的註冊</h2>
+                        <h4>驗證您的帳戶電子郵件地址</h4>
                         <div style="word-break:break-all">
-                        <p style="font-size:13px;line-height:16px" >Click this link to complete your YelpCamp account setup:</p>
-                        <a href="${url}"> Verify my email </a>
-                        <h3>activate link:
-                        <p style="font-size:10px;line-height:16px"> Link not working? Copy and paste this URL into your browser:</p>
+                        <p style="font-size:13px;line-height:16px">您必須驗證電子郵件地址，才能使用 台灣拉麵俱樂部 的某些功能，並且在討論區中發表貼文。</p>
+                        <p style="font-size:13px;line-height:16px" >請點擊以下連結以驗證電子郵件</p>
+                        <a href="${url}">驗證電子郵件 </a>
+                        
+                        <p style="font-size:10px;line-height:16px"> 連結無法使用？請複製以下網址貼入搜尋列</p>
                         <p style="font-size:10px;line-height:16px"> ${url}</p>
-                        <p>This link is valid for 1 hours. If this link expires, 
-                        <a href="${process.env.CLIENT_URL}/users/register">sign up </a> again. 
+                        <p>如果連結失效，請再次點擊<a href="${process.env.CLIENT_URL}/users/register">註冊</a>. 
                         </p>
-                        <p style="font-size:13px;line-height:16px">If you have questions about the email verification process, please <a href="#">contact support</a> </p>
+                        <p style="font-size:13px;line-height:16px">如果您對Email 驗證有任何問題，請聯絡
+                        <a href="${process.env.CLIENT_URL}">技術支援</a> 
+                        </p>
                         </div>
                         `
                 };
@@ -151,8 +154,8 @@ router.post('/register', async (req, res) => {
                         })
                     }
                     console.log('verification email sent')
-                    req.flash('success_msg', `A verification link has been sent to your email account:
-                     ${email}, Please click on the link to verify your email.`);
+                    req.flash('success_msg', `註冊連結已發至您的電子郵件:
+                     ${email}, 請點擊郵件內的連結已完成註冊。`);
                     res.redirect('/users/login');
                 });
 
@@ -178,7 +181,7 @@ router.get('/activate/:token', async (req, res) => {
             let user = await User.findOne({ email });
             if (user) {
                 console.log("User already exist!");
-                req.flash('error_msg', 'User already exist!');
+                req.flash('error_msg', '使用此email的用戶已存在！請使用另外的電子郵件或是登入');
                 res.redirect('/users/register');
             }
             //create new user
@@ -186,23 +189,23 @@ router.get('/activate/:token', async (req, res) => {
             try {
                 await newUser.save();
                 console.log("Signup success!");
-                req.flash('success_msg', 'Signup success!');
+                req.flash('success_msg', '註冊成功！');
                 res.redirect('/users/login');
 
             } catch (err) {
                 console.log("Error in signup while account activation: ", err);
-                req.flash('error_msg', 'Error in signup while account activation, please try again later.');
+                req.flash('error_msg', '在註冊時發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員：mepowenlin@gmail.com');
                 res.redirect('/');
             }
 
         } catch (error) {
             console.log(error)
-            req.flash('error_msg', 'Incorrect or Expire link');
+            req.flash('error_msg', '不正確或是過期的連結');
             res.redirect('/');
         }
 
     } else {
-        req.flash('error_msg', 'Something went wrong :(');
+        req.flash('error_msg', '伺服器錯誤，請聯繫網站管理員：mepowenlin@gmail.com');
         res.redirect('/');
     }
 })
@@ -269,16 +272,16 @@ router.post('/recover', async (req, res) => {
                     return res.send({ error: err.message })
                 }
                 console.log('recover email sent')
-                req.flash('success_msg', 'A new password link has been sent to your email Account. Please click on the link to set new password. The link will expire after one hour.');
+                req.flash('success_msg', `密碼驗證信已寄至您的電子郵件信箱: ${email}\n 請點擊郵件內連結已設定新的密碼`);
                 res.redirect('/users/login');
             });
 
         } else {
-            req.flash('error_msg', 'Did not find user, please register.');
+            req.flash('error_msg', '用戶不存在！請註冊');
             res.redirect('/users/register')
         }
     } catch (error) {
-        req.flash('error_msg', 'Something went wrong with the server. Please try again later.');
+        req.flash('error_msg', '更改密碼時發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員：mepowenlin@gmail.com');
         console.log(error.message)
         res.redirect('/users/login')
     }
@@ -304,12 +307,12 @@ router.get('/recover/:token', async (req, res) => {
 
         } catch (error) {
             console.log('Incorrect or Expire link');
-            req.flash('error_msg', 'Incorrect or Expire link');
+            req.flash('error_msg', '連結不存在或已過期');
             res.redirect('/users/login');
         }
 
     } else {
-        return res.send("something went wrong")
+        return res.send("伺服器發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員：mepowenlin@gmail.com")
     }
 });
 
@@ -319,16 +322,16 @@ router.post('/recover/:token', async (req, res) => {
     let errors = [];
     // Check required fields
     if (!password || !password2) {
-        errors.push({ msg: 'Please fill in all fields' });
+        errors.push({ msg: '請填寫全部欄位' });
     }
     // Check password match
     if (password !== password2) {
-        errors.push({ msg: 'Passwords do not match' });
+        errors.push({ msg: '密碼並不匹配' });
     }
 
     //Check pass length
     if (password.length < 6) {
-        errors.push({ msg: 'Password should be at least 6 characters' })
+        errors.push({ msg: '密碼須至少為六位' })
     }
     //if there is a issue, rerender the register form and flash errors
     //we also want to keep what the user typed in last time
@@ -366,11 +369,11 @@ router.post('/recover/:token', async (req, res) => {
                 }
             }
 
-            req.flash('success_msg', 'Password updated success!');
+            req.flash('success_msg', '密碼更新成功！');
             res.redirect('/users/login');
         }
     } catch (err) {
-        req.flash('error_msg', 'Invalid user');
+        req.flash('error_msg', '用戶不存在！請註冊');
         res.redirect('/users/login');
 
     }
@@ -390,7 +393,7 @@ router.get("/:id", middleware.checkUserOwnership, async (req, res) => {
         res.render("users/show", { user })
 
     } catch (error) {
-        req.flash("error", "User doesn't exist. Please register!");
+        req.flash("error", "用戶不存在！請註冊");
         res.redirect('/users/register')
     }
 });
@@ -404,7 +407,7 @@ router.get('/:id/edit', middleware.checkUserOwnership, async (req, res) => {
         res.render("users/edit", { user })
 
     } catch (error) {
-        req.flash("error", "User doesn't exist. Please register!");
+        req.flash("error", "用戶不存在！請註冊");
         res.redirect('/users/register')
     }
 })
@@ -425,7 +428,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        req.flash('error_msg', err.message);
+        req.flash('error_msg', "伺服器發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員：mepowenlin@gmail.com");
         return res.redirect('back');
     }
 })
