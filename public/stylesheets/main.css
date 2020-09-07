@@ -78,7 +78,7 @@
 }
 
 .marker {
-    background-image: url('../images/ramen.png');
+    background-image: url('../images/ramen.svg');
     background-size: cover;
     width: 30px;
     height: 30px;

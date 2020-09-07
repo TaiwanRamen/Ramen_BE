@@ -111,6 +111,12 @@ and more...
 * [imgur](https://api.imgur.com/)
 * [Heroku](https://www.heroku.com/)
 
+# Progress
+2020/09/07
+![image](https://i.imgur.com/Tqq5M4D.png)
+finished map on index page, map to chinese, ramen icon
+
+
 ## Undos
 v Image corousel  
 v show page info => SPA 
