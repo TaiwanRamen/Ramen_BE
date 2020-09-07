@@ -1,9 +1,16 @@
+<!-- maxbox setting -->
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet'>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
 <%-include ("../partials/header")  -%>
 <!-- updated syntax in ejs v3.0.1 -->
 <link rel="stylesheet" href="/stylesheets/store-index.css">
 <header class="jumbotron">
     <div class="container">
         <div class="row">
+
+
+
             <div class="col-md-9">
                 <h1>歡迎來到台灣拉麵俱樂部</h1>
                 <p>查看全台各地的拉麵店家！</p>
@@ -19,7 +26,7 @@
                 </form>
 
 
-
+                <!-- 
                 <form action="/stores/location" method="GET" class="form-inline " style="display:none">
                     <div class="form-group">
                         <p>給之後找最近店家用的</p>
@@ -29,7 +36,8 @@
                         <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
                     </div>
 
-                </form>
+                </form> -->
+
             </div>
 
             <div class="col-md-3 d-flex align-items-center justify-content-center">
@@ -41,6 +49,9 @@
     </div>
 
 </header>
+
+<div id="map" style="margin-top:40px; height:400px; border-radius:10px">
+</div>
 
 <div class="container-fluid">
     <div class="row">
@@ -61,7 +72,7 @@
                 </div>
                 <h5 class="card-header text-center"><%= store.name %></h5>
 
-                <div class="card-body">
+                <div class="card-body scrollbar-light-blue">
                     <% if(store.descriptionText.length > 200){  %>
                     <p><%- store.descriptionText.substring(0, 200)-%>...</p>
                     <% } else { %>
@@ -83,6 +94,38 @@
     </div>
 
 </div>
+<!-- mapbox setting -->
+<script>
+    /* beautify preserve:start */
+    mapboxgl.accessToken = '<%= mapboxAccessToken %>';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v10',
+        zoom: 12,
+        //longitude 經度, latitude緯度 
+        center: [121.5318852, 25.0355206]
+    });
+    map.addControl(new MapboxLanguage({
+        defaultLanguage: 'zh'
+    }));
+     <% stores.forEach((store) => { %>
+        var el = document.createElement('div');
+        el.className = 'marker';
+        new mapboxgl.Marker(el)
+        .setLngLat([ <%= store.location.coordinates[0] %> , <%= store.location.coordinates[1] %> ])
+        .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
+            .setHTML(
+            `<h3><%=store.name%></h3>
+            <p><%=store.rating%>顆星</p>`
+        ))
+        .addTo(map);
+
+    <%});%>
+
+    /* beautify preserve:end */
+</script>
+
+
 <script>
     let cities = document.querySelectorAll('.city');
     for (city of cities) {

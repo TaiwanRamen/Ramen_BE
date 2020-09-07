@@ -59,6 +59,7 @@ router.get('/', async (req, res) => {
                 return res.redirect("back");
             }
             res.render("stores/index", {
+                mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
                 stores: allStores,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
@@ -72,6 +73,7 @@ router.get('/', async (req, res) => {
             const count = await Store.countDocuments().exec();
 
             res.render("stores/index", {
+                mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
                 stores: allStores,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),

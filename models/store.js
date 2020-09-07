@@ -60,6 +60,9 @@ const storeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
     }],
+    tags: [{
+        type: String
+    }],
     stillOpen: Boolean
 }, {
     // if timestamps are set to true, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
