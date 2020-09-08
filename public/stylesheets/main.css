@@ -2,6 +2,10 @@
     background-color: #dfe6ec;
 } */
 
+.container {
+    margin-top: 80px
+}
+
 .thumbnail img {
     width: 100%;
 }

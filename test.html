@@ -1,61 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <title>Use a custom render function with a geocoder</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
 
-    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet'>
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
+    <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    <style>
+        .geocoder-dropdown-item {
+            padding: 5px;
+        }
 
-    <div id="map" style="margin-top:40px; height:400px; border-radius:10px">
-    </div>
+        .geocoder-dropdown-icon {
+            margin-right: 10px;
+        }
+
+        .geocoder-dropdown-text {
+            color: #5a3fc0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: larger;
+        }
+    </style>
+    <div id="map"></div>
+
     <script>
-        mapboxgl.accessToken =
-            'pk.eyJ1IjoianVsaWFubGluNTQ5IiwiYSI6ImNrZTRhbjN2dzByYTMycHB1ZDA3ZWNzN2kifQ.GF5WkDGFoxa69gHtmzo_hg';
+        // TO MAKE THE MAP APPEAR YOU MUST
+        // ADD YOUR ACCESS TOKEN FROM
+        // https://account.mapbox.com
+        mapboxgl.accessToken = 'pk.eyJ1IjoianVsaWFubGluNTQ5IiwiYSI6ImNrZTRhbjN2dzByYTMycHB1ZDA3ZWNzN2kifQ.GF5WkDGFoxa69gHtmzo_hg';
         var map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v10',
-            zoom: 12,
-            //longitude 經度, latitude緯度 
-            center: [121.5318852, 25.0355206]
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [-79.4512, 43.6568],
+            zoom: 13
         });
-        map.addControl(new MapboxLanguage({
-            defaultLanguage: 'zh'
-        }));
 
-        var el = document.createElement('div');
-        el.className = 'marker';
-        new mapboxgl.Marker(el)
-            .setLngLat([121.5318852, 25.0355206])
-            .setPopup(new mapboxgl.Popup({
-                    offset: 20
-                }) // add popups
-                .setHTML(
-                    `<h3><%=store.name%></h3>
-                <p><%=store.rating%>顆星</p>`
-                ))
-            .addTo(map);
-
-        let stores = []
-
-        map.on('zoom', function () {
-            let zoom = map.getZoom();
-            let center = map.getCenter();
-            console.log(zoom);
-            console.log(center)
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            types: 'poi',
+            // see https://docs.mapbox.com/api/search/#geocoding-response-object for information about the schema of each response feature
+            render: function(item) {
+                // extract the item's maki icon or use a default
+                var maki = item.properties.maki || 'marker';
+                return (
+                    "<div class='geocoder-dropdown-item'><img class='geocoder-dropdown-icon' src='https://unpkg.com/@mapbox/maki@6.1.0/icons/" +
+                    maki +
+                    "-15.svg'><span class='geocoder-dropdown-text'>" +
+                    item.text +
+                    '</span></div>'
+                );
+            },
+            mapboxgl: mapboxgl
         });
-        map.on('drag', function () {
-                    let zoom = map.getZoom();
-                    let center = map.getCenter();
-                    console.log(zoom);
-                    console.log(center);
+        map.addControl(geocoder);
     </script>
+
 </body>
 
 </html>
