@@ -13,20 +13,22 @@ const express = require('express'),
 
 //set filename to multer 
 const storage = multer.diskStorage({
-    filename: function(req, file, callback) {
+    filename: function (req, file, callback) {
         callback(null, Date.now() + file.originalname);
     }
 });
 //only allow jpeg, jpeg, png, gif to be uploaded
-let imageFilter = function(req, file, cb) {
+let imageFilter = function (req, file, cb) {
     // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
         return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);
 };
-let upload = multer({ storage: storage, fileFilter: imageFilter })
-
+let upload = multer({
+    storage: storage,
+    fileFilter: imageFilter
+})
 
 router.get('/', async (req, res) => {
     try {
@@ -40,17 +42,29 @@ router.get('/', async (req, res) => {
 
             //search from all the fields included in $or
             const allStores = await Store.find({
-                $or: [
-                    { name: regex },
-                    { city: regex },
-                    { descriptionText: regex },
+                $or: [{
+                        name: regex
+                    },
+                    {
+                        city: regex
+                    },
+                    {
+                        descriptionText: regex
+                    },
                 ],
-            }).sort({ 'updated_At': 1 }).skip((perPage * pageNumber) - perPage).limit(perPage).exec()
+            }).sort({
+                'updated_At': 1
+            }).skip((perPage * pageNumber) - perPage).limit(perPage).exec()
             const count = await Store.countDocuments({
-                $or: [
-                    { name: regex },
-                    { city: regex },
-                    { descriptionText: regex },
+                $or: [{
+                        name: regex
+                    },
+                    {
+                        city: regex
+                    },
+                    {
+                        descriptionText: regex
+                    },
                 ],
             }).exec()
 
@@ -69,7 +83,9 @@ router.get('/', async (req, res) => {
 
         } else {
             //get all stores from DB
-            const allStores = await Store.find({}).sort({ 'updated_At': 1 }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
+            const allStores = await Store.find({}).sort({
+                'updated_At': 1
+            }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
             const count = await Store.countDocuments().exec();
 
             res.render("stores/index", {
@@ -145,7 +161,7 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
             }
         };
         //發request
-        await request(request_options, function(error, response) {
+        await request(request_options, function (error, response) {
             if (error) throw new Error(error);
             imgurURL = response.body
         });
@@ -208,8 +224,12 @@ router.get('/:id', (req, res) => {
     //and we exec the function
     Store.findById(req.params.id).populate("comments").populate({
         path: "reviews",
-        options: { sort: { createdAt: -1 } }
-    }).exec(function(err, foundStore) {
+        options: {
+            sort: {
+                createdAt: -1
+            }
+        }
+    }).exec(function (err, foundStore) {
         if (err || !foundStore) {
             req.flash("error", "Store not found!");
             return res.redirect("back");
@@ -230,7 +250,9 @@ router.get('/:id/edit', middleware.checkStoreOwnership, (req, res) => {
         if (err) {
             req.flash("error", "Store doesn't exist.");
         } else {
-            res.render("stores/edit", { store: foundStore })
+            res.render("stores/edit", {
+                store: foundStore
+            })
         }
     })
 
@@ -249,7 +271,7 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
             //imgur request setting
             //======================
             //發request
-            await request(request_options, function(error, response) {
+            await request(request_options, function (error, response) {
                 if (error) throw new Error(error);
                 imgurURL = response.body
             });
@@ -277,8 +299,16 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
 router.delete('/:id', middleware.checkStoreOwnership, async (req, res) => {
     try {
         let store = await Store.findById(req.params.id);
-        await Comment.remove({ "_id": { $in: store.comments } });
-        await Review.remove({ "_id": { $in: store.reviews } })
+        await Comment.remove({
+            "_id": {
+                $in: store.comments
+            }
+        });
+        await Review.remove({
+            "_id": {
+                $in: store.reviews
+            }
+        })
         store.remove();
         req.flash("success", "Campground deleted successfully!");
         res.redirect("/stores");

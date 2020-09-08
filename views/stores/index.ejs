@@ -19,7 +19,8 @@
                 <form action="/stores" method="GET" class="form-inline ">
                     <div class="form-group">
                         <label for="search">搜尋店家：</label>
-                        <input type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control form-control-sm">
+                        <input type="text" name="search" placeholder="勝王/台北/雞白湯..."
+                            class="form-control form-control-sm">
                         <input style="margin-left: 0.1em;" type="submit" value="搜尋" class="btn btn-sm btn-light ">
                     </div>
 
@@ -60,7 +61,8 @@
 
             <div class="card" style="height: 500px;">
 
-                <img id="card-image" class="card-img-top" src="<%= store.imageSmall[0] %>" alt="Card image cap" height="200px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
+                <img id="card-image" class="card-img-top" src="<%= store.imageSmall[0] %>" alt="Card image cap"
+                    height="200px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
 
                 <a href="/stores?search=<%= store.city  %>">
                     <div class="topleft btn city">
@@ -94,6 +96,7 @@
     </div>
 
 </div>
+<script src='//api.tiles.mapbox.com/mapbox.js/plugins/geo-viewport/v0.1.1/geo-viewport.js'></script>
 <!-- mapbox setting -->
 <script>
     /* beautify preserve:start */
@@ -122,6 +125,38 @@
 
     <%});%>
 
+    var mapWidth = document.getElementById("map").clientWidth;
+    window.addEventListener("resize",()=>{
+        mapWidth = document.getElementById("map").clientWidth;
+    })
+    map.on('drag', function () {
+        let zoom = map.getZoom();
+        let center = map.getCenter();
+        console.log(zoom);
+        console.log(center);
+        let bound = geoViewport.bounds([center.lng, center.lat], Math.round(zoom), [mapWidth, 400])
+        //console.log(mapWidth)
+        console.log(bound)
+    });
+     map.on('zoomend', function () {
+            let zoom = map.getZoom();
+            let center = map.getCenter();
+            console.log(zoom);
+            console.log(center)
+            let bound = geoViewport.bounds([center.lng, center.lat], Math.round(zoom), [mapWidth, 400])
+            console.log(bound)
+            fetch(`http://localhost:3000/api/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {method: 'GET'})
+                .then((response) => {
+                    // 這裡會得到一個 ReadableStream 的物件
+                    console.log(response);
+                    // 可以透過 blob(), json(), text() 轉成可用的資訊
+                    return response.json();
+                }).then((jsonData) => {
+                    console.log(jsonData);
+                }).catch((err) => {
+                    console.log('錯誤:', err);
+                });
+            });
     /* beautify preserve:end */
 </script>
 

@@ -4,7 +4,7 @@
 
 ## Live Demo
 
-To see the app in action, go to [https://ramen-group.herokuapp.com/](https://ramen-group.herokuapp.com//)
+To see the app in action, go to [https://ramen-group.herokuapp.com/](https://ramen-group.herokuapp.com/)
 
 ## Features
 
@@ -124,6 +124,10 @@ v  store edit, add page fix and put route fix
 x  mongoDB ip restriction (need SSL)
 v  pagenation
 *  sanitize and escape any input
+*  navbar make fix
+*  delete navebar homebage button
+*  picture resize to fit in show page
+*  index page stores sorting 
 *  notification route not found
 *  edit and add  page can add multiple images
 *  index page map show
@@ -137,6 +141,7 @@ v  pagenation
 *  click review arthor can see all his reviews
 *  store unsent review inside browser sessionStorage or localStorage? https://www.w3schools.com/html/html5_webstorage.asp
 *  find store througe navigating through map
+* 
 ## License
 
 #### [MIT](./LICENSE)

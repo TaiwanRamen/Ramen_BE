@@ -54,7 +54,11 @@ app.use(passport.session());
 
 
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(express.json());
 app.use(express.static("public")); //去public找東西
 app.set('view engine', 'ejs'); //把ejs設訂為預設檔案。
 
@@ -67,7 +71,9 @@ app.use(async (req, res, next) => {
     res.locals.currentUser = req.user;
     if (req.user) {
         try {
-            let user = await User.findById(req.user._id).populate('notifications', null, { isRead: false }).exec();
+            let user = await User.findById(req.user._id).populate('notifications', null, {
+                isRead: false
+            }).exec();
             res.locals.notifications = user.notifications.reverse();
         } catch (error) {
             console.log(error.message);
@@ -86,6 +92,7 @@ app.locals.moment = moment;
 //Routes
 //pertain the route from the index
 app.use('/', require('./routes/index'));
+app.use('/api', require('./routes/api'));
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/stores/:id/comments', require('./routes/comments'));

@@ -5,10 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet'>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
 </head>
 
 <body>
-    <img src="https://i.imgur.com/Tqq5M4D.png" alt="">
+
+    <div id="map" style="margin-top:40px; height:400px; border-radius:10px">
+    </div>
+    <script>
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoianVsaWFubGluNTQ5IiwiYSI6ImNrZTRhbjN2dzByYTMycHB1ZDA3ZWNzN2kifQ.GF5WkDGFoxa69gHtmzo_hg';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v10',
+            zoom: 12,
+            //longitude 經度, latitude緯度 
+            center: [121.5318852, 25.0355206]
+        });
+        map.addControl(new MapboxLanguage({
+            defaultLanguage: 'zh'
+        }));
+
+        var el = document.createElement('div');
+        el.className = 'marker';
+        new mapboxgl.Marker(el)
+            .setLngLat([121.5318852, 25.0355206])
+            .setPopup(new mapboxgl.Popup({
+                    offset: 20
+                }) // add popups
+                .setHTML(
+                    `<h3><%=store.name%></h3>
+                <p><%=store.rating%>顆星</p>`
+                ))
+            .addTo(map);
+
+        let stores = []
+
+        map.on('zoom', function () {
+            let zoom = map.getZoom();
+            let center = map.getCenter();
+            console.log(zoom);
+            console.log(center)
+        });
+        map.on('drag', function () {
+                    let zoom = map.getZoom();
+                    let center = map.getCenter();
+                    console.log(zoom);
+                    console.log(center);
+    </script>
 </body>
 
 </html>
