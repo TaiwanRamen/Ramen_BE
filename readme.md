@@ -116,7 +116,9 @@ and more...
 ![image](https://i.imgur.com/Tqq5M4D.png)
 finished map on index page, map to chinese, ramen icon
 
+2020/09/08
 
+got some change in index map, put searchbar in map, setup session storage to store currently get stores, add fix nav'
 ## Undos
 v Image corousel  
 v show page info => SPA 
