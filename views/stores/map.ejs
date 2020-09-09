@@ -5,46 +5,7 @@
 <%-include ("../partials/header")  -%>
 <!-- updated syntax in ejs v3.0.1 -->
 <link rel="stylesheet" href="/stylesheets/store-index.css">
-<header class="jumbotron">
-    <div class="row">
-        <div class="col-md-9">
-            <h1>歡迎來到台灣拉麵俱樂部</h1>
-            <p>查看全台各地的拉麵店家！</p>
-            <%-include ("../partials/messages")  -%>
-            <!-- will pack in res.query -->
-            <form action="/stores" method="GET" class="form-inline ">
-                <div class="form-group">
-                    <label for="search">搜尋店家：</label>
-                    <input type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control form-control-sm">
-                    <input style="margin-left: 0.1em;" type="submit" value="搜尋" class="btn btn-sm btn-light ">
-                </div>
 
-            </form>
-
-
-            <!-- 
-                <form action="/stores/location" method="GET" class="form-inline " style="display:none">
-                    <div class="form-group">
-                        <p>給之後找最近店家用的</p>
-                        <input type="text" name="lng" placeholder="longitude" class="form-control form-control-sm">
-                        <input type="text" name="lat" placeholder="latitude" class="form-control form-control-sm">
-                        <input type="text" name="meter" placeholder="meter" class="form-control form-control-sm">
-                        <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
-                    </div>
-
-                </form> -->
-
-        </div>
-
-        <div class="col-md-3 d-flex align-items-center justify-content-center">
-            <%  if (currentUser && currentUser.isAdmin){ %>
-            <a class="p-4 btn btn-danger btn-large " href="/stores/new">管理員新增店家</a>
-            <%}  %>
-        </div>
-    </div>
-
-
-</header>
 
 <div id="map" style="margin-top:40px; height:400px; border-radius:10px">
     <form action="/stores" method="GET" class="form-inline " style="position: relative; z-index:1000; margin:15px; ">
@@ -55,10 +16,13 @@
 
     </form>
 </div>
-
+<div>
+    <span id="currentSeen">0</span>
+</div>
 
 <div class="container-fluid">
-    <div class="row">
+    <div id="cards-container" class="row">
+        <!-- 用ajax的方式把cards加進來和刪掉 -->
         <% stores.forEach((store)=>{ %>
         <div class="col-sm-6 col-lg-4 mt-4 ">
 
@@ -92,6 +56,7 @@
 
         </div>
         <%})  %>
+
     </div>
     <div class="my-4">
         <%-include ("../partials/pagination")  -%>
@@ -102,17 +67,99 @@
 <!-- mapbox setting -->
 <script>
     /* beautify preserve:start */
+   function getCoordinates() {
+        return new Promise(function(resolve, reject) {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+    }
+
+
+    let [defaultLon, defaultLat] = [121.5178, 25.046];
+    async function userLocation(){
+        if ("geolocation" in navigator) {
+        /* geolocation is available */
+            let position = await getCoordinates();
+            console.log(position.coords.latitude, position.coords.longitude)
+            return [position.coords.longitude, position.coords.latitude ];
+        } else {
+        /* geolocation IS NOT available */
+        return [defaultLon, defaultLat]
+        }
+
+    }
+    userLocation().then((position)=>{
+        map.flyTo({
+            center: position,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+    }).catch(error=>{
+        console.log(error)
+    })
+
+
+
     mapboxgl.accessToken = '<%= mapboxAccessToken %>';
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v10',
-        zoom: 12,
+        zoom: 16,
         //longitude 經度, latitude緯度 
-        center: [121.5318852, 25.0355206]
+        center: [defaultLon, defaultLat]
     });
     map.addControl(new MapboxLanguage({
         defaultLanguage: 'zh'
     }))
+
+
+   /* beautify preserve:end */
+
+    var mapWidth = document.getElementById("map").clientWidth;
+    window.addEventListener("resize", () => {
+        mapWidth = document.getElementById("map").clientWidth;
+    });
+    let currentSeen = document.getElementById('currentSeen');
+
+    function getBoundandStoreinSession() {
+        let zoom = map.getZoom();
+        let center = map.getCenter();
+        let bound = geoViewport.bounds([center.lng, center.lat], Math.ceil(zoom), [mapWidth, 400]);
+        fetch(
+                `http://localhost:3000/api/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {
+                    method: 'GET'
+                })
+            .then((response) => {
+                // 這裡會得到一個 ReadableStream 的物件
+                //console.log(response);
+                // 可以透過 blob(), json(), text() 轉成可用的資訊
+                return response.json();
+            }).then((jsonData) => {
+                //console.log(jsonData.foundStore); //array
+                //全部存到sessionStorage，之後除了都用的到。
+                for (store of jsonData.foundStore) {
+                    if (!stores[store._id]) {
+                        stores[store._id] = store;
+                        sessionStorage.setItem(store._id, JSON.stringify(store));
+
+                        var el = document.createElement('div');
+                        el.className = 'marker';
+                        new mapboxgl.Marker(el)
+                            .setLngLat([store.location.coordinates[0], store.location.coordinates[1]])
+                            .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
+                                .setHTML(
+                                    `<h3>${store.name}</h3>
+                                    <p>${store.rating}顆星</p>`
+                                ))
+                            .addTo(map);
+                    }
+
+                }
+                console.log(Object.keys(stores).length)
+                currentSeen.innerText = sessionStorage.length;
+            }).catch((err) => {
+                console.log('錯誤:', err);
+            });
+    }
+    getBoundandStoreinSession();
 
     function setMarker(store) {
         var el = document.createElement('div');
@@ -126,24 +173,31 @@
                 ))
             .addTo(map);
     }
+    //重新進入頁面，如果sessionStorage裡面有東西就render他
+    if (sessionStorage && sessionStorage.length > 0) {
+        Object.keys(sessionStorage).forEach(function(key) {
+            let store = JSON.parse(sessionStorage.getItem(key));
+            setMarker(store);
+        });
 
-    <% stores.forEach((store) => { %>
-    var el = document.createElement('div');
-    el.className = 'marker';
-    new mapboxgl.Marker(el)
-    .setLngLat([ <%= store.location.coordinates[0] %> , <%= store.location.coordinates[1] %> ])
-    .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
-        .setHTML(
-        `<h3><%=store.name%></h3>
-        <p><%=store.rating%>顆星</p>`
-    ))
-    .addTo(map);
-    <%});%>
-
-
-   /* beautify preserve:end */
+    }
+    map.on('dragend', function() {
+        getBoundandStoreinSession()
+    });
+    var stores = {};
+    map.on('zoomend', async function() {
+        getBoundandStoreinSession()
+    });
 </script>
 
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchBar = document.getElementById('searchBar');
+    const searchQuery = urlParams.get('search');
+    if (searchQuery) {
+        searchBar.value = searchQuery;
+    }
+</script>
 <script>
     let cities = document.querySelectorAll('.city');
     for (city of cities) {

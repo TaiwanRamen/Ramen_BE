@@ -13,12 +13,12 @@ const express = require('express'),
 
 //set filename to multer 
 const storage = multer.diskStorage({
-    filename: function (req, file, callback) {
+    filename: function(req, file, callback) {
         callback(null, Date.now() + file.originalname);
     }
 });
 //only allow jpeg, jpeg, png, gif to be uploaded
-let imageFilter = function (req, file, cb) {
+let imageFilter = function(req, file, cb) {
     // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
         return cb(new Error('Only image files are allowed!'), false);
@@ -42,29 +42,19 @@ router.get('/', async (req, res) => {
 
             //search from all the fields included in $or
             const allStores = await Store.find({
-                $or: [{
-                        name: regex
-                    },
-                    {
-                        city: regex
-                    },
-                    {
-                        descriptionText: regex
-                    },
+                $or: [
+                    { name: regex },
+                    { city: regex },
+                    { descriptionText: regex },
                 ],
             }).sort({
                 'updated_At': 1
             }).skip((perPage * pageNumber) - perPage).limit(perPage).exec()
             const count = await Store.countDocuments({
-                $or: [{
-                        name: regex
-                    },
-                    {
-                        city: regex
-                    },
-                    {
-                        descriptionText: regex
-                    },
+                $or: [
+                    { name: regex },
+                    { city: regex },
+                    { descriptionText: regex },
                 ],
             }).exec()
 
@@ -102,36 +92,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-//====================================================
-// location test
-//====================================================
-router.get('/location', async (req, res) => {
-    try {
-        //found the nearest store 
-        if (req.query.lat && req.query.lng) {
-
-            let foundStore = await Store.aggregate([{
-                '$geoNear': {
-                    'near': {
-                        'type': 'Point',
-                        'coordinates': [parseFloat(req.query.lng), parseFloat(req.query.lat)]
-                    },
-                    'spherical': true,
-                    'distanceField': 'dist',
-                    'maxDistance': 800 //in meter
-                }
-            }])
-
-            console.log(foundStore)
-        }
-    } catch (error) {
-        console.log(error)
-    }
-});
-
-
-
-
 //Create == add new store to DB
 //you can upload the image
 router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res) => {
@@ -161,7 +121,7 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
             }
         };
         //發request
-        await request(request_options, function (error, response) {
+        await request(request_options, function(error, response) {
             if (error) throw new Error(error);
             imgurURL = response.body
         });
@@ -212,6 +172,64 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
     }
 
 });
+
+
+//====================================================
+// map testing feature
+//====================================================
+router.get('/map', async (req, res) => {
+    try {
+        let perPage = 9;
+        let pageQuery = parseInt(req.query.page);
+        let pageNumber = pageQuery ? pageQuery : 1;
+        let noMatch = null;
+        const allStores = await Store.find({}).sort({
+            'updated_At': 1
+        }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
+        const count = await Store.countDocuments().exec();
+
+        res.render("stores/map", {
+            mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
+            stores: allStores,
+            current: pageNumber,
+            pages: Math.ceil(count / perPage),
+            noMatch: noMatch,
+            search: false
+        });
+
+    } catch (error) {
+        console.log(error)
+    }
+});
+
+
+//====================================================
+// location testing feature
+//====================================================
+router.get('/location', async (req, res) => {
+    try {
+        //found the nearest store 
+        if (req.query.lat && req.query.lng) {
+
+            let foundStore = await Store.aggregate([{
+                '$geoNear': {
+                    'near': {
+                        'type': 'Point',
+                        'coordinates': [parseFloat(req.query.lng), parseFloat(req.query.lat)]
+                    },
+                    'spherical': true,
+                    'distanceField': 'dist',
+                    'maxDistance': 800 //in meter
+                }
+            }])
+
+            console.log(foundStore)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+
 //要比/:id前定義，不然會變成/:id 優先
 router.get('/new', middleware.isLoggedIn, (req, res) => {
     res.render('stores/new');
@@ -229,7 +247,7 @@ router.get('/:id', (req, res) => {
                 createdAt: -1
             }
         }
-    }).exec(function (err, foundStore) {
+    }).exec(function(err, foundStore) {
         if (err || !foundStore) {
             req.flash("error", "Store not found!");
             return res.redirect("back");
@@ -271,7 +289,7 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
             //imgur request setting
             //======================
             //發request
-            await request(request_options, function (error, response) {
+            await request(request_options, function(error, response) {
                 if (error) throw new Error(error);
                 imgurURL = response.body
             });
