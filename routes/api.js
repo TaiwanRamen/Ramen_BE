@@ -3,7 +3,9 @@ const express = require('express'),
     Store = require('../models/store');
 
 
-
+//==============================================================
+//   put bound inside the query and return stores in the bound
+//==============================================================
 router.get('/get-store/', async (req, res) => {
     try {
         //res.query =  

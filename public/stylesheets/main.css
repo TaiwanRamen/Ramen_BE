@@ -87,8 +87,8 @@
 .marker {
     background-image: url('../images/ramen.svg');
     background-size: cover;
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     cursor: pointer;
 }

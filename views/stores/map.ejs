@@ -115,6 +115,9 @@
         var el = document.createElement('div');
         el.className = 'marker';
         el.id = store._id;
+        el.addEventListener('click', () => {
+            map.flyTo({center: [ store.location.coordinates[0], store.location.coordinates[1] ],  essential: true, offset: [0, 150],});
+        });
         let ratingHTML = null;
         if (store.rating === 0) {
             ratingHTML =
