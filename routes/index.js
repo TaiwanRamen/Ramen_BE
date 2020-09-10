@@ -13,11 +13,18 @@ router.get('/', (req, res) => {
 router.get('/privacy', (req, res) => {
     res.render("privacy");
 });
-router.get('/index', middleware.isLoggedIn, (req, res) => {
-    console.log(req.user)
-    res.redirect('stores/index')
-});
 
+//====================================================
+// map testing feature
+//====================================================
+router.get('/map', async (req, res) => {
+    try {
+        res.render("stores/map", { mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN, });
+
+    } catch (error) {
+        console.log(error)
+    }
+});
 
 
 module.exports = router

@@ -173,36 +173,6 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
 
 });
 
-
-//====================================================
-// map testing feature
-//====================================================
-router.get('/map', async (req, res) => {
-    try {
-        let perPage = 9;
-        let pageQuery = parseInt(req.query.page);
-        let pageNumber = pageQuery ? pageQuery : 1;
-        let noMatch = null;
-        const allStores = await Store.find({}).sort({
-            'updated_At': 1
-        }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
-        const count = await Store.countDocuments().exec();
-
-        res.render("stores/map", {
-            mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
-            stores: allStores,
-            current: pageNumber,
-            pages: Math.ceil(count / perPage),
-            noMatch: noMatch,
-            search: false
-        });
-
-    } catch (error) {
-        console.log(error)
-    }
-});
-
-
 //====================================================
 // location testing feature
 //====================================================

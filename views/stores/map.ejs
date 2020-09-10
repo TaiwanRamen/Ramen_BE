@@ -4,11 +4,10 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
 <%-include ("../partials/header")  -%>
 <!-- updated syntax in ejs v3.0.1 -->
-<link rel="stylesheet" href="/stylesheets/store-index.css">
+<link rel="stylesheet" href="/stylesheets/map.css">
 
-
-<div id="map" style="margin-top:40px; height:400px; border-radius:10px">
-    <form action="/stores" method="GET" class="form-inline " style="position: relative; z-index:1000; margin:15px; ">
+<div id="map" style="margin-top:40px; width:100%; height: 80%;border-radius:10px; ">
+    <form action="/stores" method="GET" class="form-inline " style="position: relative; z-index:1000; margin:15px; width:30%">
         <div class="input-group">
             <input id="searchBar" type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control ">
             <input style="margin-left: 0.2em;" type="submit" value="搜尋" class="btn  btn-light ">
@@ -20,48 +19,6 @@
     <span id="currentSeen">0</span>
 </div>
 
-<div class="container-fluid">
-    <div id="cards-container" class="row">
-        <!-- 用ajax的方式把cards加進來和刪掉 -->
-        <% stores.forEach((store)=>{ %>
-        <div class="col-sm-6 col-lg-4 mt-4 ">
-
-            <div class="card" style="height: 500px;">
-
-                <img id="card-image" class="card-img-top" src="<%= store.imageSmall[0] %>" alt="Card image cap" height="200px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
-
-                <a href="/stores?search=<%= store.city  %>">
-                    <div class="topleft btn city">
-                        <%=store.city %>
-                    </div>
-                </a>
-                <div class="topright">
-                    <%-include ("../partials/showrating", {item:store})  -%>
-                </div>
-                <h5 class="card-header text-center"><%= store.name %></h5>
-
-                <div class="card-body scrollbar-light-blue">
-                    <% if(store.descriptionText.length > 200){  %>
-                    <p><%- store.descriptionText.substring(0, 200)-%>...</p>
-                    <% } else { %>
-                    <p><%= store.descriptionText -%></p>
-                    <% }  %>
-                </div>
-                <div class="card-footer text-muted text-right">
-                    <a href="/stores/<%= store._id %>" class="btn btn-primary">更多資訊</a>
-                </div>
-
-            </div>
-
-
-        </div>
-        <%})  %>
-
-    </div>
-    <div class="my-4">
-        <%-include ("../partials/pagination")  -%>
-    </div>
-
 </div>
 <script src='//api.tiles.mapbox.com/mapbox.js/plugins/geo-viewport/v0.1.1/geo-viewport.js'></script>
 <!-- mapbox setting -->
@@ -72,8 +29,7 @@
             navigator.geolocation.getCurrentPosition(resolve, reject);
         });
     }
-
-
+    //預設台北車站位置
     let [defaultLon, defaultLat] = [121.5178, 25.046];
     async function userLocation(){
         if ("geolocation" in navigator) {
@@ -85,13 +41,13 @@
         /* geolocation IS NOT available */
         return [defaultLon, defaultLat]
         }
-
     }
     userLocation().then((position)=>{
         map.flyTo({
             center: position,
             essential: true // this animation is considered essential with respect to prefers-reduced-motion
         });
+        //getBoundandStoreinSession();
     }).catch(error=>{
         console.log(error)
     })
@@ -109,11 +65,15 @@
     map.addControl(new MapboxLanguage({
         defaultLanguage: 'zh'
     }))
-
-
-   /* beautify preserve:end */
-
-    var mapWidth = document.getElementById("map").clientWidth;
+     map.addControl(
+        new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+                trackUserLocation: true
+        })
+    );
+    let mapWidth = document.getElementById("map").clientWidth;
     window.addEventListener("resize", () => {
         mapWidth = document.getElementById("map").clientWidth;
     });
@@ -139,17 +99,7 @@
                     if (!stores[store._id]) {
                         stores[store._id] = store;
                         sessionStorage.setItem(store._id, JSON.stringify(store));
-
-                        var el = document.createElement('div');
-                        el.className = 'marker';
-                        new mapboxgl.Marker(el)
-                            .setLngLat([store.location.coordinates[0], store.location.coordinates[1]])
-                            .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
-                                .setHTML(
-                                    `<h3>${store.name}</h3>
-                                    <p>${store.rating}顆星</p>`
-                                ))
-                            .addTo(map);
+                        setMarker(store);
                     }
 
                 }
@@ -159,18 +109,74 @@
                 console.log('錯誤:', err);
             });
     }
-    getBoundandStoreinSession();
+    /* getBoundandStoreinSession(); */
 
     function setMarker(store) {
         var el = document.createElement('div');
         el.className = 'marker';
+        el.id = store._id;
+        let ratingHTML = null;
+        if (store.rating === 0) {
+            ratingHTML =
+            `<div class="star-rating">
+
+                <div class="back-stars">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </div>
+            </div>`
+        } else {
+            ratingHTML =
+            `<div class="star-rating">
+
+                <div class="back-stars">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+
+                    <div class="front-stars" style="width: ${store.rating * 20} %">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>`
+        }
+
+
+        let popup = new mapboxgl.Popup({ offset: 20, anchor: 'bottom' })
+            .setMaxWidth(400)
+            .setHTML(
+                `<div class="card" style="height: 350px;">
+                    <img id="card-image" class="card-img-top" src="${store.imageSmall[0]} %>" alt="Card image cap" height="120px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
+                    <a href="/stores?search= ${store.city}  ">
+                        <div class="topleft btn city">
+                            ${store.city}
+                        </div>
+                    </a>
+                    <div class="topright">
+                        ${ratingHTML}
+                    </div>
+                    <h5 class="card-header text-center">${store.name}</h5>
+                    <div class="card-body scrollbar-light-blue">
+                        <p>${store.descriptionText.substring(0, 200)}...</p>  
+                    </div>
+                    <div class="card-footer text-muted text-right">
+                        <a href="/stores/${store._id}" class="btn btn-primary btn-sm">更多資訊</a>
+                    </div>
+                </div> `
+            );
+/* beautify preserve:end */
         new mapboxgl.Marker(el)
             .setLngLat([store.location.coordinates[0], store.location.coordinates[1]])
-            .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
-                .setHTML(
-                    `<h3>${store.name}</h3>
-                    <p>${store.rating}顆星</p>`
-                ))
+            .setPopup(popup)
             .addTo(map);
     }
     //重新進入頁面，如果sessionStorage裡面有東西就render他
@@ -181,6 +187,9 @@
         });
 
     }
+    map.on('load', function() {
+        getBoundandStoreinSession()
+    });
     map.on('dragend', function() {
         getBoundandStoreinSession()
     });
@@ -198,26 +207,7 @@
         searchBar.value = searchQuery;
     }
 </script>
-<script>
-    let cities = document.querySelectorAll('.city');
-    for (city of cities) {
-        if (/台北市|新北市|基隆市/.test(city.innerText)) {
-            city.classList.add("TNK");
-        } else if (/桃園市|新竹縣|新竹市|苗栗縣/.test(city.innerText)) {
-            city.classList.add("TCM");
-        } else if (/台中市|彰化縣|南投縣/.test(city.innerText)) {
-            city.classList.add("CCT");
-        } else if (/雲林縣|嘉義縣|嘉義市|台南市/.test(city.innerText)) {
-            city.classList.add("YCN");
-        } else if (/高雄市|屏東縣/.test(city.innerText)) {
-            city.classList.add("KP");
-        } else if (/宜蘭縣|花蓮縣|台東縣/.test(city.innerText)) {
-            city.classList.add("YHT");
-        } else {
-            city.classList.add("PCM");
-        }
-    }
-</script>
+
 
 <%-include ("../partials/footer") -%>
 <!-- updated syntax in ejs v3.0.1 -->

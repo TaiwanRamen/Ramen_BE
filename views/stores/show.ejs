@@ -32,7 +32,7 @@
                 <div class="my-2">
                     <a href="/stores/<%= store._id %>/reviews">
                         <span><strong><%= store.rating.toFixed(1) %></strong></span>
-                        <%-include ("../partials/showrating",{item:store})  -%>
+                        <%-include ("../partials/showrating",{rating: store.rating})  -%>
                         <em>(<%= store.reviews.length %>)</em>
                     </a>
                 </div>

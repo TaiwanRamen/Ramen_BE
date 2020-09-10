@@ -62,17 +62,19 @@
         <% stores.forEach((store)=>{ %>
         <div class="col-sm-6 col-lg-4 mt-4 ">
 
-            <div class="card" style="height: 500px;">
+            <div id="<%= store._id %>" class="card" style="height: 500px;" onclick="
+                map.flyTo({center: [ <%= store.location.coordinates[0] %> , <%= store.location.coordinates[1] %> ],  essential: true});
+                document.getElementById('<%= store._id %>_marker').click()
+            ">
 
                 <img id="card-image" class="card-img-top" src="<%= store.imageSmall[0] %>" alt="Card image cap" height="200px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
-
                 <a href="/stores?search=<%= store.city  %>">
                     <div class="topleft btn city">
                         <%=store.city %>
                     </div>
                 </a>
                 <div class="topright">
-                    <%-include ("../partials/showrating", {item:store})  -%>
+                    <%-include ("../partials/showrating", {rating:store.rating})  -%>
                 </div>
                 <h5 class="card-header text-center"><%= store.name %></h5>
 
@@ -117,6 +119,7 @@
     function setMarker(store) {
         var el = document.createElement('div');
         el.className = 'marker';
+        el.id = store._id + '_marker';
         new mapboxgl.Marker(el)
             .setLngLat([store.location.coordinates[0], store.location.coordinates[1]])
             .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
@@ -130,6 +133,7 @@
     <% stores.forEach((store) => { %>
     var el = document.createElement('div');
     el.className = 'marker';
+    el.id = '<%= store._id %>_marker';
     new mapboxgl.Marker(el)
     .setLngLat([ <%= store.location.coordinates[0] %> , <%= store.location.coordinates[1] %> ])
     .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
