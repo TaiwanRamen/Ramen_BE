@@ -82,3 +82,11 @@ hr {
     top: 0;
     transition: all 0.5s;
 }
+
+.input-group-append {
+    background-color: #fff;
+}
+
+.input-group-append>button>i {
+    font-size: 0.5rem;
+}

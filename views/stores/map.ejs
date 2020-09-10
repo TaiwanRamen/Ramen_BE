@@ -1,35 +1,36 @@
-<!-- maxbox setting -->
-<script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet'>
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
-<%-include ("../partials/header")  -%>
-<!-- updated syntax in ejs v3.0.1 -->
-<link rel="stylesheet" href="/stylesheets/map.css">
+<%-include ("../partials/map-header")  -%>
 
-<div id="map" style="margin-top:40px; width:100%; height: 80%;border-radius:10px; ">
-    <form action="/stores" method="GET" class="form-inline " style="position: relative; z-index:1000; margin:15px; width:30%">
-        <div class="input-group">
-            <input id="searchBar" type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control ">
-            <input style="margin-left: 0.2em;" type="submit" value="搜尋" class="btn  btn-light ">
-        </div>
 
-    </form>
+<div id="map" style="margin-top:40px; width:100%; height: 80vh;border-radius:10px; ">
+    <!-- 送出之後fetch看有沒有回傳，如果有刪除所有marker換成回傳的，如果沒有找到，flash no found marker照舊session裡面有的 -->
+    <div class="input-group" style="position: relative; z-index:1000; margin:15px; width:30%">
+        <input id="searchInput" type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control ">
+        <span id="clearSearchBtn" class="input-group-append d-none">
+            <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                <i class="fa fa-times"></i>
+            </button>
+        </span>
+        <input id="searchBtn" style="margin-left: 0.2em;" type="submit" value="搜尋" class="btn  btn-light">
+    </div>
+
 </div>
 <div>
     <span id="currentSeen">0</span>
 </div>
 
-</div>
 <script src='//api.tiles.mapbox.com/mapbox.js/plugins/geo-viewport/v0.1.1/geo-viewport.js'></script>
 <!-- mapbox setting -->
 <script>
     /* beautify preserve:start */
-   function getCoordinates() {
+    //拿user現在的位置
+    var apiUrl = '<%=process.env.CLIENT_URL%>/api';
+    console.log(apiUrl)
+    function getCoordinates() {
         return new Promise(function(resolve, reject) {
             navigator.geolocation.getCurrentPosition(resolve, reject);
         });
     }
-    //預設台北車站位置
+    //預設default在台北車站位置
     let [defaultLon, defaultLat] = [121.5178, 25.046];
     async function userLocation(){
         if ("geolocation" in navigator) {
@@ -53,7 +54,9 @@
     })
 
 
-
+    //==================================================
+    //         創建地圖
+    //==================================================
     mapboxgl.accessToken = '<%= mapboxAccessToken %>';
     var map = new mapboxgl.Map({
         container: 'map',
@@ -65,7 +68,7 @@
     map.addControl(new MapboxLanguage({
         defaultLanguage: 'zh'
     }))
-     map.addControl(
+    map.addControl(
         new mapboxgl.GeolocateControl({
             positionOptions: {
                 enableHighAccuracy: true
@@ -73,44 +76,106 @@
                 trackUserLocation: true
         })
     );
+    //==================================================
+    //         搜尋，找店家
+    //==================================================
+    var searchInput = document.getElementById('searchInput');
+    var clearSearchBtn = document.getElementById('clearSearchBtn');
+    searchInput.addEventListener('focusout',function(){
+        if(searchInput.value){
+            clearSearchBtn.classList.remove('d-none');
+        }else{
+            clearSearchBtn.classList.add('d-none');
+        }
+
+    })
+    document.getElementById('searchBtn').onclick = function (){
+
+        searchStore(searchInput .value);
+    }
+    //找到要的店家，清空marker畫新的
+
+    function searchStore(searchInput) {
+        fetch(`${apiUrl}/search-store?input=${searchInput}`, {method: 'GET'})
+            .then((response) => {
+                // 這裡會得到一個 ReadableStream 的物件
+                // 可以透過 blob(), json(), text() 轉成可用的資訊
+                return response.json();
+            }).then((jsonData) => {
+                //console.log(jsonData); //array
+                //如果有找到store
+                if(jsonData.foundStore.length > 1){
+                    //刪光原本的marker
+                    if (currentMarkers!==null) {
+                        currentMarkers.forEach(marker=>{
+                            marker.remove();
+                        })
+                    }
+                    for (store of jsonData.foundStore) {
+                    //if (!stores[store._id]) {
+                        setMarker(store)
+                    }
+                }else{
+                    //告訴user沒有店家
+                }
+
+            }).catch((err) => {
+                console.log('錯誤:', err);
+        });
+    }
+    //清空input，把session存的marker畫回去
+
+    clearSearchBtn.onclick = function (){
+
+        searchInput.value = '';
+        stores = Object.keys(sessionStorage).map(key=>{
+            let store = sessionStorage.getItem(key);
+            setMarker (JSON.parse(store))
+        })
+
+    }
+
+
+    //因為地圖的bound會根據地圖大小計算，所以要先取得地圖寬度。
     let mapWidth = document.getElementById("map").clientWidth;
     window.addEventListener("resize", () => {
         mapWidth = document.getElementById("map").clientWidth;
     });
+    //不太重要等等刪
     let currentSeen = document.getElementById('currentSeen');
 
+    //==================================================
+    //         找在地圖里店家，存到session
+    //==================================================
     function getBoundandStoreinSession() {
         let zoom = map.getZoom();
         let center = map.getCenter();
         let bound = geoViewport.bounds([center.lng, center.lat], Math.ceil(zoom), [mapWidth, 400]);
-        fetch(
-                `http://localhost:3000/api/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {
-                    method: 'GET'
-                })
+        fetch(`${apiUrl}/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {method: 'GET'})
             .then((response) => {
                 // 這裡會得到一個 ReadableStream 的物件
-                //console.log(response);
                 // 可以透過 blob(), json(), text() 轉成可用的資訊
                 return response.json();
             }).then((jsonData) => {
-                //console.log(jsonData.foundStore); //array
+                console.log(jsonData); //array
                 //全部存到sessionStorage，之後除了都用的到。
                 for (store of jsonData.foundStore) {
-                    if (!stores[store._id]) {
-                        stores[store._id] = store;
+                    //if (!stores[store._id]) {
+                    if (sessionStorage.getItem(`${store._id}`) === null) {
+                        //stores[store._id] = store;
                         sessionStorage.setItem(store._id, JSON.stringify(store));
                         setMarker(store);
                     }
 
                 }
-                console.log(Object.keys(stores).length)
                 currentSeen.innerText = sessionStorage.length;
             }).catch((err) => {
                 console.log('錯誤:', err);
-            });
+        });
     }
-    /* getBoundandStoreinSession(); */
+    //getBoundandStoreinSession();
 
+    var currentMarkers=[];
     function setMarker(store) {
         var el = document.createElement('div');
         el.className = 'marker';
@@ -152,8 +217,6 @@
                 </div>
             </div>`
         }
-
-
         let popup = new mapboxgl.Popup({ offset: 20, anchor: 'bottom' })
             .setMaxWidth(400)
             .setHTML(
@@ -177,11 +240,13 @@
                 </div> `
             );
 /* beautify preserve:end */
-        new mapboxgl.Marker(el)
+        let marker = new mapboxgl.Marker(el)
             .setLngLat([store.location.coordinates[0], store.location.coordinates[1]])
             .setPopup(popup)
             .addTo(map);
+        currentMarkers.push(marker);
     }
+
     //重新進入頁面，如果sessionStorage裡面有東西就render他
     if (sessionStorage && sessionStorage.length > 0) {
         Object.keys(sessionStorage).forEach(function(key) {
@@ -191,14 +256,19 @@
 
     }
     map.on('load', function() {
-        getBoundandStoreinSession()
+        if (!searchInput.value) {
+            getBoundandStoreinSession()
+        }
     });
     map.on('dragend', function() {
-        getBoundandStoreinSession()
+        if (!searchInput.value) {
+            getBoundandStoreinSession()
+        }
     });
-    var stores = {};
     map.on('zoomend', async function() {
-        getBoundandStoreinSession()
+        if (!searchInput.value) {
+            getBoundandStoreinSession()
+        }
     });
 </script>
 
