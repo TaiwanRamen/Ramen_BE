@@ -20,33 +20,32 @@
 
 <body>
     <div id="app">
-        <div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="landing-header">
+                    <div class="container" style="width: 100%;">
+                        <!-- error message -->
+                        <div style="width: 80%;" class="container">
+                            <%-include ("./partials/messages")  -%>
+                        </div>
+                        <h1 id="title">歡迎來到台灣拉麵愛好會</h1>
+                        <h4 id="description">台湾ラーメン愛好会/Taiwan Ramen Club</h4>
+                        <hr>
+                        <div>
+                            <a href="#" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                請登入以繼續
+                            </a>
+                        </div>
+                        <div>
+                            <a href="/map" class="mt-4 btn btn-lg btn-secondary inline-block">
+                                使用訪客瀏覽
+                            </a>
+                        </div>
 
 
-            <div id="landing-header">
-                <div class="container" style="width: 600px;">
-                    <!-- error message -->
-                    <div style="width: 500px;" class="container">
-                        <%-include ("./partials/messages")  -%>
+                        <!-- Button trigger modal -->
                     </div>
-                    <h1>歡迎來到台灣拉麵愛好會</h1>
-                    <h4>台湾ラーメン愛好会/Taiwan Ramen Club</h4>
-                    <hr>
-                    <div>
-                        <a href="#" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            請登入以繼續
-                        </a>
-                    </div>
-                    <div>
-                        <a href="/map" class="mt-4 btn btn-lg btn-secondary inline-block">
-                            使用訪客瀏覽
-                        </a>
-                    </div>
-
-
-                    <!-- Button trigger modal -->
                 </div>
-
 
             </div>
 
@@ -88,7 +87,6 @@
                 <li></li>
                 <li></li>
             </ul>
-
         </div>
     </div>
 
