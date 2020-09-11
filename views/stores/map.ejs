@@ -322,14 +322,15 @@
     //重新進入頁面，如果sessionStorage裡面有東西就render他
     if (sessionStorage && sessionStorage.length > 0) {
         console.log(typeof(Object.keys(sessionStorage)))
-        Object.keys(sessionStorage).forEach(function(key) {
+        for (let i = 0; i < sessionStorage.length; i++) {
+            //小心自己挖的坑阿，有怪怪的東西在session Storage裡面
+            if (sessionStorage.key(i) != 'isshow') {
+                let store = JSON.parse(sessionStorage.getItem(sessionStorage.key(i)));
+                console.log(store)
+                setMarker(store);
+            }
 
-            let store = JSON.parse(sessionStorage.getItem(key));
-            console.log(store)
-            setMarker(store);
-
-        });
-
+        }
     }
     map.on('load', function() {
         if (!searchInput.value) {
