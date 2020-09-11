@@ -93,7 +93,7 @@
     /* beautify preserve:start */
     //拿user現在的位置
     var apiUrl = '<%=process.env.CLIENT_URL%>/api';
-    console.log(apiUrl)
+    //console.log(apiUrl)
     function getCoordinates() {
         return new Promise(function(resolve, reject) {
             navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -105,7 +105,7 @@
         if ("geolocation" in navigator) {
         /* geolocation is available */
             let position = await getCoordinates();
-            console.log(position.coords.latitude, position.coords.longitude)
+            //console.log(position.coords.latitude, position.coords.longitude)
             return [position.coords.longitude, position.coords.latitude ];
         } else {
         /* geolocation IS NOT available */
@@ -205,11 +205,6 @@
     }
 
 
-    //因為地圖的bound會根據地圖大小計算，所以要先取得地圖寬度。
-    let mapWidth = document.getElementById("map").clientWidth;
-    window.addEventListener("resize", () => {
-        mapWidth = document.getElementById("map").clientWidth;
-    });
     //不太重要等等刪
     let currentSeen = document.getElementById('currentSeen');
 
@@ -219,16 +214,18 @@
     function getBoundandStoreinSession() {
         let zoom = map.getZoom();
         let center = map.getCenter();
+        //因為地圖的bound會根據地圖大小計算，所以要先取得地圖寬度。
         let mapWidth = document.getElementById("map").clientWidth;
-        let bound = geoViewport.bounds([center.lng, center.lat], Math.ceil(zoom), [mapWidth, 400]);
-        console.log(mapWidth);
+        let mapHeight = document.getElementById("map").clientHeight;
+        let bound = geoViewport.bounds([center.lng, center.lat], Math.ceil(zoom), [mapWidth, mapHeight]);
+        //console.log(mapWidth, mapHeight);
         fetch(`${apiUrl}/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {method: 'GET'})
             .then((response) => {
                 // 這裡會得到一個 ReadableStream 的物件
                 // 可以透過 blob(), json(), text() 轉成可用的資訊
                 return response.json();
             }).then((jsonData) => {
-                console.log(jsonData); //array
+                //console.log(jsonData); //array
                 //全部存到sessionStorage，之後除了都用的到。
                 for (store of jsonData.foundStore) {
                     //if (!stores[store._id]) {
@@ -321,12 +318,12 @@
 
     //重新進入頁面，如果sessionStorage裡面有東西就render他
     if (sessionStorage && sessionStorage.length > 0) {
-        console.log(typeof(Object.keys(sessionStorage)))
+        //console.log(typeof(Object.keys(sessionStorage)))
         for (let i = 0; i < sessionStorage.length; i++) {
             //小心自己挖的坑阿，有怪怪的東西在session Storage裡面
             if (sessionStorage.key(i) != 'isshow') {
                 let store = JSON.parse(sessionStorage.getItem(sessionStorage.key(i)));
-                console.log(store)
+                //console.log(store)
                 setMarker(store);
             }
 
