@@ -291,7 +291,14 @@
         if(store.imageSmall){
             imageUrl = store.imageSmall[0]
         }else{
+            console.log(store.name + 'has no image')
             imageUrl = 'https://i.imgur.com/siJp2jE.png'
+        }
+        var description = '';
+        if(store.descriptionText){
+            description = store.descriptionText.substring(0, 200);
+        }else{
+            console.log(store.name + 'has no description')
         }
         console.log()
         let popup = new mapboxgl.Popup({ offset: 20, anchor: 'bottom' })
@@ -309,7 +316,7 @@
                     </div>
                     <h5 class="card-header text-center">${store.name}</h5>
                     <div class="card-body scrollbar-light-blue">
-                        <p>${store.descriptionText.substring(0, 200)}...</p>  
+                        <p>${description}...</p>  
                     </div>
                     <div class="card-footer text-muted text-right">
                         <a href="/stores/${store._id}" class="btn btn-primary btn-sm">更多資訊</a>
