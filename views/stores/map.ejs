@@ -69,9 +69,10 @@
         </button>
     </div>
 </div>
-<div id="map" style="mt-2 width:100%; height: 80vh;border-radius:10px; ">
+<div id="map" class="mt-2" style="width:100%; height: 80vh;border-radius:10px; ">
     <!-- 送出之後fetch看有沒有回傳，如果有刪除所有marker換成回傳的，如果沒有找到，flash no found marker照舊session裡面有的 -->
-    <div class="input-group" style="position: relative; z-index:1000; margin:15px; width:30%">
+
+    <div class="input-group" style="position: relative; z-index:1000; margin:15px; width:40%; min-width:180px; max-width:350px">
         <input id="searchInput" type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control ">
         <span id="clearSearchBtn" class="input-group-append d-none">
             <button class="btn btn-outline-secondary border-left-0 border" type="button">
@@ -285,11 +286,12 @@
                 </div>
             </div>`
         }
+        let imageUrl = store.imageSmall[0];
         let popup = new mapboxgl.Popup({ offset: 20, anchor: 'bottom' })
             .setMaxWidth(400)
             .setHTML(
                 `<div class="card" style="height: 350px;">
-                    <img id="card-image" class="card-img-top" src="${store.imageSmall[0]} %>" alt="Card image cap" height="120px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
+                    <img id="card-image" class="card-img-top" src="${imageUrl}" alt="Card image cap" height="120px" onError="this.onerror=null;this.src='https://i.imgur.com/siJp2jE.png';">
                     <a href="/stores?search= ${store.city}  ">
                         <div class="topleft btn city">
                             ${store.city}
