@@ -29,8 +29,9 @@ router.get('/get-store/', async (req, res) => {
             ]
         };
         // find stores within current map range
-        let foundStore = await Store.find().where('location').within(mapBound)
-        console.log([req.query.W, req.query.N], [req.query.E, req.query.S])
+        let foundStore = await Store.find().where('location').within(mapBound);
+        console.log([req.query.W, req.query.N], [req.query.E, req.query.S]);
+        console.log(foundStore);
         res.status(200).json({ foundStore })
     } catch (err) {
         console.log(err)

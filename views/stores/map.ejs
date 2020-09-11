@@ -219,7 +219,9 @@
     function getBoundandStoreinSession() {
         let zoom = map.getZoom();
         let center = map.getCenter();
+        let mapWidth = document.getElementById("map").clientWidth;
         let bound = geoViewport.bounds([center.lng, center.lat], Math.ceil(zoom), [mapWidth, 400]);
+        console.log(mapWidth);
         fetch(`${apiUrl}/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {method: 'GET'})
             .then((response) => {
                 // 這裡會得到一個 ReadableStream 的物件
@@ -286,21 +288,7 @@
                 </div>
             </div>`
         }
-
-        var imageUrl = '';
-        if(store.imageSmall){
-            imageUrl = store.imageSmall[0]
-        }else{
-            console.log(store.name + 'has no image')
-            imageUrl = 'https://i.imgur.com/siJp2jE.png'
-        }
-        var description = '';
-        if(store.descriptionText){
-            description = store.descriptionText.substring(0, 200);
-        }else{
-            console.log(store.name + 'has no description')
-        }
-        console.log()
+        let imageUrl = store.imageSmall[0];
         let popup = new mapboxgl.Popup({ offset: 20, anchor: 'bottom' })
             .setMaxWidth(400)
             .setHTML(
@@ -316,7 +304,7 @@
                     </div>
                     <h5 class="card-header text-center">${store.name}</h5>
                     <div class="card-body scrollbar-light-blue">
-                        <p>${description}...</p>  
+                        <p>${store.descriptionText.substring(0, 200)}...</p>  
                     </div>
                     <div class="card-footer text-muted text-right">
                         <a href="/stores/${store._id}" class="btn btn-primary btn-sm">更多資訊</a>
@@ -333,9 +321,13 @@
 
     //重新進入頁面，如果sessionStorage裡面有東西就render他
     if (sessionStorage && sessionStorage.length > 0) {
+        console.log(typeof(Object.keys(sessionStorage)))
         Object.keys(sessionStorage).forEach(function(key) {
+
             let store = JSON.parse(sessionStorage.getItem(key));
+            console.log(store)
             setMarker(store);
+
         });
 
     }
