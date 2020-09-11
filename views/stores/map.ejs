@@ -160,12 +160,12 @@
     })
     document.getElementById('searchBtn').onclick = function (){
 
-        searchStore(searchInput .value);
+        searchStore(searchInput.value);
     }
     //找到要的店家，清空marker畫新的
 
-    function searchStore(searchInput) {
-        fetch(`${apiUrl}/search-store?input=${searchInput}`, {method: 'GET'})
+    function searchStore(searchInputValue) {
+        fetch(`${apiUrl}/search-store?input=${searchInputValue}`, {method: 'GET'})
             .then((response) => {
                 // 這裡會得到一個 ReadableStream 的物件
                 // 可以透過 blob(), json(), text() 轉成可用的資訊
@@ -286,7 +286,14 @@
                 </div>
             </div>`
         }
-        let imageUrl = store.imageSmall[0];
+
+        var imageUrl = '';
+        if(store.imageSmall[0]){
+            imageUrl = store.imageSmall[0]
+        }else{
+            imageUrl = 'https://i.imgur.com/siJp2jE.png'
+        }
+        console.log()
         let popup = new mapboxgl.Popup({ offset: 20, anchor: 'bottom' })
             .setMaxWidth(400)
             .setHTML(
