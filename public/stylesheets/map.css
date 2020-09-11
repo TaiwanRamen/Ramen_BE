@@ -1,3 +1,14 @@
+.modal-lg {
+    width: 75vw;
+    max-width: 1200px;
+}
+
+.container-fluid {
+    width: 90vw;
+    padding: 20px;
+    margin-top: 40px
+}
+
 .city {
     color: #fff;
     background-color: #f5ac53;
@@ -37,6 +48,7 @@ hr {
     -moz-border-radius: 4px;
     border-radius: 10px;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+
 }
 
 .card img {
@@ -89,4 +101,8 @@ hr {
 
 .input-group-append>button>i {
     font-size: 0.5rem;
+}
+
+.mapboxgl-popup-content p {
+    font-size: 0.9rem
 }

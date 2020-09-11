@@ -42,14 +42,14 @@ router.get('/', async (req, res) => {
 
             //search from all the fields included in $or
             const allStores = await Store.find({
-                $or: [
-                    { name: regex },
-                    { city: regex },
-                    { descriptionText: regex },
-                ],
-            }).sort({
-                'updated_At': 1
-            }).skip((perPage * pageNumber) - perPage).limit(perPage).exec()
+                    $or: [
+                        { name: regex },
+                        { city: regex },
+                        { descriptionText: regex },
+                    ],
+                }).collation({ locale: 'zh@collation=zhuyin' })
+                .sort({ rating: -1, city: 1 })
+                .skip((perPage * pageNumber) - perPage).limit(perPage).exec();
             const count = await Store.countDocuments({
                 $or: [
                     { name: regex },
@@ -73,9 +73,8 @@ router.get('/', async (req, res) => {
 
         } else {
             //get all stores from DB
-            const allStores = await Store.find({}).sort({
-                'updated_At': 1
-            }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
+            const allStores = await Store.find().collation({ locale: 'zh@collation=zhuyin' })
+                .sort({ rating: -1, city: 1 }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();;
             const count = await Store.countDocuments().exec();
 
             res.render("stores/index", {

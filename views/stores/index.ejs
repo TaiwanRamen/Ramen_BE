@@ -11,28 +11,14 @@
             <h1>歡迎來到台灣拉麵俱樂部</h1>
             <p>查看全台各地的拉麵店家！</p>
             <%-include ("../partials/messages")  -%>
-            <!-- will pack in res.query -->
-            <form action="/stores" method="GET" class="form-inline ">
-                <div class="form-group">
-                    <label for="search">搜尋店家：</label>
-                    <input type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control form-control-sm">
-                    <input style="margin-left: 0.1em;" type="submit" value="搜尋" class="btn btn-sm btn-light ">
+            <form action="/stores" method="GET" class="form-inline" style="width: 60%;">
+                <div class="input-group">
+                    <input id="searchBar" type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control ">
+                    <input style="margin-left: 0.2em;" type="submit" value="搜尋" class="btn  btn-light ">
                 </div>
 
             </form>
-
-
-            <!-- 
-                <form action="/stores/location" method="GET" class="form-inline " style="display:none">
-                    <div class="form-group">
-                        <p>給之後找最近店家用的</p>
-                        <input type="text" name="lng" placeholder="longitude" class="form-control form-control-sm">
-                        <input type="text" name="lat" placeholder="latitude" class="form-control form-control-sm">
-                        <input type="text" name="meter" placeholder="meter" class="form-control form-control-sm">
-                        <input style="margin-left: 0.1em;" type="submit" value="Search" class="btn nav-link">
-                    </div>
-
-                </form> -->
+            <a href="/map" class="h3">以地圖搜尋</a>
 
         </div>
 
@@ -40,21 +26,18 @@
             <%  if (currentUser && currentUser.isAdmin){ %>
             <a class="p-4 btn btn-danger btn-large " href="/stores/new">管理員新增店家</a>
             <%}  %>
+
         </div>
     </div>
 
 
 </header>
+<a href="/map">
+    <div id="map" style="margin-top:40px; height:400px; border-radius:10px">
 
-<div id="map" style="margin-top:40px; height:400px; border-radius:10px">
-    <form action="/stores" method="GET" class="form-inline " style="position: relative; z-index:1000; margin:15px; ">
-        <div class="input-group">
-            <input id="searchBar" type="text" name="search" placeholder="勝王/台北/雞白湯..." class="form-control ">
-            <input style="margin-left: 0.2em;" type="submit" value="搜尋" class="btn  btn-light ">
-        </div>
+    </div>
+</a>
 
-    </form>
-</div>
 
 
 <div class="container-fluid">
@@ -108,9 +91,9 @@
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v10',
-        zoom: 12,
+        zoom: 6,
         //longitude 經度, latitude緯度 
-        center: [121.5318852, 25.0355206]
+        center: [120.9757865, 23.7534841]
     });
     map.addControl(new MapboxLanguage({
         defaultLanguage: 'zh'
@@ -143,7 +126,7 @@
     ))
     .addTo(map);
     <%});%>
-
+    map.scrollZoom.disable();
 
    /* beautify preserve:end */
 </script>

@@ -47,7 +47,7 @@ router.get("/login", (req, res) => {
 //Login Handle
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
-        successRedirect: '/users',
+        successRedirect: '/map',
         failureRedirect: '/users/login',
         failureFlash: true
     })(req, res, next);
@@ -423,7 +423,8 @@ router.put('/:id', upload.single('image'), async (req, res) => {
             });
 
         } else {
-            console.log(req.body.user.lastName)
+            console.log(req.body.user.fbName)
+
         }
 
     } catch (error) {
