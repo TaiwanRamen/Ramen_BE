@@ -8,25 +8,25 @@
 
 <h1 style="text-align: center;">編輯： <%= store.name  %> </h1>
 <div style="width:70%; margin:25px auto">
-    <form action="/stores/<%= store._id %>/?_method=PUT " method="POST" enctype="multipart/form-data">
+    <form id="form" action="/stores/<%= store._id %>/?_method=PUT " method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <p>店名：</p>
-            <input class="form-control" type="text" name="store[name]" value=<%= store.name %>>
+            <input id="name" class="form-control" type="text" name="store[name]" value=<%= store.name %>>
         </div>
         <div class="form-group">
-            <p>縣市：<span id="cityDisplay"></span></p>
-            <input id="city" class="form-control" type="text" name="store[city]" value=<%= store.city %> style="display:none">
+            <p>縣市：<span id="cityDisplay"><%= store.city %></span></p>
+            <input id="city" type="text" value='<%= store.city %>' name="store[city]" style="display: none;">
         </div>
 
         <div class="form-group">
             <p>地址：</p>
             <input id="address" class="form-control" type="text" name="store[address]" value=<%= store.address %>>
         </div>
-        <div class="form-group">
-            <select class="custom-select" id="inputGroupSelect01" name="store[city]">
+        <!-- <div class="form-group">
+            <select id="city" class="custom-select" id="inputGroupSelect01" name="store[city]">
 
-                <option selected value="<%= store.city %>"><%= store.city %></option>
-                <%  let cities = [
+                <option selected>< %= store.city %></option>
+                < %  let cities = [
                 "台北市", "新北市", "基隆市",
                 "桃園市", "新竹縣", "新竹市", "苗栗縣",
                 "台中市", "彰化縣", "南投縣",
@@ -34,11 +34,11 @@
                 "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣",
                 "澎湖縣", "金門縣", "連江縣" ]; 
                 cities = cities.filter(item => item !== store.city) %>
-                <% cities.forEach((city)=>{ %>
-                <option value="<%= city %> "><%= city %></option>
-                <% })  %>
+                < % cities.forEach((city)=>{ %>
+                <option value="< %= city %> ">< %= city %></option>
+                < % })  %>
             </select>
-        </div>
+        </div> -->
 
         <div class="form-group">
             <label for="uploadImage" class="btn btn-sm btn-secondary">
@@ -52,11 +52,11 @@
 
         <div class="form-group">
             <p>介紹：</p>
-            <textarea class="form-control" name="store[description]" cols="30" rows="20"><%= store.descriptionText %></textarea>
+            <textarea id="description" class="form-control" name="store[description]" cols="30" rows="20"><%= store.descriptionText %></textarea>
             <!-- <input class="form-control" type="text" name="store[description]" value=< %= store.description %>> -->
         </div>
         <div class="form-group">
-            <button class="class= btn btn-lg btn-primary btn-block">送出編輯</button>
+            <button id="submitBtn" class="class= btn btn-lg btn-primary btn-block">送出編輯</button>
         </div>
 
     </form>
@@ -66,20 +66,40 @@
 <script>
     const address = document.getElementById("address");
     const city = document.getElementById("city");
+    const name = document.getElementById("name");
     const cityDisplay = document.getElementById("cityDisplay");
-    let re = /台北市|新北市|基隆市|桃園市|新竹縣|新竹市|苗栗縣|台中市|彰化縣|南投縣|雲林縣|嘉義縣|嘉義市|台南市"|高雄市|屏東縣|宜蘭縣|花蓮縣|台東縣|澎湖縣|金門縣|連江縣/;
-    window.addEventListener('keyup', function() {
+    const submitBtn = document.getElementById("submitBtn");
+    const description = document.getElementById("description");
+    let re = /台北市|新北市|基隆市|桃園市|新竹縣|新竹市|苗栗縣|台中市|彰化縣|南投縣|雲林縣|嘉義縣|嘉義市|台南市|高雄市|屏東縣|宜蘭縣|花蓮縣|台東縣|澎湖縣|金門縣|連江縣/;
+    /* city.addEventListener('change', function() {
         if (re.test(address.value)) {
             city.value = address.value.match(re);
             cityDisplay.innerText = city.value
         }
+    }) */
 
+    address.addEventListener('focusout', () => {
+        if (!re.test(address.value)) {
+            alert('請輸入正確縣市');
+            cityDisplay.innerText = '請輸入正確縣市';
+        } else {
+            city.value = address.value.match(re);
+            cityDisplay.innerText = city.value
+        }
     })
+    form.addEventListener('focusout', () => {
+        if (name.value && city.value && address.value && description.value) {
+            submitBtn.removeAttribute('disabled')
+        } else {
+            submitBtn.setAttribute('disabled', 'disabled')
+        }
+    });
 </script>
 <script>
     const image = document.getElementById("uploadImage");
     const fileDescription = document.getElementById("fileDescription");
     const deleteIcon = document.getElementById("deleteIcon");
+
     image.onchange = function() {
         if (this.files[0].size > 6291456) {
             alert("File is too big! Must be less than 6MB!");

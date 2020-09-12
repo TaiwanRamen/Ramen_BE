@@ -38,9 +38,9 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
     }],
-    followers: [{
+    followedStore: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Store'
     }],
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,

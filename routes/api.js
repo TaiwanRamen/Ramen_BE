@@ -6,7 +6,7 @@ const express = require('express'),
 //==============================================================
 //   put bound inside the query and return stores in the bound
 //==============================================================
-router.get('/get-store/', async (req, res) => {
+router.get('/get-store', async (req, res) => {
     try {
         //res.query =  
         //{
@@ -42,7 +42,7 @@ router.get('/get-store/', async (req, res) => {
 //==============================================================
 //   put bound inside the query and return stores in the bound
 //==============================================================
-router.get('/search-store/', async (req, res) => {
+router.get('/search-store', async (req, res) => {
     try {
         //res.query = { input: '台北' }
         console.log(req.query)

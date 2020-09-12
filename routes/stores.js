@@ -150,18 +150,7 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
         //console.log(req.body.store)
         //塞到db裡面
         let store = await Store.create(req.body.store);
-        //讓我的follower 知道你上傳了
-        let user = await User.findById(req.user._id).populate('followers').exec();
-        let newNotification = {
-            username: req.user.username,
-            storeId: store.id
-        }
 
-        for (const follower of user.followers) {
-            let notification = await Notification.create(newNotification);
-            follower.notifications.push(notification);
-            follower.save();
-        }
         res.redirect('/stores/' + store.id);
 
     } catch (error) {
@@ -271,8 +260,21 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
 
         }
         let data = req.body.store; //在ejs裡面包好了store[name, image, author]
+        console.log(data)
         //find and update
         await Store.findByIdAndUpdate(req.params.id, data);
+        //讓我的follower 知道你更新了
+        let store = await Store.findById(req.params.id).populate('followers').exec();
+        let newNotification = {
+            storeId: store.id,
+            storeName: store.name,
+        }
+        for (const follower of store.followers) {
+            let notification = await Notifications.create(newNotification);
+            follower.notifications.push(notification);
+            follower.save();
+        }
+
         res.redirect("/stores/" + req.params.id);
 
     } catch (error) {
@@ -282,7 +284,7 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
     }
 })
 
-// DESTROY CAMPGROUND
+// DESTROY Store
 router.delete('/:id', middleware.checkStoreOwnership, async (req, res) => {
     try {
         let store = await Store.findById(req.params.id);
@@ -305,6 +307,37 @@ router.delete('/:id', middleware.checkStoreOwnership, async (req, res) => {
         res.redirect("/stores");
     }
 
+})
+
+//user follow store
+router.get('/:id/follow', middleware.isLoggedIn, async (req, res) => {
+    try {
+        let store = await Store.findById(req.params.id);
+        store.followers.push(req.user._id);
+        store.save();
+        console.log('成功追蹤' + store.name);
+        req.flash('success', '成功追蹤' + store.name);
+        res.redirect('back');
+    } catch (error) {
+        console.log('無法追蹤' + store.name);
+        req.flash('success', '無法追蹤' + store.name);
+        res.redirect('back');
+    }
+})
+//user unfollow store
+router.get('/:id/unfollow', middleware.isLoggedIn, async (req, res) => {
+    try {
+        let store = await Store.findById(req.params.id);
+        store.followers = store.followers.filter(id => id !== req.user._id);
+        store.save();
+        console.log('成功取消追蹤' + store.name);
+        req.flash('success', '成功取消追蹤' + store.name);
+        res.redirect('back');
+    } catch (error) {
+        console.log('無法取消追蹤' + store.name)
+        req.flash('success', '無法取消追蹤' + store.name);
+        res.redirect('back');
+    }
 })
 
 function escapeRegex(text) {

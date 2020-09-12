@@ -71,9 +71,7 @@ app.use(async (req, res, next) => {
     res.locals.currentUser = req.user;
     if (req.user) {
         try {
-            let user = await User.findById(req.user._id).populate('notifications', null, {
-                isRead: false
-            }).exec();
+            let user = await User.findById(req.user._id).populate('notifications', null, { isRead: false }).exec();
             res.locals.notifications = user.notifications.reverse();
         } catch (error) {
             console.log(error.message);

@@ -388,8 +388,8 @@ router.post('/recover/:token', async (req, res) => {
 //User Profile
 router.get("/:id", middleware.checkUserOwnership, async (req, res) => {
     try {
-
-        let user = await User.findById(req.params.id).populate('followers').populate('reviews').exec();
+        req.params.id = req.params.id.replace(/\#(.+)/, ''); //今天不希望partition 5f50b434a93534c9f4a14922#list-notification 也進來
+        let user = await User.findById(req.params.id).populate('notifications').populate('reviews').exec();
         res.render("users/show", { user })
 
     } catch (error) {

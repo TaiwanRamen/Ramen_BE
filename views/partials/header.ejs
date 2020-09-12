@@ -55,13 +55,13 @@
 
                             <% notifications.forEach((notification)=>{%>
                             <a href="/notifications/<%= notification.id %>">
-                                <%= notification.username %> created a new store
+                                <%= notification.storeName %> 剛剛更新於 <%= notification.createdAt %>
                             </a>
                             <% }) %>
                             <% if(notifications.length > 0){ %>
                             <div class="dropdown-divider"></div>
                             <% } %>
-                            <a class="dropdown-item" href="/notifications">View past Notifications</a>
+                            <a class="dropdown-item" href="/users/<%= currentUser._id %>#list-notification">查看通知</a>
                         </div>
                     </li>
 

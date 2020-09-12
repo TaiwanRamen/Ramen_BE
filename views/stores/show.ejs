@@ -25,8 +25,17 @@
     <div class="col-md-9 h-scroll scrollbar-light-blue">
         <div class="thumbnail">
             <div class="caption-full">
-                <!-- 店家標題開始 -->
+
                 <a class="btn btn-orange badge-pill my-2" href="/stores?search=<%= store.city  %>"><%= store.city %></span></a>
+                <!-- 追蹤/取消追蹤 -->
+                <% if (currentUser){  %>
+                <% if(store.followers.includes(currentUser._id)){ %>
+                <a class="btn btn-secondary my-2" href="/stores/<%= store._id %>/unfollow">取消追蹤</span></a>
+                <% }else{ %>
+                <a class="btn btn-primary my-2" href="/stores/<%= store._id %>/follow">追蹤</span></a>
+                <% } %>
+                <% } %>
+                <!-- 店家標題開始 -->
                 <h2><%=store.name %></h2>
 
                 <div class="my-2">
