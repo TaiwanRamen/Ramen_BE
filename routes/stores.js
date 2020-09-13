@@ -207,8 +207,8 @@ router.get('/:id', (req, res) => {
         }
     }).exec(function(err, foundStore) {
         if (err || !foundStore) {
-            req.flash("error", "Store not found!");
-            return res.redirect("back");
+            req.flash("error", "店家不存在");
+            return res.redirect("/stores");
             //console.log(err);
         } else {
             res.render("stores/show", {
@@ -299,7 +299,7 @@ router.delete('/:id', middleware.checkStoreOwnership, async (req, res) => {
             }
         })
         store.remove();
-        req.flash("success", "Campground deleted successfully!");
+        req.flash("success", "Store deleted successfully!");
         res.redirect("/stores");
 
     } catch (error) {
@@ -316,11 +316,11 @@ router.get('/:id/follow', middleware.isLoggedIn, async (req, res) => {
         store.followers.push(req.user._id);
         store.save();
         console.log('成功追蹤' + store.name);
-        req.flash('success', '成功追蹤' + store.name);
+        req.flash('success_msg', '成功追蹤' + store.name);
         res.redirect('back');
     } catch (error) {
         console.log('無法追蹤' + store.name);
-        req.flash('success', '無法追蹤' + store.name);
+        req.flash('error_msg', '無法追蹤' + store.name);
         res.redirect('back');
     }
 })
@@ -328,14 +328,17 @@ router.get('/:id/follow', middleware.isLoggedIn, async (req, res) => {
 router.get('/:id/unfollow', middleware.isLoggedIn, async (req, res) => {
     try {
         let store = await Store.findById(req.params.id);
-        store.followers = store.followers.filter(id => id !== req.user._id);
-        store.save();
-        console.log('成功取消追蹤' + store.name);
-        req.flash('success', '成功取消追蹤' + store.name);
+        let index = store.followers.indexOf(req.user._id);
+        if (index > -1) {
+            store.followers.splice(index, 1);
+            store.save();
+            console.log('成功取消追蹤' + store.name);
+            req.flash('success_msg', '成功取消追蹤' + store.name);
+        }
         res.redirect('back');
     } catch (error) {
         console.log('無法取消追蹤' + store.name)
-        req.flash('success', '無法取消追蹤' + store.name);
+        req.flash('error_msg', '無法取消追蹤' + store.name);
         res.redirect('back');
     }
 })
