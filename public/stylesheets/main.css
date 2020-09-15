@@ -1,6 +1,17 @@
-/* body {
-    background-color: #dfe6ec;
-} */
+@font-face {
+    font-family: 'CPFont';
+    src: url('../CPFont.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'JFOpen';
+    src: url('../JFOpen.ttf') format('truetype');
+}
+
+nav a {
+    font-family: 'JFOpen';
+    font-size: 1.25rem;
+}
 
 .container {
     margin-top: 80px

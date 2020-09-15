@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 }
 const express = require('express'),
+    socket = require('socket.io'),
     app = express(),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
@@ -101,6 +102,11 @@ app.get('/:else', (req, res) => {
     res.send("No such pass exist.");
 })
 
+//handel http server and socket io
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+const server = app.listen(PORT, console.log(`Server started on port ${PORT}`));
+const io = socket(server);
+io.on('connection', (socket) => {
+    console.log('socket connection on', socket.id);
+})
