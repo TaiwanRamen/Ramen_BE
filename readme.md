@@ -144,6 +144,10 @@ v  pagenation
 *  store unsent review inside browser sessionStorage or localStorage? https://www.w3schools.com/html/html5_webstorage.asp
 *  find store througe navigating through map
 * 
+
+
+* 加入index預先顯示灰色的block，
+
 ## License
 
 #### [MIT](./LICENSE)
