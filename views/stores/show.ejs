@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-3 fix">
 
-        <a href="/stores" class="btn btn-outline-primary mt-4" style="width: 100%;"><i class="fas fa-angle-double-left"></i> &nbsp 回到主頁</a>
+        <a href="javascript:history.back()" class="btn btn-outline-primary mt-4" style="width: 100%;"><i class="fas fa-angle-double-left"></i> &nbsp 返回上一頁</a>
 
         <div id="map" style="margin-top:40px; height:400px; border-radius:10px">
         </div>
@@ -25,14 +25,23 @@
     <div class="col-md-9 h-scroll scrollbar-light-blue">
         <div class="thumbnail">
             <div class="caption-full">
-                <!-- 店家標題開始 -->
+
                 <a class="btn btn-orange badge-pill my-2" href="/stores?search=<%= store.city  %>"><%= store.city %></span></a>
+                <!-- 追蹤/取消追蹤 -->
+                <% if (currentUser){  %>
+                <% if(store.followers.includes(currentUser._id)){ %>
+                <a class="btn btn-secondary my-2" href="/stores/<%= store._id %>/unfollow">取消追蹤</span></a>
+                <% }else{ %>
+                <a class="btn btn-primary my-2" href="/stores/<%= store._id %>/follow">追蹤</span></a>
+                <% } %>
+                <% } %>
+                <!-- 店家標題開始 -->
                 <h2><%=store.name %></h2>
 
                 <div class="my-2">
                     <a href="/stores/<%= store._id %>/reviews">
                         <span><strong><%= store.rating.toFixed(1) %></strong></span>
-                        <%-include ("../partials/showrating",{item:store})  -%>
+                        <%-include ("../partials/showrating",{rating: store.rating})  -%>
                         <em>(<%= store.reviews.length %>)</em>
                     </a>
                 </div>

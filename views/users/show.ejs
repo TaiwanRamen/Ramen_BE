@@ -1,31 +1,95 @@
 <%-include ("../partials/header")  -%>
 <div class="container">
+    <%-include ("../partials/messages")  -%>
+    <div class="row">
+        <div class="col-3">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action " id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">個人資料</a>
+                <a class="list-group-item list-group-item-action" id="list-notification-list" data-toggle="list" href="#list-notification" role="tab" aria-controls="notification">
+                    通知
+                    <% if( notifications.length>0){ %>
+                    <span class="badge badge-primary badge-pill float-right"><%= notifications.length  %> </span>
+                    <% } %>
+                </a>
+                <a class="list-group-item list-group-item-action" id="list-followedStore-list" data-toggle="list" href="#list-followedStore" role="tab" aria-controls="followedStore">追蹤店家</a>
+                <a class="list-group-item list-group-item-action" id="list-wishlist-list" data-toggle="list" href="#list-wishlist" role="tab" aria-controls="wishlist">wishlist</a>
+            </div>
+        </div>
+        <div class="col-9 h-scroll scrollbar-light-blue">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade " id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
 
-    <h1 class="mt-4">Dashboard</h1>
-    <img src="<%= user.avatar %> " alt="">
-    <% if(user.fbName){  %>
-    <p class="lead mb-3">Welcome <%= user.fbName  %></p>
-    <% }else{  %>
-    <p class="lead mb-3">Welcome <%= user.username  %></p>
-    <%}  %>
-    <p class="lead mb-3">user ID: <%= user._id  %></p>
-    <% if(user.email){  %>
-    <p class="lead mb-3"><%= user.email  %></p>
-    <% }else{  %>
-    <p class="lead mb-3">目前無email，請盡速上傳email</p>
-    <%}  %>
-    <a id="btn" href="/users/<%= user._id  %>/edit" class="btn btn-secondary">
-        <span id="edit">Edit</span>
-        <img style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">
-    </a>
-    <a id="logoutBtn" href="/users/logout" class="btn btn-secondary">
-        <span id="logoutMsg">Log out</span>
-        <img id="loading" style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">
-    </a>
-    <img src="" alt="">
+                    <h1 class="mt-4">Dashboard</h1>
+                    <img src="<%= user.avatar %> " alt="">
+                    <% if(user.fbName){  %>
+                    <p class="lead mb-3">Welcome <%= user.fbName  %></p>
+                    <% }else{  %>
+                    <p class="lead mb-3">Welcome <%= user.username  %></p>
+                    <%}  %>
+                    <p class="lead mb-3">user ID: <%= user._id  %></p>
+                    <% if(user.email){  %>
+                    <p class="lead mb-3"><%= user.email  %></p>
+                    <% }else{  %>
+                    <p class="lead mb-3">目前無email，請盡速上傳email</p>
+                    <%}  %>
+                    <!--  <a id="btn" href="/users/< %= user._id  %>/edit" class="btn btn-secondary">
+                        <span id="edit">Edit</span>
+                        <img style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">
+                    </a> -->
+                    <a id="logoutBtn" href="/users/logout" class="btn btn-secondary">
+                        <span id="logoutMsg">Log out</span>
+                        <img id="loading" style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">
+                    </a>
+
+                </div>
+                <div class="tab-pane fade" id="list-notification" role="tabpanel" aria-labelledby="list-notification-list">
+                    <div id="notification">
+                        <div class="list-group">
+                            <% user.notifications.reverse().forEach((notify) => { %>
+                            <% if(notify.isRead === false){ %>
+                            <a href="/notifications/<%= notify._id  %> " class="list-group-item list-group-item-action list-group-item-info">
+                                <%= notify.storeName %> 於 <span><%= moment(notify.createdAt).fromNow() %></span> 更新
+                                <span class="badge badge-primary badge-pill float-right">未讀</span>
+                            </a>
+                            <% }else{ %>
+                            <a href="/notifications/<%= notify._id  %> " class="list-group-item list-group-item-action">
+                                <%= notify.storeName %> 於 <span><%= moment(notify.createdAt).fromNow() %></span> 更新
+                            </a>
+                            <% } %>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="list-followedStore" role="tabpanel" aria-labelledby="list-followedStore-list">...</div>
+                <div class="tab-pane fade" id="list-wishlist" role="tabpanel" aria-labelledby="list-wishlist-list">...</div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
 
 <script>
+    $(document).ready(function() {
+        //如果沒有指定要哪個show，就show profile
+        if (window.location.hash) {
+            let hashtag = window.location.hash;
+            console.log(hashtag)
+            if (hashtag === '#list-notification') {
+                $('#list-notification-list').tab('show');
+
+            } else if (hashtag === '#list-followedStore') {
+                $('#list-followedStore-list').tab('show');
+
+            } else if (hashtag === '#list-wishlist') {
+                $('#list-wishlist-list').tab('show');
+            }
+        } else {
+            $('#list-profile-list').tab('show');
+        }
+
+    })
     const logoutBtn = document.querySelector("#logoutBtn");
     const loading = document.querySelector("#loading");
     const logoutMsg = document.querySelector("#logoutMsg");

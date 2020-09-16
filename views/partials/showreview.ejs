@@ -15,7 +15,7 @@
             <h5><strong><%= review.author.username %></strong></h5>
         </div>
         <div class="userRating">
-            <%-include ("./showrating",{item:review})  -%>
+            <%-include ("./showrating",{rating:review.rating})  -%>
             <span><%= moment(review.updatedAt).fromNow() %></span>
         </div>
 

@@ -1,6 +1,17 @@
-/* body {
-    background-color: #dfe6ec;
-} */
+@font-face {
+    font-family: 'CPFont';
+    src: url('../CPFont.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'JFOpen';
+    src: url('../JFOpen.ttf') format('truetype');
+}
+
+nav a {
+    font-family: 'JFOpen';
+    font-size: 1.25rem;
+}
 
 .container {
     margin-top: 80px
@@ -72,20 +83,23 @@
     scrollbar-color: #c9d8f0 #F5F5F5;
 }
 
+
 .mapboxgl-popup {
-    max-width: 200px;
+    max-width: 300px;
 }
 
 .mapboxgl-popup-content {
     text-align: center;
     font-family: 'Open Sans', sans-serif;
+    padding: 0;
+    border-radius: 10px;
 }
 
 .marker {
     background-image: url('../images/ramen.svg');
     background-size: cover;
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     cursor: pointer;
 }

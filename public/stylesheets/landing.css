@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'CPFont';
+    src: url('../CPFont.ttf') format('truetype');
+}
+
 body {
     background-color: #000;
 }
@@ -6,14 +11,18 @@ body {
     z-index: 1;
     position: relative;
     text-align: center;
-    padding-top: 40vh;
+    padding: 35vh 10vw;
 }
 
 #landing-header h1 {
+    font-family: 'CPFont';
+    font-size: 3rem;
     color: #fff;
 }
 
 #landing-header h4 {
+    font-family: 'CPFont';
+    font-size: 1.6rem;
     color: #fff;
 }
 

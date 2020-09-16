@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/stylesheets/rating-show.css">
 
-<% if (item.rating === 0) { %>
+<% if (rating === 0) { %>
 <div class="star-rating">
 
     <div class="back-stars">
@@ -22,7 +22,7 @@
         <i class="fa fa-star" aria-hidden="true"></i>
         <i class="fa fa-star" aria-hidden="true"></i>
 
-        <div class="front-stars" style="width: <%= item.rating*20 %>%">
+        <div class="front-stars" style="width: <%= rating*20 %>%">
             <i class="fa fa-star" aria-hidden="true"></i>
             <i class="fa fa-star" aria-hidden="true"></i>
             <i class="fa fa-star" aria-hidden="true"></i>

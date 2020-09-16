@@ -119,30 +119,33 @@ finished map on index page, map to chinese, ramen icon
 2020/09/08
 
 got some change in index map, put searchbar in map, setup session storage to store currently get stores, add fix nav'
+
+2020/09/13
+finish notification
 ## Undos
 v Image corousel  
 v show page info => SPA 
 v  store edit, add page fix and put route fix 
 x  mongoDB ip restriction (need SSL)
 v  pagenation
-*  sanitize and escape any input
-*  navbar make fix
-*  delete navebar homebage button
+x  sanitize and escape any input
+v  navbar make fix
+v  delete navebar homebage button
 *  picture resize to fit in show page
 *  index page stores sorting 
-*  notification route not found
+v  notification route not found
 *  edit and add  page can add multiple images
-*  index page map show
+v  index page map show
 *  navbar to sidebar?
 *  index page city tag search
 *  index page soup taste search(using tag)
 *  store open time
-*  fit edit review ui
-*  add new store proximity search($near)
+v  fix edit review ui
+v  add new store proximity search($near)
 *  showpage review put into infoBtn for long review with pictures
 *  click review arthor can see all his reviews
 *  store unsent review inside browser sessionStorage or localStorage? https://www.w3schools.com/html/html5_webstorage.asp
-*  find store througe navigating through map
+v  find store througe navigating through map
 * 
 
 

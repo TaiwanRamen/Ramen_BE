@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 }
 const express = require('express'),
+    socket = require('socket.io'),
     app = express(),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
@@ -71,9 +72,7 @@ app.use(async (req, res, next) => {
     res.locals.currentUser = req.user;
     if (req.user) {
         try {
-            let user = await User.findById(req.user._id).populate('notifications', null, {
-                isRead: false
-            }).exec();
+            let user = await User.findById(req.user._id).populate('notifications', null, { isRead: false }).exec();
             res.locals.notifications = user.notifications.reverse();
         } catch (error) {
             console.log(error.message);
@@ -103,6 +102,11 @@ app.get('/:else', (req, res) => {
     res.send("No such pass exist.");
 })
 
+//handel http server and socket io
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+const server = app.listen(PORT, console.log(`Server started on port ${PORT}`));
+const io = socket(server);
+io.on('connection', (socket) => {
+    console.log('socket connection on', socket.id);
+})
