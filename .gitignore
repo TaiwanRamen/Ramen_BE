@@ -3,5 +3,6 @@ safe-zone/
 SSL/
 data/
 databases/
+logs/
 .env
 userData

@@ -1,6 +1,7 @@
 const express = require('express'),
     router = express.Router(),
-    Store = require('../models/store');
+    log = require('../../modules/logger'),
+    Store = require('../../models/store');
 
 
 //==============================================================
@@ -8,14 +9,6 @@ const express = require('express'),
 //==============================================================
 router.get('/get-store', async (req, res) => {
     try {
-        //res.query =  
-        //{
-        //     W: '121.45540237426758',
-        //     S: '25.00986185664923',
-        //     E: '121.64594650268555',
-        //     N: '25.072072304608533'
-        // } 
-
         const mapBound = {
             type: 'Polygon',
             coordinates: [
@@ -30,11 +23,11 @@ router.get('/get-store', async (req, res) => {
         };
         // find stores within current map range
         let foundStore = await Store.find().where('location').within(mapBound);
-        console.log([req.query.W, req.query.N], [req.query.E, req.query.S]);
-        console.log(foundStore.length);
+        log.info([req.query.W, req.query.N], [req.query.E, req.query.S]);
+        log.info(foundStore.length);
         res.status(200).json({ foundStore })
     } catch (err) {
-        console.log(err)
+        log.info(err)
         //res.status(404).send(err.message);
     }
 })
@@ -45,7 +38,7 @@ router.get('/get-store', async (req, res) => {
 router.get('/search-store', async (req, res) => {
     try {
         //res.query = { input: '台北' }
-        console.log(req.query)
+        log.info(req.query)
         const regex = new RegExp(escapeRegex(req.query.input), 'gi');
 
         //search from all the fields included in $or
@@ -65,10 +58,10 @@ router.get('/search-store', async (req, res) => {
                 { descriptionText: regex },
             ],
         }).exec()
-        console.log(foundStore.length)
+        log.info(foundStore.length)
         res.status(200).json({ foundStore })
     } catch (err) {
-        console.log(err)
+        log.info(err)
         res.status(404).send(err.message);
     }
 })

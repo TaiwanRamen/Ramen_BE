@@ -9,14 +9,12 @@ const express = require('express'),
     mongoose = require('mongoose'),
     passport = require('passport'),
     LocalStrategy = require("passport-local"),
-
     mathodOverride = require("method-override"),
     flash = require("connect-flash"),
     User = require("./models/user"),
     settings = require("./settings");
 
-
-app.use(express.static(__dirname + '/public')) //dirname是你現在script跑的位置。
+app.use(express.static(__dirname + '/public')) ;//dirname是你現在script跑的位置。
 
 app.use(mathodOverride("_method"));
 app.use(flash());
@@ -63,8 +61,6 @@ app.use(express.json());
 app.use(express.static("public")); //去public找東西
 app.set('view engine', 'ejs'); //把ejs設訂為預設檔案。
 
-
-
 //Global variable
 //used to flash message
 //can call the currentUser success_msg and error_msg from anywhere
@@ -91,7 +87,7 @@ app.locals.moment = moment;
 //Routes
 //pertain the route from the index
 app.use('/', require('./routes/index'));
-app.use('/api', require('./routes/api'));
+app.use('/api', require('./routes/api/apiRouter'));
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/stores/:id/comments', require('./routes/comments'));

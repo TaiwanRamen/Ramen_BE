@@ -92,7 +92,7 @@
 <script>
     /* beautify preserve:start */
     //拿user現在的位置
-    var apiUrl = '<%=process.env.CLIENT_URL%>/api';
+    var mapUrl = '<%=process.env.CLIENT_URL%>/api/map';
     //console.log(apiUrl)
     function getCoordinates() {
         return new Promise(function(resolve, reject) {
@@ -165,7 +165,7 @@
     //找到要的店家，清空marker畫新的
 
     function searchStore(searchInputValue) {
-        fetch(`${apiUrl}/search-store?input=${searchInputValue}`, {method: 'GET'})
+        fetch(`${mapUrl}/search-store?input=${searchInputValue}`, {method: 'GET'})
             .then((response) => {
                 // 這裡會得到一個 ReadableStream 的物件
                 // 可以透過 blob(), json(), text() 轉成可用的資訊
@@ -219,7 +219,7 @@
         let mapHeight = document.getElementById("map").clientHeight;
         let bound = geoViewport.bounds([center.lng, center.lat], Math.ceil(zoom), [mapWidth, mapHeight]);
         //console.log(mapWidth, mapHeight);
-        fetch(`${apiUrl}/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {method: 'GET'})
+        fetch(`${mapUrl}/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {method: 'GET'})
             .then((response) => {
                 // 這裡會得到一個 ReadableStream 的物件
                 // 可以透過 blob(), json(), text() 轉成可用的資訊
