@@ -12,7 +12,7 @@ const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
 const multer = require('multer');
 const fs = require('fs');
-const errorMessage = require('../templates/users/error-message-template')
+const message = require('../message-templates/users/user-message')
 
 
 //set filename to multer
@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 let imageFilter = function(req, file, cb) {
     // accept image files only
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        return cb(new Error(errorMessage.WRONG_FILE_TYPE), false);
+        return cb(new Error(message.WRONG_FILE_TYPE), false);
     }
     cb(null, true);
 };
@@ -83,17 +83,17 @@ router.post('/register', async (req, res) => {
     let errors = [];
     // Check required fields
     if (!username || !email || !password || !password2) {
-        errors.push({ msg: errorMessage.FIELD_EMPTY });
+        errors.push({ msg: message.FIELD_EMPTY });
     }
     // Check password match
     if (password !== password2) {
-        errors.push({ msg: errorMessage.PASSWORD_NOT_MATCH });
+        errors.push({ msg: message.PASSWORD_NOT_MATCH });
     }
 
     //Check pass length capital, special character
     let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/; //8*(A-Z a-z 0-9 !@#) 
     if (!re.test(password)) {
-        errors.push({ msg: errorMessage.WRONG_PASSWORD_FORMAT})
+        errors.push({ msg: message.WRONG_PASSWORD_FORMAT})
     }
     //if there is a issue, rerender the register form and flash errors
     //we also want to keep what the user typed in last time
@@ -110,7 +110,7 @@ router.post('/register', async (req, res) => {
             //if user already exist
             //render register again with previously typed in information
             if (user) {
-                errors.push({ msg: errorMessage.USER_ALREASDY_EXIST });
+                errors.push({ msg: message.USER_ALREASDY_EXIST });
                 res.render('users/register', { errors, username, email, password, password2 })
             } else {
 
@@ -128,7 +128,6 @@ router.post('/register', async (req, res) => {
 
                 //sending mail
                 const mail_data = {
-                    //from: 'noreply@hello.com',
                     to: email,
                     subject: "驗證您在台灣拉麵俱樂部的帳戶電子郵件",
                     html: `
@@ -159,7 +158,7 @@ router.post('/register', async (req, res) => {
                     }
                     console.log('verification email sent')
                     req.flash('success_msg',
-                        `註冊連結已發至您的電子郵件:${email}, \n 請點擊郵件內的連結已完成註冊。`);
+                        message.USER_REGISTER_THROUGH_EMAIL_BEFORE + email + message.USER_REGISTER_THROUGH_EMAIL_AFTER);
                     res.redirect('/users/login');
                 });
 
@@ -185,7 +184,7 @@ router.get('/activate/:token', async (req, res) => {
             let user = await User.findOne({ email });
             if (user) {
                 console.log("User already exist!");
-                req.flash('error_msg', errorMessage.USER_ALREASDY_EXIST);
+                req.flash('error_msg', message.USER_ALREASDY_EXIST);
                 res.redirect('/users/register');
             }
             //create new user
@@ -198,18 +197,18 @@ router.get('/activate/:token', async (req, res) => {
 
             } catch (err) {
                 console.log("Error in signup while account activation: ", err);
-                req.flash('error_msg', errorMessage.REGISTRY_ERROR);
+                req.flash('error_msg', message.REGISTRY_ERROR);
                 res.redirect('/');
             }
 
         } catch (error) {
             console.log(error)
-            req.flash('error_msg', errorMessage.WRONG_REGISTRY_URL);
+            req.flash('error_msg', message.WRONG_REGISTRY_URL);
             res.redirect('/');
         }
 
     } else {
-        req.flash('error_msg', errorMessage.INTERNAL_SERVER_ERROR);
+        req.flash('error_msg', message.INTERNAL_SERVER_ERROR);
         res.redirect('/');
     }
 })
@@ -220,7 +219,7 @@ router.get('/activate/:token', async (req, res) => {
 ============================*/
 //LOGOUT
 router.get("/logout", (req, res) => {
-    //req.logout();
+
     req.flash("success_msg", "成功登出!");
     req.session.destroy((err) => {
         res.redirect('/') // will always fire after session is destroyed
@@ -281,11 +280,11 @@ router.post('/recover', async (req, res) => {
             });
 
         } else {
-            req.flash('error_msg', errorMessage.USER_NOT_FOUND);
+            req.flash('error_msg', message.USER_NOT_FOUND);
             res.redirect('/users/register')
         }
     } catch (error) {
-        req.flash('error_msg', errorMessage.CHANGE_PASSWORD_ERROR);
+        req.flash('error_msg', message.CHANGE_PASSWORD_ERROR);
         console.log(error.message)
         res.redirect('/users/login')
     }
@@ -316,7 +315,7 @@ router.get('/recover/:token', async (req, res) => {
         }
 
     } else {
-        return res.send(errorMessage.INTERNAL_SERVER_ERROR)
+        return res.send(message.INTERNAL_SERVER_ERROR)
     }
 });
 
@@ -377,7 +376,7 @@ router.post('/recover/:token', async (req, res) => {
             res.redirect('/users/login');
         }
     } catch (err) {
-        req.flash('error_msg', errorMessage.USER_NOT_FOUND);
+        req.flash('error_msg', message.USER_NOT_FOUND);
         res.redirect('/users/login');
 
     }
@@ -397,7 +396,7 @@ router.get("/:id", middleware.checkUserOwnership, async (req, res) => {
         res.render("users/show", { user })
 
     } catch (error) {
-        req.flash("error", errorMessage.USER_NOT_FOUND);
+        req.flash("error", message.USER_NOT_FOUND);
         res.redirect('/users/register')
     }
 });
@@ -411,7 +410,7 @@ router.get('/:id/edit', middleware.checkUserOwnership, async (req, res) => {
         res.render("users/edit", { user })
 
     } catch (error) {
-        req.flash("error", errorMessage.USER_NOT_FOUND);
+        req.flash("error", message.USER_NOT_FOUND);
         res.redirect('/users/register')
     }
 })
@@ -433,7 +432,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        req.flash('error_msg', errorMessage.INTERNAL_SERVER_ERROR);
+        req.flash('error_msg', message.INTERNAL_SERVER_ERROR);
         return res.redirect('back');
     }
 })

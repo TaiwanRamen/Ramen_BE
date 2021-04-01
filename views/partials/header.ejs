@@ -77,7 +77,6 @@
                     <li class=" nav-item">
                         <a id="logout" class="nav-link" href="/users/logout" onclick="sessionStorage.clear()">登出</a>
                     </li>
-                    <!-- socket.io -->
                     <script>
                         const socket = io.connect('<%= process.env.CLIENT_URL %>')
                         let isshow = sessionStorage.getItem('isshow');

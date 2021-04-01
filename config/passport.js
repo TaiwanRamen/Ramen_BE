@@ -1,9 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy;
 const facebookStrategy = require('passport-facebook').Strategy;
-const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
-//Load User Model
+const log = require('../modules/logger');
 const User = require('../models/user');
 
 module.exports = (passport) => {
@@ -13,67 +12,64 @@ module.exports = (passport) => {
 
         try {
             //Match user
-            console.log('Matching user...')
+            log.info('Matching user:', email)
             const user = await User.findOne({ email: email });
 
             // if no user match, return done
-            if (!user) {
-                return done(null, false, { message: '該電子信箱未註冊' });
+            if (!user || !user.password) {
+                log.info("email not registered:", email);
+                return done(null, false, { message: '該電子信箱未註冊，或是嘗試使用Facebook登入' });
+            }
+            if (await bcrypt.compare(password, user.password)) {
+                return done(null, user)
+            } else {
+                log.info("password fail", email);
+                return done(null, false, { message: '密碼錯誤' })
             }
 
-            try {
-                if (await bcrypt.compare(password, user.password)) {
-                    return done(null, user)
-                } else {
-                    return done(null, false, { message: '密碼錯誤' })
-                }
-            } catch (e) {
-                return done(e)
-            }
         } catch (err) {
             console.log(err)
+            done(null, false, { message: '系統出現問題，請稍後再試。' })
         }
     }
     const facebookAuthUser = async (token, refreshToken, profile, done) => {
         try {
-            // find the user in the database based on their facebook id
             let user = await User.findOne({ 'uid': profile.id })
-            // if the user is found, then log them in
             if (user) {
-                console.log("user found")
-                console.log(user)
-                return done(null, user); // user found, return that user
+                log.info("user", user._id, "login");
+                updateUserInfo(user, profile, token);
+                await user.save();
+                return done(null, user);
             } else {
-                console.log(profile)
-                // if there is no user found with that facebook id, create them
+                log.info("new user: "+ profile)
                 let newUser = new User();
-                // set all of the facebook information in our user model
-                newUser.uid = profile.id; // set the users facebook id                   
-                newUser.token = token; // we will save the token that facebook provides to the user                    
-                newUser.fbName = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                if (!!profile.emails) {
-                    newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-                }
-                if (!!profile.email) {
-                    newUser.email = profile.email[0].value; // facebook can return multiple emails so we'll take the first
-                }
+                updateUserInfo(newUser, profile, token);
                 newUser.uuid = uuidv4();
-                newUser.avatar = profile.photos[0].value
-                // save our user to the database
                 await newUser.save()
-                // if successful, return the new user
                 return done(null, newUser);
             }
         } catch (err) {
-            console.log(err)
+            log.info(err);
             return done(err);
         }
+    }
+
+    const updateUserInfo = (user, profile, token) => {
+        user.uid = profile.id;
+        user.token = token;
+        user.fbName = profile.name.givenName + ' ' + profile.name.familyName;
+        if (!!profile.emails) {
+            user.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+        }
+        if (!!profile.email) {
+            user.email = profile.email[0].value;
+        }
+        user.avatar = profile.photos[0].value
     }
 
 
     passport.use(new LocalStrategy({ usernameField: 'email' }, localAuthUser));
     passport.use(new facebookStrategy({
-        // pull in our app id and secret from our auth.js file
         clientID: process.env.FB_API_ID,
         clientSecret: process.env.FB_API_SECRET,
         callbackURL: process.env.FB_CALLBACK_URL,

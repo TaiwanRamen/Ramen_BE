@@ -9,4 +9,6 @@ module.exports = Object.freeze({
     INTERNAL_SERVER_ERROR:  '伺服器錯誤，請聯繫網站管理員： ' + process.env.CUSTOMER_SUPPORT_EMAIL,
     CHANGE_PASSWORD_ERROR: '更改密碼時發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員： '+ process.env.CUSTOMER_SUPPORT_EMAIL,
     USER_NOT_FOUND:'用戶不存在！請註冊',
+    USER_REGISTER_THROUGH_EMAIL_BEFORE: '註冊連結已發至您的電子郵件: \n',
+    USER_REGISTER_THROUGH_EMAIL_AFTER: '\n 請點擊郵件內的連結已完成註冊。若無收到信件請查看垃圾信件夾或聯絡客服。'
 });
