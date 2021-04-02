@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
             }).exec()
 
             if (allStores.length < 1) {
-                req.flash("error", "Store no found");
+                req.flash("error", "找不到店家");
                 return res.redirect("back");
             }
             res.render("stores/index", {
