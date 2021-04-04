@@ -67,15 +67,16 @@ module.exports = (passport) => {
 
     const jwtAuthUser = async (req, payload, done) => {
         try {
-            const user = await User.findById(payload.sub);
+            console.log("payload:", payload)
+            let user = await User.findById(payload.sub);
             if (!user) {
                 return done(null, false);
             }
             req.user = user;
-            done(null, user);
+            return done(null, user);
         } catch(err) {
             log.error(err);
-            done(err, false, { message: '系統出現問題，請稍後再試。' });
+            return done(err, false, { message: '系統出現問題，請稍後再試。' });
         }
     }
 
@@ -97,6 +98,7 @@ module.exports = (passport) => {
         if (req && req.cookies) {
             token = req.cookies['access_token'];
         }
+        console.log('have cookies :', token)
         return token;
     }
 
@@ -129,7 +131,8 @@ module.exports = (passport) => {
         algorithms: [config.JWT_SIGNING_ALGORITHM]
         // jsonWebTokenOptions:{
         //     complete: false,
-        //     maxAge: config.JWT_MAX_AGE
+        //     maxAge: config.JWT_MAX_AGE,
+        //     algorithm: "HS512"
         // }
     }, jwtAuthUser));
 

@@ -188,7 +188,7 @@ router.get('/activate/:token', async (req, res) => {
                 res.redirect('/users/register');
             }
             //create new user
-            let newUser = new User({ username, email, password, isActivated: true, uuid: uuidv4() });
+            let newUser = new User({ username, email, password, isEmailVerified: true, uuid: uuidv4() });
             try {
                 await newUser.save();
                 console.log("Signup success!");

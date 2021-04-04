@@ -12,7 +12,8 @@ signToken = async (user) => {
         iss: 'Taiwan Ramen-club',
         sub: user._id,
         iat: new Date().getTime(), // current time
-    }, process.env.JWT_SIGNING_KEY, { expiresIn: config.JWT_MAX_AGE });
+        exp: new Date(new Date().getTime() + config.JWT_MAX_AGE).getTime()
+    }, process.env.JWT_SIGNING_KEY, { algorithm: config.JWT_SIGNING_ALGORITHM});
 }
 
 router.post('/oauth/facebook', passport.authenticate('facebookToken', { session: false }),
@@ -28,10 +29,9 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken', { session:
 router.get('/profile', passportJWT,
     async (req, res, next) => {
         if(req.user){
-            console.log(user);
+            let {password, __v, ...user } = req.user._doc; //remove password and other sensitive info from user object
+            res.status(200).send(user);
         }
     })
-
-
 
 module.exports = router

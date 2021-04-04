@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         default: 'https://imgur.com/ypEN9cK'
     },
-    isActivated: {
+    isEmailVerified: {
         required: true,
         type: Boolean,
         default: false

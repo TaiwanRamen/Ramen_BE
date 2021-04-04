@@ -27,7 +27,7 @@ module.exports = {
 
     JWT_SIGNING_ALGORITHM: "HS512",
 
-    JWT_MAX_AGE: "20 days",
+    JWT_MAX_AGE: 1000 * 60 * 60 * 24 * 20, //20 days
 
     //set rate limit to 200 times for 1 minute
     RATE_LIMIT_WINDOW: 1000 * 60,

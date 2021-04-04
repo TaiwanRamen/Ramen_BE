@@ -4,3 +4,5 @@ module.exports = Object.freeze({
     STORE_OWNER: 2,
     AGENT: 3
 });
+
+//userRole

@@ -14,8 +14,10 @@ const express = require('express'),
     helmet = require('helmet'),
     rateLimit = require('express-rate-limit'),
     moment = require('moment'),
-    log = require('./modules/logger');
+    log = require('./modules/logger'),
+    cookieParser = require("cookie-parser");
 const app = express();
+app.use(cookieParser());
 app.use(express.static(__dirname + '/public')) ;//dirname是你現在script跑的位置。
 
 app.use(helmet({ contentSecurityPolicy: (process.env.NODE_ENV === 'production') ? undefined : false }));
