@@ -175,7 +175,7 @@ router.get('/activate/:token', async (req, res) => {
             log.info(decodedToken)
             let user = await User.findById(userId);
             try {
-                user.isEmailVerified = true;
+                user.isVerified = true;
                 await user.save();
                 log.info("account verification success");
                 req.flash('success_msg', '帳號驗證成功！');

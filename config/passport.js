@@ -54,6 +54,7 @@ module.exports = (passport) => {
                 log.info("new user: "+ profile.id)
                 let newUser = new User();
                 updateUserInfoWhenLogin(newUser, profile, token);
+                newUser.isVerified = true;
                 await newUser.save()
                 return done(null, newUser);
             }
@@ -127,11 +128,6 @@ module.exports = (passport) => {
         passReqToCallback: true,
         ignoreExpiration: false,
         algorithms: [config.JWT_SIGNING_ALGORITHM]
-        // jsonWebTokenOptions:{
-        //     complete: false,
-        //     maxAge: config.JWT_MAX_AGE,
-        //     algorithm: "HS512"
-        // }
     }, jwtAuthUser));
 
 

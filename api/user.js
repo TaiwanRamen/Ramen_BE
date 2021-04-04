@@ -5,7 +5,8 @@ const express = require('express'),
     passport = require('passport'),
     JWT = require('jsonwebtoken'),
     config = require('../config/golbal-config'),
-    passportJWT = passport.authenticate('jwt', { session: false });
+    passportJWT = passport.authenticate('jwt', { session: false }),
+    axios = require('axios');
 
 signToken = async (user) => {
     return await JWT.sign({
@@ -32,6 +33,24 @@ router.get('/profile', passportJWT,
             let {password, __v, ...user } = req.user._doc; //remove password and other sensitive info from user object
             res.status(200).send(user);
         }
-    })
+    });
+
+router.get('/isUserInRamenGroup', passport.authenticate('facebookToken', { session: false }),
+    async (req, res) => {
+        let response = await axios.get(`https://graph.facebook.com/v10.0/${req.user.fbUid}/groups?pretty=0&admin_only=false&limit=10000&access_token=${req.user.fbToken}`)
+        let groupsList;
+        if(!response.data.paging.next){
+            groupsList = response.data.data;
+        }
+
+        let hasList = false;
+        if(groupsList.length > 0){
+            hasList = groupsList.some(group => {
+                return group.id === "1694931020757966"
+            })
+        }
+
+        res.status(200).send({hasList});
+    });
 
 module.exports = router

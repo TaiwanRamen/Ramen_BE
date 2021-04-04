@@ -321,11 +321,11 @@ router.get('/:id/follow', middleware.isLoggedIn, async (req, res) => {
         store.save();
         console.log('成功追蹤' + store.name);
         req.flash('success_msg', '成功追蹤' + store.name);
-        res.redirect('back');
+        res.redirect(`/stores/${store._id}`);
     } catch (error) {
         console.log('無法追蹤' + store.name);
         req.flash('error_msg', '無法追蹤' + store.name);
-        res.redirect('back');
+        res.redirect(`/stores/${store._id}`);
     }
 })
 //user unfollow store
@@ -339,11 +339,11 @@ router.get('/:id/unfollow', middleware.isLoggedIn, async (req, res) => {
             console.log('成功取消追蹤' + store.name);
             req.flash('success_msg', '成功取消追蹤' + store.name);
         }
-        res.redirect('back');
+        res.redirect(`/stores/${store._id}`);
     } catch (error) {
         console.log('無法取消追蹤' + store.name)
         req.flash('error_msg', '無法取消追蹤' + store.name);
-        res.redirect('back');
+        res.redirect(`/stores/${store._id}`);
     }
 })
 
