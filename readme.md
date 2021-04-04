@@ -148,6 +148,13 @@ v  add new store proximity search($near)
 v  find store througe navigating through map
 * 
 
+2021/04/04
+* reddis session
+* passport fb token
+* api seperation
+* fb get group: /v.10.0/{userFbId}/groups?pretty=0&limit=25000
+* find nearest store
+* subway image map
 
 * 加入index預先顯示灰色的block，
 

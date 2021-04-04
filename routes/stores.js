@@ -168,6 +168,7 @@ router.get('/location', async (req, res) => {
     try {
         //found the nearest store 
         if (req.query.lat && req.query.lng) {
+            let maxDistance = req.query.maxDistance ? req.query.maxDistance : 1000;
 
             let foundStore = await Store.aggregate([{
                 '$geoNear': {
@@ -176,15 +177,18 @@ router.get('/location', async (req, res) => {
                         'coordinates': [parseFloat(req.query.lng), parseFloat(req.query.lat)]
                     },
                     'spherical': true,
-                    'distanceField': 'dist',
-                    'maxDistance': 800 //in meter
+                    'distanceField': "distance",
+                    //"distanceMultiplier": 0.001,
+                    'maxDistance': parseFloat(maxDistance)
                 }
-            }])
+            }]);
 
-            console.log(foundStore)
+            console.log(foundStore);
+            res.send(foundStore);
         }
     } catch (error) {
         console.log(error)
+        res.send(error)
     }
 });
 

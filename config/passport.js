@@ -34,6 +34,9 @@ module.exports = (passport) => {
     }
     const facebookAuthUser = async (token, refreshToken, profile, done) => {
         try {
+            log.info(token);
+            log.info(refreshToken);
+            log.info(profile);
             let user = await User.findOne({ 'uid': profile.id })
             if (user) {
                 log.info("user", user._id, "login");

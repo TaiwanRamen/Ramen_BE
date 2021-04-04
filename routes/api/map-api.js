@@ -28,7 +28,7 @@ router.get('/get-store', async (req, res) => {
         res.status(200).json({ foundStore })
     } catch (err) {
         log.info(err)
-        //res.status(404).send(err.message);
+        res.status(404).send(err.message);
     }
 })
 

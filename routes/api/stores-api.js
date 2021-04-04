@@ -34,9 +34,9 @@ router.get('/', async (req, res) => {
             }).exec()
 
             if (allStores.length < 1) {
-                req.flash("error", "Store no found");
-                return res.redirect("back");
+                res.status(404).send("store not found")
             }
+            res.status(200).send()
             res.render("stores/index", {
                 mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
                 stores: allStores,
