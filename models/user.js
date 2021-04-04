@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"),
+    userRole = require("../enums/user-role");
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -25,10 +26,10 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isAdmin: {
+    userRole: {
         required: true,
-        type: Boolean,
-        default: false
+        type: Number,
+        default: userRole.END_USER
     },
     uuid: {
         type: String,
@@ -46,10 +47,8 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Review'
     }],
-    uid: String,
-    token: String,
+    fbUid: String,
+    fbToken: String,
     fbName: String
-
-
 }, { timestamps: true });
 module.exports = mongoose.model("User", UserSchema);

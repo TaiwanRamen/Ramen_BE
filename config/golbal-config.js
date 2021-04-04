@@ -1,3 +1,4 @@
+require('dotenv').config();
 module.exports = {
     // the 'strength' of our bcrypt hashing algorithm
     // 14 is a good strength at the present time based on the strength of
@@ -26,10 +27,10 @@ module.exports = {
 
     JWT_SIGNING_ALGORITHM: "HS512",
 
-    JWT_SIGNING_KEY: process.env.JWT_SIGNING_KEY,
+    JWT_MAX_AGE: "20 days",
 
     //set rate limit to 200 times for 1 minute
-    RATE_LIMIT_WINDOW: 1000 * 60 * 1,
+    RATE_LIMIT_WINDOW: 1000 * 60,
     RATE_LIMIT: 1000
 
 };

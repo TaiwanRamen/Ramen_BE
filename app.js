@@ -98,11 +98,11 @@ app.use(limiter)
 //Routes
 //pertain the route from the index
 app.use('/', require('./routes/index'));
-app.use('/api', require('./routes/api/api-router'));
+app.use('/api/v1', require('./api/api-router'));
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/stores/:id/comments', require('./routes/comments'));
-app.use("/stores/:id/reviews", require('./routes/reviews'));
+app.use('/stores/:id/reviews', require('./routes/reviews'));
 app.use('/stores', require('./routes/stores'));
 
 app.get('/:else', (req, res) => {

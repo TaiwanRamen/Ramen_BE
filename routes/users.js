@@ -121,7 +121,7 @@ router.post('/register', async (req, res) => {
 
                 //jwt data, key, expire after
                 //put hashed password inside jwt for verification
-                const token = jwt.sign({ username, email, password: hash }, process.env.JWT_ACC_ACTIVATE, { expiresIn: process.env.JWT_EXPIRE_IN })
+                const token = jwt.sign({ username, email, password: hash }, process.env.JWT_SIGNING_KEY, { expiresIn: process.env.JWT_ACC_ACTIVATE_MAX_AGE })
 
                 //sending confirmation mail
                 let url = `${process.env.CLIENT_URL}/users/activate/${token}`;
@@ -177,7 +177,7 @@ router.get('/activate/:token', async (req, res) => {
     if (token) {
         //jwt token contain username, email, and hashed password
         try {
-            let decodedToken = await jwt.verify(token, process.env.JWT_ACC_ACTIVATE);
+            let decodedToken = await jwt.verify(token, process.env.JWT_SIGNING_KEY);
             const { username, email, password } = decodedToken;
             console.log(decodedToken)
             //find if email already in db
@@ -245,7 +245,7 @@ router.post('/recover', async (req, res) => {
         //if user exist, send email to reset pwd
         if (user) {
             //jwt user id to create url
-            const token = jwt.sign({ uuid: user.uuid }, process.env.JWT_ACC_ACTIVATE, { expiresIn: process.env.JWT_EXPIRE_IN })
+            const token = jwt.sign({ uuid: user.uuid }, process.env.JWT_SIGNING_KEY, { expiresIn: process.env.JWT_ACC_ACTIVATE_MAX_AGE })
 
             //sending confirmation mail
             let url = `${process.env.CLIENT_URL}/users/recover/${token}`;
@@ -298,7 +298,7 @@ router.get('/recover/:token', async (req, res) => {
     if (token) {
         //jwt token contain user Id
         try {
-            let decodedToken = await jwt.verify(token, process.env.JWT_ACC_ACTIVATE);
+            let decodedToken = await jwt.verify(token, process.env.JWT_SIGNING_KEY);
             const uuid = decodedToken.uuid;
             console.log(uuid)
             //find if userid already in db
@@ -344,7 +344,7 @@ router.post('/recover/:token', async (req, res) => {
     console.log(token)
     try {
         //find if userid already in db
-        let decodedToken = await jwt.verify(token, process.env.JWT_ACC_ACTIVATE);
+        let decodedToken = await jwt.verify(token, process.env.JWT_SIGNING_KEY);
         const uuid = decodedToken.uuid;
         let user = await User.findOne({ uuid });
         if (user) {

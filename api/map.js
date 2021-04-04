@@ -1,7 +1,7 @@
 const express = require('express'),
     router = express.Router(),
-    log = require('../../modules/logger'),
-    Store = require('../../models/store');
+    log = require('../modules/logger'),
+    Store = require('../models/store');
 
 
 //==============================================================
