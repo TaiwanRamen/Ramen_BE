@@ -4,7 +4,6 @@ const FacebookTokenStrategy = require('passport-facebook-token');
 const JwtStrategy = require('passport-jwt').Strategy;
 const config = require("../config/golbal-config");
 const bcrypt = require('bcryptjs');
-const { v4: uuidv4 } = require('uuid');
 const log = require('../modules/logger');
 const User = require('../models/user');
 
@@ -55,7 +54,6 @@ module.exports = (passport) => {
                 log.info("new user: "+ profile.id)
                 let newUser = new User();
                 updateUserInfoWhenLogin(newUser, profile, token);
-                newUser.uuid = uuidv4();
                 await newUser.save()
                 return done(null, newUser);
             }

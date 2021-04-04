@@ -5,6 +5,7 @@ module.exports = Object.freeze({
     WRONG_PASSWORD_FORMAT: '密碼需要由大小寫英文、數字、符號組成，並至少八位',
     USER_ALREASDY_EXIST: '使用此email的用戶已存在！請使用另外的電子郵件或是登入',
     REGISTRY_ERROR: '在註冊時發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員：' + process.env.CUSTOMER_SUPPORT_EMAIL,
+    ACCOUNT_VERIFY_ERROR: '在驗證時發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員：' + process.env.CUSTOMER_SUPPORT_EMAIL,
     WRONG_REGISTRY_URL: '不正確或是過期的連結',
     INTERNAL_SERVER_ERROR:  '伺服器錯誤，請聯繫網站管理員： ' + process.env.CUSTOMER_SUPPORT_EMAIL,
     CHANGE_PASSWORD_ERROR: '更改密碼時發生錯誤，請過幾分鐘後再試，或是聯繫網站管理員： '+ process.env.CUSTOMER_SUPPORT_EMAIL,

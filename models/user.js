@@ -31,10 +31,6 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         default: userRole.END_USER
     },
-    uuid: {
-        type: String,
-        sparse: true
-    },
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'

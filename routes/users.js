@@ -8,11 +8,11 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const smtpTransport = require('../config/smtp');
 const middleware = require('../middleware'); //will automaticlly include index.js
-const { v4: uuidv4 } = require('uuid');
 const User = require('../models/user');
 const multer = require('multer');
 const fs = require('fs');
-const message = require('../message-templates/users/user-message')
+const message = require('../message-templates/users/user-message');
+const log = require('../modules/logger');
 
 
 //set filename to multer
@@ -36,7 +36,7 @@ let upload = multer({
 
 
 router.get("/", middleware.isLoggedIn, (req, res) => {
-    //console.log(req.user);
+    //log.info(req.user);
     res.redirect('/users/' + req.user._id);
 });
 
@@ -60,7 +60,7 @@ router.post('/login', (req, res, next) => {
 
 
 /* ========================= 
-    SIGN UP EMAIL VERIFY 
+    SIGN UP EMAIL
 ============================*/
 
 
@@ -72,12 +72,11 @@ router.get("/register", (req, res) => {
 
 
 /* ========================= 
-    SIGN UP EMAIL VERIFY 
+    SIGN UP USING EMAIL
 ============================*/
 
-//Register Handle with email sent
 router.post('/register', async (req, res) => {
-    console.log(req.body)
+    log.info(req.body)
     const { username, email, password, password2 } = req.body;
 
     let errors = [];
@@ -102,26 +101,20 @@ router.post('/register', async (req, res) => {
         res.render('users/register', { errors, username, email, password, password2 })
 
     } else {
-        //valid imformation  and password
-        //User.findOne will return a promise
-        //will give us a user, check the user
         try {
             let user = await User.findOne({ email: email });
-            //if user already exist
-            //render register again with previously typed in information
             if (user) {
                 errors.push({ msg: message.USER_ALREASDY_EXIST });
                 res.render('users/register', { errors, username, email, password, password2 })
             } else {
-
-                //Hash Password using bcrypt
-                //generate salt using bcrypt
                 const salt = await bcrypt.genSalt(process.env.BCRYPT_WORK_FACTOR);
-                const hash = await bcrypt.hash(password, salt);
-
-                //jwt data, key, expire after
-                //put hashed password inside jwt for verification
-                const token = jwt.sign({ username, email, password: hash }, process.env.JWT_SIGNING_KEY, { expiresIn: process.env.JWT_ACC_ACTIVATE_MAX_AGE })
+                const hashedPassword = await bcrypt.hash(password, salt);
+                let newUser = new User({ username, email, password: hashedPassword});
+                newUser = await newUser.save();
+                
+                log.info("newUser: ", newUser._id);
+                
+                const token = jwt.sign({ userId: newUser._id}, process.env.JWT_SIGNING_KEY, { expiresIn: process.env.JWT_ACC_ACTIVATE_MAX_AGE })
 
                 //sending confirmation mail
                 let url = `${process.env.CLIENT_URL}/users/activate/${token}`;
@@ -136,7 +129,7 @@ router.post('/register', async (req, res) => {
                         <div style="word-break:break-all">
                         <p style="font-size:13px;line-height:16px">您必須驗證電子郵件地址，才能使用 台灣拉麵俱樂部 的某些功能，並且在討論區中發表貼文。</p>
                         <p style="font-size:13px;line-height:16px" >請點擊以下連結以驗證電子郵件</p>
-                        <a href="${url}">驗證電子郵件 </a>
+                        <a style="font-size:20px;line-height:16px" href="${url}">驗證電子郵件 </a>
                         
                         <p style="font-size:10px;line-height:16px"> 連結無法使用？請複製以下網址貼入搜尋列</p>
                         <p style="font-size:10px;line-height:16px"> ${url}</p>
@@ -151,12 +144,12 @@ router.post('/register', async (req, res) => {
 
                 let response = await smtpTransport.sendMail(mail_data, (error, response) => {
                     if (error) {
-                        console.log(error);
+                        log.info(error);
                         return res.send({
                             error: err.message
                         })
                     }
-                    console.log('verification email sent')
+                    log.info('verification email sent to ', email)
                     req.flash('success_msg',
                         message.USER_REGISTER_THROUGH_EMAIL_BEFORE + email + message.USER_REGISTER_THROUGH_EMAIL_AFTER);
                     res.redirect('/users/login');
@@ -164,49 +157,40 @@ router.post('/register', async (req, res) => {
 
             }
         } catch (err) {
-            console.log(err)
+            log.info(err)
         }
     }
 })
 
-//Verifation email through jwt token
-//Adding User in DB
+//Verify email through jwt token
+//set isVerified to true
 router.get('/activate/:token', async (req, res) => {
     const token = req.params.token;
-    console.log(token);
+    log.info(token);
     if (token) {
         //jwt token contain username, email, and hashed password
         try {
             let decodedToken = await jwt.verify(token, process.env.JWT_SIGNING_KEY);
-            const { username, email, password } = decodedToken;
-            console.log(decodedToken)
-            //find if email already in db
-            let user = await User.findOne({ email });
-            if (user) {
-                console.log("User already exist!");
-                req.flash('error_msg', message.USER_ALREASDY_EXIST);
-                res.redirect('/users/register');
-            }
-            //create new user
-            let newUser = new User({ username, email, password, isEmailVerified: true, uuid: uuidv4() });
+            const { userId } = decodedToken;
+            log.info(decodedToken)
+            let user = await User.findById(userId);
             try {
-                await newUser.save();
-                console.log("Signup success!");
-                req.flash('success_msg', '註冊成功！');
+                user.isEmailVerified = true;
+                await user.save();
+                log.info("account verification success");
+                req.flash('success_msg', '帳號驗證成功！');
                 res.redirect('/users/login');
 
             } catch (err) {
-                console.log("Error in signup while account activation: ", err);
-                req.flash('error_msg', message.REGISTRY_ERROR);
-                res.redirect('/');
+                log.info("Error while account activation:", userId,  err);
+                req.flash('error_msg', message.ACCOUNT_VERIFY_ERROR);
+                res.redirect('/user/login');
             }
-
         } catch (error) {
-            console.log(error)
+            log.info(error)
             req.flash('error_msg', message.WRONG_REGISTRY_URL);
             res.redirect('/');
         }
-
     } else {
         req.flash('error_msg', message.INTERNAL_SERVER_ERROR);
         res.redirect('/');
@@ -234,18 +218,18 @@ router.get('/recover', (req, res) => {
     res.render('users/recover')
 });
 
-//recover pwd, using jwt by user uuid
+//recover pwd, using jwt by user _id
 //send email to verify reset pwd
 router.post('/recover', async (req, res) => {
     const email = req.body.email;
-    console.log(email)
+    log.info(email)
     //check if the email is in db or not
     try {
         let user = await User.findOne({ email: email });
         //if user exist, send email to reset pwd
         if (user) {
             //jwt user id to create url
-            const token = jwt.sign({ uuid: user.uuid }, process.env.JWT_SIGNING_KEY, { expiresIn: process.env.JWT_ACC_ACTIVATE_MAX_AGE })
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SIGNING_KEY, { expiresIn: process.env.JWT_ACC_ACTIVATE_MAX_AGE })
 
             //sending confirmation mail
             let url = `${process.env.CLIENT_URL}/users/recover/${token}`;
@@ -271,10 +255,10 @@ router.post('/recover', async (req, res) => {
 
             await smtpTransport.sendMail(mail_data, (error, response) => {
                 if (error) {
-                    console.log(error);
+                    log.info(error);
                     return res.send({ error: err.message })
                 }
-                console.log('recover email sent')
+                log.info('recover email sent')
                 req.flash('success_msg', `密碼驗證信已寄至您的電子郵件信箱: ${email}\n 請點擊郵件內連結已設定新的密碼`);
                 res.redirect('/users/login');
             });
@@ -285,7 +269,7 @@ router.post('/recover', async (req, res) => {
         }
     } catch (error) {
         req.flash('error_msg', message.CHANGE_PASSWORD_ERROR);
-        console.log(error.message)
+        log.info(error.message)
         res.redirect('/users/login')
     }
 });
@@ -294,22 +278,22 @@ router.post('/recover', async (req, res) => {
 //once the tokes is correct, show the pwd reset page
 router.get('/recover/:token', async (req, res) => {
     const token = req.params.token;
-    console.log(token)
+    log.info(token)
     if (token) {
         //jwt token contain user Id
         try {
             let decodedToken = await jwt.verify(token, process.env.JWT_SIGNING_KEY);
-            const uuid = decodedToken.uuid;
-            console.log(uuid)
+            const userId = decodedToken.userId;
+            log.info(userId)
             //find if userid already in db
-            let user = await User.findOne({ uuid });
-            console.log(user)
+            let user = await User.findById(userId);
+            log.info(user)
             if (user) {
                 return res.render('users/newpassword', { token, email: user.email });
             }
 
         } catch (error) {
-            console.log('Incorrect or Expire link');
+            log.info('Incorrect or Expire link');
             req.flash('error_msg', '連結不存在或已過期');
             res.redirect('/users/login');
         }
@@ -341,36 +325,20 @@ router.post('/recover/:token', async (req, res) => {
     if (errors.length > 0) {
         return res.render('users/newpassword', { errors, password, password2, token })
     }
-    console.log(token)
+    log.info(token)
     try {
         //find if userid already in db
         let decodedToken = await jwt.verify(token, process.env.JWT_SIGNING_KEY);
-        const uuid = decodedToken.uuid;
-        let user = await User.findOne({ uuid });
+        const userId = decodedToken.userId;
+        let user = await User.findById(userId);
         if (user) {
             //Hash Password using bcrypt
             //generate salt using bcrypt
             const salt = await bcrypt.genSalt(process.env.BCRYPT_WORK_FACTOR);
-            const hash = await bcrypt.hash(password, salt);
+            const hashedPassword = await bcrypt.hash(password, salt);
 
-
-            await User.updateOne({ _id: user._id }, { password: hash });
-            console.log("password updated");
-
-            //check if uuid is duplicate, if so, generate another uuid
-            let flag = true;
-            while (flag) {
-                let new_uuid = uuidv4();
-                let duplicate_uuid_user = await User.findOne({ uuid: new_uuid })
-                if (!duplicate_uuid_user) {
-                    flag = false;
-                    console.log("no duplicate")
-                    await User.updateOne({ _id: user._id }, { uuid: new_uuid })
-                } else {
-                    console.log("uuid already been taken!")
-                    new_uuid = uuidv4()
-                }
-            }
+            await User.updateOne({ _id: user._id }, { password: hashedPassword });
+            log.info("password updated");
 
             req.flash('success_msg', '密碼更新成功！');
             res.redirect('/users/login');
@@ -381,12 +349,6 @@ router.post('/recover/:token', async (req, res) => {
 
     }
 });
-/* router.get("/show", middleware.isLoggedIn, (req, res) => {
-    res.render('users/show', {
-        user: req.user
-    });
-    console.log(req.user)
-}); */
 
 //User Profile
 router.get("/:id", middleware.checkUserOwnership, async (req, res) => {
@@ -416,22 +378,22 @@ router.get('/:id/edit', middleware.checkUserOwnership, async (req, res) => {
 })
 //EDIT USER 
 router.put('/:id', upload.single('image'), async (req, res) => {
-    console.log("put route!")
+    log.info("put route!")
     try {
         //如果有更改上傳照片
         if (req.body.user.avatar) {
             var avatarBase64Data = req.body.user.avatar.replace(/^data:image\/jpeg;base64,/, "");
             fs.writeFile("out.jpg", avatarBase64Data, 'base64', function(err) {
-                console.log(err);
+                log.info(err);
             });
 
         } else {
-            console.log(req.body.user.fbName)
+            log.info(req.body.user.fbName)
 
         }
 
     } catch (error) {
-        console.log(error);
+        log.info(error);
         req.flash('error_msg', message.INTERNAL_SERVER_ERROR);
         return res.redirect('back');
     }
