@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         default: userRole.END_USER
     },
+    hasStore: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Store'
+    }],
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'

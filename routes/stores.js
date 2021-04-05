@@ -4,12 +4,10 @@ const express = require('express'),
     Notifications = require('../models/notification'),
     middleware = require('../middleware'), //will automaticlly include index.js
     multer = require('multer'),
-    fs = require("fs"),
-    request = require("request-promise-native"),
-    User = require("../models/user"),
     Review = require("../models/review"),
     Comment = require("../models/comment"),
-    geocoder = require('../utils/here')
+    geocoder = require('../utils/here'),
+    uploadImageUrl = require('../modules/upload-image');
 
 //set filename to multer 
 const storage = multer.diskStorage({
@@ -102,33 +100,11 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
             throw new Error('Location coordination out of range.')
         }
 
-        //去node server暫存區找圖片在哪
-        let bitmap = fs.readFileSync(req.file.path);
-        // 將圖片轉成base64
-        let encode_image = Buffer.from(bitmap).toString('base64');
-        //======================
-        //imgur request setting
-        //======================
-        request_options = {
-            'method': 'POST',
-            'url': 'https://api.imgur.com/3/image',
-            'headers': {
-                'Authorization': 'Client-ID ' + process.env.IMGUR_CLIENT_ID
-            },
-            formData: {
-                'image': encode_image
-            }
-        };
-        //發request
-        await request(request_options, function(error, response) {
-            if (error) throw new Error(error);
-            imgurURL = response.body
-        });
-        //這邊回傳的imgurURL是JSON要轉成str才能存到mongodb
-        const imgurURLToJSON2 = JSON.parse(imgurURL).data.link
-        console.log(imgurURLToJSON2)
-        // add imgur url for the image to the store object under image property
-        req.body.store.imageSmall = [imgurURLToJSON2];
+        let foundStore = Store.findOne({'name': req.body.store.name});
+        if(!!foundStore) throw new Error(`店家名稱 ${req.body.store.name} 已存在`);
+
+        let imgurURL = await uploadImageUrl(req.file.path);
+        req.body.store.imageSmall = [imgurURL];
 
         // add author to store
         req.body.store.author = {
@@ -136,10 +112,7 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
             username: req.user.fbName
         }
 
-        //把暫存區的圖片砍掉
-        fs.unlinkSync(req.file.path);
 
-        //console.log(req.body.store)
         let locObj = await geocoder(req.body.store.address); //from geocoder here
         req.body.store.address = locObj.address;
         req.body.store.city = locObj.city;
@@ -158,7 +131,6 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
         req.flash('error_msg', error.message);
         return res.redirect('back');
     }
-
 });
 
 //====================================================
@@ -215,7 +187,9 @@ router.get('/:id', (req, res) => {
             return res.redirect("/stores");
             //console.log(err);
         } else {
+            let isStoreOwner = true;
             res.render("stores/show", {
+                isStoreOwner : isStoreOwner,
                 store: foundStore,
                 mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN
             }); //把回傳的store傳到ejs裡面。
@@ -243,25 +217,8 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
     try {
         //如果有更新照片
         if (req.file) {
-            //去node server暫存區找圖片在哪
-            let bitmap = fs.readFileSync(req.file.path);
-            // 將圖片轉成base64
-            let encode_image = Buffer.from(bitmap).toString('base64');
-            //======================
-            //imgur request setting
-            //======================
-            //發request
-            await request(request_options, function(error, response) {
-                if (error) throw new Error(error);
-                imgurURL = response.body
-            });
-            //這邊回傳的imgurURL是JSON要轉成str才能存到mongodb
-            const imgurURLToJSON2 = JSON.parse(imgurURL).data.link
-            //console.log(imgurURLToJSON2)
-            // add imgur url for the image to the store object under image property
-            req.body.store.imageSmall = [imgurURLToJSON2];
-            fs.unlinkSync(req.file.path);
-
+            let imgurURL = await uploadImageUrl(req.file.path);
+            req.body.store.imageSmall = [imgurURL];
         }
         let data = req.body.store; //在ejs裡面包好了store[name, image, author]
         console.log(data)

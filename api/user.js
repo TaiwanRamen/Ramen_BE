@@ -37,20 +37,26 @@ router.get('/profile', passportJWT,
 
 router.get('/isUserInRamenGroup', passport.authenticate('facebookToken', { session: false }),
     async (req, res) => {
-        let response = await axios.get(`https://graph.facebook.com/v10.0/${req.user.fbUid}/groups?pretty=0&admin_only=false&limit=10000&access_token=${req.user.fbToken}`)
-        let groupsList;
-        if(!response.data.paging.next){
-            groupsList = response.data.data;
+        let isUserInGroup = false;
+        try{
+                let response = await axios.get(`https://graph.facebook.com/v10.0/${req.user.fbUid}/groups?pretty=0&admin_only=false&limit=10000&access_token=${req.user.fbToken}`)
+                let groupsList;
+                log.info(response.data)
+                if(!response.data.paging.next){
+                    groupsList = response.data.data;
+                }
+
+                if(groupsList.length > 0){
+                    isUserInGroup = groupsList.some(group => {
+                        return group.id === "1694931020757966"
+                    })
+                }
+        } catch(err){
+            log.error(err.message);
+            isUserInGroup = true;
         }
 
-        let hasList = false;
-        if(groupsList.length > 0){
-            hasList = groupsList.some(group => {
-                return group.id === "1694931020757966"
-            })
-        }
-
-        res.status(200).send({hasList});
+        res.status(200).send({isUserInGroup});
     });
 
 module.exports = router

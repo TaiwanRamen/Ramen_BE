@@ -1,20 +1,21 @@
 require('dotenv').config()
-const request = require('request-promise-native');
+const axios = require("axios");
 
 module.exports = function getLonLat(address) {
     return new Promise(async (resolve, reject) => {
         try {
             const options = {
                 method: 'GET',
-                uri: 'https://geocode.search.hereapi.com/v1/geocode?q=' + encodeURI(address) + '&apiKey=' + process.env.HERE_API_KEY,
-                json: true
+                url: 'https://geocode.search.hereapi.com/v1/geocode?q=' + encodeURI(address) + '&apiKey=' + process.env.HERE_API_KEY,
             }
-            const response = await request(options)
+            const response = await axios(options);
+            if(response.status !== 200) throw new Error("geocode fail")
             let location = {};
-            location.address = response.items[0].title;
-            location.city = response.items[0].address.county;
-            location.longitude = response.items[0].position.lng;
-            location.latitude = response.items[0].position.lat;
+            location.address = response.data.items[0].title;
+            location.city = response.data.items[0].address.county;
+            location.longitude = response.data.items[0].position.lng;
+            location.latitude = response.data.items[0].position.lat;
+            console.log(location);
             resolve(location)
         } catch (error) {
             reject(error)

@@ -1,26 +1,35 @@
-if (process.env.NODE_ENV !== 'production') {
+const isProduction = process.env.NODE_ENV === 'production';
+if (!isProduction) {
     require('dotenv').config();
-
 }
 const express = require('express'),
     socket = require('socket.io'),
     bodyParser = require('body-parser'),
     passport = require('passport'),
     mathodOverride = require("method-override"),
-    flash = require("connect-flash"),
-    User = require("./models/user"),
-    config = require("./config/golbal-config"),
-    session = require("express-session"),
+    flash = require('connect-flash'),
+    User = require('./models/user'),
+    config = require('./config/golbal-config'),
+    session = require('express-session'),
     helmet = require('helmet'),
     rateLimit = require('express-rate-limit'),
     moment = require('moment'),
     log = require('./modules/logger'),
-    cookieParser = require("cookie-parser");
+    cors = require('cors'),
+    cookieParser = require('cookie-parser'),
+    morgan = require('morgan'),
+    accessLogStream = require('./modules/accesslog-stream');
+
 const app = express();
+
+// setup the access log
+app.use(morgan(':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', { stream: accessLogStream }))
+
+app.use(cors());
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public')) ;//dirname是你現在script跑的位置。
 
-app.use(helmet({ contentSecurityPolicy: (process.env.NODE_ENV === 'production') ? undefined : false }));
+app.use(helmet({ contentSecurityPolicy: isProduction ? undefined : false }));
 
 
 app.use(mathodOverride("_method"));

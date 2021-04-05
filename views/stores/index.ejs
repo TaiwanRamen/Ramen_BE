@@ -3,7 +3,6 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet'>
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
 <%-include ("../partials/header")  -%>
-<!-- updated syntax in ejs v3.0.1 -->
 <link rel="stylesheet" href="/stylesheets/store-index.css">
 <header class="jumbotron">
     <div class="row">
@@ -23,7 +22,7 @@
         </div>
 
         <div class="col-md-3 d-flex align-items-center justify-content-center">
-            <%  if (currentUser && currentUser.isAdmin){ %>
+            <%  if (currentUser && currentUser.userRole == 0){ %>
             <a class="p-4 btn btn-danger btn-large " href="/stores/new">管理員新增店家</a>
             <%}  %>
 
@@ -153,4 +152,3 @@
 </script>
 
 <%-include ("../partials/footer") -%>
-<!-- updated syntax in ejs v3.0.1 -->

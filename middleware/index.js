@@ -3,6 +3,7 @@ const Store = require('../models/store');
 const Comment = require('../models/comment');
 const User = require('../models/user');
 const Review = require("../models/review");
+const userRole = require("../enums/user-role");
 
 
 const middlewareObj = {}
@@ -49,7 +50,7 @@ middlewareObj.checkStoreOwnership = async function(req, res, next) {
                 //req.user._id is a string
                 //even if they looks the same, they are essentially different,
                 // so we have to use mongoose method .equals()
-                if (foundUser.isAdmin || foundStore.author.id.equals(req.user._id)) {
+                if (foundUser.userRole == userRole.ADMIN || (foundUser.userRole == userRole.STORE_OWNER && foundStore.author.id.equals(req.user._id))) {
                     next();
                 } else {
                     req.flash("error_msg", "您並沒有權限執行此操作。如果您認為這是個錯誤，請聯絡網站管理員mepowenlin@gmail.com");
