@@ -1,7 +1,6 @@
 const pad = num => (num > 9 ? "" : "0") + num;
 const generator = (time, index) => {
     if (!time) return "access.log";
-    console.log(time);
     let month = time.getFullYear() + "" + pad(time.getMonth() + 1);
     let day = pad(time.getDate());
     let hour = pad(time.getHours());

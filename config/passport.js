@@ -41,19 +41,16 @@ module.exports = (passport) => {
     }
     const facebookAuthUser = async (req, token, refreshToken, profile, done) => {
         try {
-            log.info(token);
-            log.info(refreshToken);
-            log.info(profile);
             let user = await User.findOne({ 'fbUid': profile.id })
             if (user) {
                 log.info("user", user._id, "login");
-                updateUserInfoWhenLogin(user, profile, token);
+                updateUserInfoWhenLogin(user, profile, refreshToken);
                 await user.save();
                 return done(null, user);
             } else {
                 log.info("new user: "+ profile.id)
                 let newUser = new User();
-                updateUserInfoWhenLogin(newUser, profile, token);
+                updateUserInfoWhenLogin(newUser, profile, refreshToken);
                 newUser.isVerified = true;
                 await newUser.save()
                 return done(null, newUser);
@@ -81,7 +78,7 @@ module.exports = (passport) => {
 
     const updateUserInfoWhenLogin = (user, profile, token) => {
         user.fbUid = profile.id;
-        user.fbToken = token;
+        user.fbToken = token.access_token;
         user.fbName = profile.name.givenName + ' ' + profile.name.familyName;
         if (!!profile.emails) {
             user.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
