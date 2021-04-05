@@ -18,33 +18,20 @@ const express = require('express'),
     cors = require('cors'),
     cookieParser = require('cookie-parser'),
     morgan = require('morgan'),
-    accessLogStream = require('./modules/accesslog-stream');
+    accessLogStream = require('./modules/accesslog-stream'),
+    errorhandler = require('errorhandler');
 
 const app = express();
-
-// setup the access log
 app.use(morgan(':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', { stream: accessLogStream }))
-
 app.use(cors());
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public')) ;//dirname是你現在script跑的位置。
-
 app.use(helmet({ contentSecurityPolicy: isProduction ? undefined : false }));
-
-
 app.use(mathodOverride("_method"));
 app.use(flash());
-
-//path
 app.use('/public/images/', express.static('./public/images'));
-
-//Passport config
 require('./config/passport')(passport);
-
-//connect DB
 require("./db/connectDB");
-
-//config email
 require("./config/smtp");
 
 
@@ -73,10 +60,37 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.json());
 app.use(express.static("public")); //去public找東西
-app.set('view engine', 'ejs'); //把ejs設訂為預設檔案。
+app.set('view engine', 'ejs');
+
+//error handler
+if (!isProduction) {
+    app.use(errorhandler());
+}
+
+// development error handler
+// will print stacktrace
+if (!isProduction) {
+    app.use(function(err, req, res, next) {
+        console.log(err.stack);
+        res.status(err.status || 500);
+        res.json({'errors': {
+                message: err.message,
+                error: err
+            }});
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.json({'errors': {
+            message: err.message,
+            error: {}
+        }});
+});
 
 //Global variable
-//used to flash message
 //can call the currentUser success_msg and error_msg from anywhere
 app.use(async (req, res, next) => {
     res.locals.currentUser = req.user;
