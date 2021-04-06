@@ -3,4 +3,6 @@ const express = require('express'),
 
 apiRouter.use('/map', require('./map'));
 apiRouter.use('/user', require('./user'));
+apiRouter.use('/stores', require('./store'));
+
 module.exports = apiRouter

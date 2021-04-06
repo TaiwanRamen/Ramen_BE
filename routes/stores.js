@@ -6,8 +6,8 @@ const express = require('express'),
     multer = require('multer'),
     Review = require("../models/review"),
     Comment = require("../models/comment"),
-    geocoder = require('../utils/here'),
-    uploadImageUrl = require('../modules/upload-image');
+    geocoder = require('../utils/here-geocode'),
+    uploadImageUrl = require('../utils/imgur-upload');
 
 //set filename to multer 
 const storage = multer.diskStorage({
@@ -33,7 +33,6 @@ router.get('/', async (req, res) => {
         let perPage = 9;
         let pageQuery = parseInt(req.query.page);
         let pageNumber = pageQuery ? pageQuery : 1;
-        let noMatch = null;
         //fuzzy search
         if (req.query.search) {
             const regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -65,7 +64,6 @@ router.get('/', async (req, res) => {
                 stores: allStores,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
-                noMatch: noMatch,
                 search: req.query.search
             });
 
@@ -80,7 +78,6 @@ router.get('/', async (req, res) => {
                 stores: allStores,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
-                noMatch: noMatch,
                 search: false
             });
         }
