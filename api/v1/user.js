@@ -1,10 +1,10 @@
 const express = require('express'),
     router = express.Router(),
-    log = require('../modules/logger'),
-    User = require('../models/user'),
+    log = require('../../modules/logger'),
+    User = require('../../models/user'),
     passport = require('passport'),
     JWT = require('jsonwebtoken'),
-    config = require('../config/golbal-config'),
+    config = require('../../config/golbal-config'),
     passportJWT = passport.authenticate('jwt', { session: false }),
     axios = require('axios');
 

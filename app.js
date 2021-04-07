@@ -37,7 +37,7 @@ require("./config/smtp");
 
 //PASSPORT CONFIGURATION
 app.use(session({
-    cookieName: "session",
+    cookieName: "connect.sid",
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
@@ -123,7 +123,7 @@ app.use(limiter)
 //Routes
 //pertain the route from the index
 app.use('/', require('./routes/index'));
-app.use('/api/v1', require('./api/api-router'));
+app.use('/api/v1', require('./api/v1/api-router'));
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/stores/:id/comments', require('./routes/comments'));

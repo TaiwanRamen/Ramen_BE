@@ -14,6 +14,7 @@
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
         "connect-flash": "^0.1.1",
+        "connect-redis": "^5.1.0",
         "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
@@ -38,6 +39,7 @@
         "passport-jwt": "^4.0.0",
         "passport-local": "^1.0.0",
         "path": "^0.12.7",
+        "redis": "^3.1.0",
         "rotating-file-stream": "^2.1.5",
         "socket.io": "^2.4.1"
     },
