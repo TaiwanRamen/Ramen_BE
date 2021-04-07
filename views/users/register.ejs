@@ -16,6 +16,7 @@
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" class="form-control" placeholder="輸入 Email" value="<%= typeof email != 'undefined' ? email : '' %>" />
                 </div>
+                <p class="warning-flash" id="emailFlash"></p>
                 <div class="form-group">
                     <label for="password">密碼</label>
                     <input type="password" id="password" name="password" class="form-control" placeholder="輸入密碼" value="<%= typeof password != 'undefined' ? password : '' %>" />
@@ -24,8 +25,8 @@
                     <label for="password2">請重新輸入密碼</label>
                     <input type="password" id="password2" name="password2" class="form-control" placeholder="請重新輸入密碼" value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
                 </div>
-                <p class="worning-flash" id="passwordFlash1"></p>
-                <p class="worning-flash" id="passwordFlash2"></p>
+                <p class="warning-flash" id="passwordFlash1"></p>
+                <p class="warning-flash" id="passwordFlash2"></p>
                 <button id="submitBtn" disabled="disabled" class="btn btn-primary btn-block mt-4">
                     <span id="register">註冊</span>
                     <img id="loading" style="display:none" src="../public/images/Spinner-1s-200px.svg" height="30px" width="30px">
@@ -38,38 +39,51 @@
 </div>
 <script>
     const form = document.getElementById('form');
+    const emailFlash = document.getElementById("emailFlash");
     const username = document.getElementById("username");
     const password = document.getElementById("password");
     const password2 = document.getElementById("password2");
-    const passwordFlash = document.getElementById("passwordFlash");
-    const submitBtn = document.querySelector("#submitBtn");
-    const loading = document.querySelector("#loading");
-    const register = document.querySelector("#register");
+    const passwordFlash1 = document.getElementById("passwordFlash1");
+    const passwordFlash2 = document.getElementById("passwordFlash2");
+    const submitBtn = document.getElementById("submitBtn");
+    const loading = document.getElementById("loading");
+    const register = document.getElementById("register");
     submitBtn.addEventListener('click', () => {
-        btn.classList.add("disabled");
+        submitBtn.classList.add("disabled");
         loading.style.display = "inline-block";
         register.textContent = "註冊中，請稍後...";
     });
     form.addEventListener('focusout', () => {
         //validate data input
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/; //8*(A-Z a-z 0-9 !@#) 
+        let passwordRule = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/; //8*(A-Z a-z 0-9 !@#)
+        let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+
         //let re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
         if (password.value !== password2.value) {
             passwordFlash1.innerText = "兩欄位密碼不一致";
         } else {
             passwordFlash1.innerText = "";
         }
-        if (!re.test(password.value)) {
+        if (!password.value.match(passwordRule)) {
             passwordFlash2.innerText = "密碼應包含最少八位，至少包含一位大寫字母，一位數字以及一個特殊符號";
         } else {
             passwordFlash2.innerText = "";
         }
 
-        if (password.value === password2.value && username.value && re.test(password.value)) {
+        if (password.value === password2.value && username.value && password.value.match(passwordRule)) {
             submitBtn.removeAttribute('disabled')
         } else {
             submitBtn.setAttribute('disabled', 'disabled')
         }
+
+        if (!email.value.match(emailRule)) {
+            emailFlash.innerText = "請輸入正確信箱格式"
+            submitBtn.setAttribute('disabled', 'disabled')
+        } else{
+            emailFlash.innerText = ""
+            submitBtn.removeAttribute('disabled');
+        }
+
     });
 </script>
 
