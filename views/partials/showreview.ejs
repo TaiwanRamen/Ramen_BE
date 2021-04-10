@@ -4,8 +4,7 @@
 <p>尚無評論/食記，快來上傳第一篇吧！</p>
 <% } %>
 <% store.reviews.slice(0, 5).forEach(function(review){ %>
-<div class="row">
-
+<div class="row" id="<%= review._id %>">
     <!-- 作者 -->
     <div class="grid-container">
         <div class="avatar">
@@ -20,7 +19,6 @@
         </div>
 
         <div class="functionBtn">
-
             <div class="btn-group dropleft">
                 <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
                 <button type="button" class="btn btn-light " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,9 +26,10 @@
                 </button>
                 <div class="dropdown-menu">
 
-                    <a class="dropdown-item" href="/stores/<%=store._id %>/reviews/<%=review._id %>/edit">編輯</a>
-
-                    <button id="delete-btn" type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteReviewModal">
+                    <a class="dropdown-item" href="/stores/<%=store._id %>/reviews/<%=review._id %>/edit">
+                        編輯
+                    </a>
+                    <button id="delete-btn" data-id="<%= review._id %>" type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteReviewModal">
                         刪除
                     </button>
 
@@ -39,42 +38,8 @@
             </div>
         </div>
     </div>
-
-
-</div>
-
-<p class="mt-4" style="text-align: justify; word-wrap: break-word;">
-    <%= review.text %>
-</p>
-
-<!-- 確認刪除modal -->
-<div class="modal fade" id="deleteReviewModal" tabindex="-1" role="dialog" aria-labelledby="deleteReviewModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="deleteReviewModalTitle">刪除評論/食記 </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5>即將刪除：</h5>
-
-                <p style="text-align: justify; word-wrap: break-word;">
-                    <% if(review.text.length > 100){  %>
-                    <%= review.text.substring(0, 100) %>
-                    <%}else{  %>
-                    <%= review.text %>
-                    <% }  %>
-                </p>
-            </div>
-            <div class=" modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <form id="delete-form" action="/stores/<%=store._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
-                    <input type="submit" value="刪除" class="btn btn-danger" id="delete-review-input">
-                </form>
-            </div>
-        </div>
+    <div class="mt-4 review-content">
+        <%= review.text %>
     </div>
 </div>
 
@@ -88,38 +53,52 @@
 </div>
 <% } %>
 
-<div>
-    <!-- 評論modalBtn -->
-    <a href="#" id="modalBtn" class="btn btn-lg btn-primary <% if (currentUser && store.reviews.some(function (review) {return review.author.id.equals(currentUser._id)})) { %> disabled <% } %>" data-toggle="modal" data-target="#newReviewModal"> 評論或評分</a>
-</div>
 
 
+<%-include ("../partials/newReviewModal") -%>
 
-<!-- 評論modal -->
-<div class="modal fade" id="newReviewModal" tabindex="-1" role="dialog" aria-labelledby="newReviewModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+<!-- 刪除評論 modal -->
+<div class="modal fade" id="deleteReviewModal" tabindex="-1" role="dialog" aria-labelledby="deleteReviewModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header text-center">
-                <h3 class="modal-title w-100"><i class="fas fa-comment-alt-edit"></i> &nbsp 評分或評論：</h3>
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteReviewModalTitle">刪除評論 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
             <div class="modal-body">
-                <p>店家：<%= store.name %></p>
-
-                <%-include ("../partials/newreview") -%>
-
+                <h5>即將刪除：</h5>
+                <p style="text-align: justify; word-wrap: break-word;" id="deleted-review"></p>
             </div>
-
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <form id="delete-form" action="/stores/<%=store._id %>/reviews/review_id?_method=DELETE" method="POST">
+                    <input type="submit" value="刪除" class="btn btn-danger" id="delete-review-input">
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
 <script>
-    $(document).ready(function() {
-        if ($('#modalBtn').hasClass('disabled')) {
-            $('#modalBtn').text('您已經發表評論')
-        }
+
+    let deletedReview = document.getElementById('deleted-review');
+    let deleteBtn = document.getElementById('delete-btn');
+    let deleteForm = document.getElementById('delete-form');
+
+    $('#deleteReviewModal').on('show.bs.modal', () => {
+
+        deleteForm.action = deleteForm.action.replace('review_id', deleteBtn.getAttribute("data-id"));
+        let reviewContent = document.querySelector('[id=\"' + deleteBtn.getAttribute("data-id") + '\"] > div.review-content');
+        deletedReview.innerHTML = reviewContent.innerHTML;
+
     })
+
+    $('#deleteReviewModal').on('hidden.bs.modal', () => {
+        deleteForm.action = "/stores/<%=store._id %>/reviews/review_id?_method=DELETE";
+        deletedReview.innerHTML = "";
+    })
+
+
 </script>

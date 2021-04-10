@@ -31,10 +31,16 @@
     font-size: 15px;
 }
 
-.dropdown-menu>a:hover {
+#edit-btn:hover {
     background-color: #FFBC0B;
 }
 
 #delete-btn:hover {
     background-color: red;
+}
+
+.review-content {
+    text-align: justify;
+    word-wrap: break-word;
+    margin: 10px;
 }

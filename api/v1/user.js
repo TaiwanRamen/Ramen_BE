@@ -10,22 +10,41 @@ const express = require('express'),
 
 signToken = async (user) => {
     return await JWT.sign({
-        iss: 'Taiwan Ramen-club',
+        iss: 'Taiwan Ramen-Club',
         sub: user._id,
         iat: new Date().getTime(), // current time
         exp: new Date(new Date().getTime() + config.JWT_MAX_AGE).getTime()
     }, process.env.JWT_SIGNING_KEY, { algorithm: config.JWT_SIGNING_ALGORITHM});
 }
 
-router.post('/oauth/facebook', passport.authenticate('facebookToken', { session: false }),
+router.post('/oauth/facebook', passport.authenticate('facebookToken'),
     async (req, res) => {
-        // Generate token
-        const token = await signToken(req.user);
-        res.cookie('access_token', token, {
-            httpOnly: true
-        });
-        res.status(200).json({ success: true });
-    });
+        if(req.user.err){
+            res.status(401).json({
+                success: false,
+                message: 'Auth failed',
+                error: req.user.err
+            })
+        }
+        else if(req.user) {
+            // Generate token
+            const token = await signToken(req.user);
+            res.cookie('access_token', token, {
+                httpOnly: true
+            });
+            res.status(200).json({ success: true });
+        } else {
+            res.status(401).json({
+                success: false,
+                message: 'Auth failed'
+            })
+        }
+    }, (error, req, res, next) => {
+        if(error) {
+            res.status(400).json({success: false, message: 'Auth failed', error})
+        }
+    }
+)
 
 router.get('/profile', passportJWT,
     async (req, res, next) => {

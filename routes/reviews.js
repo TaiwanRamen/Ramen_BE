@@ -65,20 +65,16 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, functio
 });
 
 // Reviews Edit
-router.get("/:review_id/edit", middleware.checkReviewOwnership, function(req, res) {
-    Store.findById(req.params.id, (err, foundStore) => {
-        if (err || !foundStore) {
-            req.flash("error", "No Store find");
-            return res.redirect("back");
-        }
-    })
-    Review.findById(req.params.review_id, function(err, foundReview) {
-        if (err) {
-            req.flash("error", err.message);
-            return res.redirect("back");
-        }
-        res.render("reviews/edit", { store_id: req.params.id, review: foundReview });
-    });
+router.get("/:review_id/edit", async (req, res) => {
+
+    try {
+        let store = await Store.findById(req.params.id);
+        let review = await Review.findById(req.params.review_id);
+        res.render("reviews/edit", { store, review });
+
+    } catch (err) {
+        req.flash("error", "No store or review found");
+    }
 });
 
 // Reviews Update
