@@ -34,6 +34,28 @@
                 <a class="btn btn-primary my-2" href="/stores/<%= store._id %>/follow">追蹤</span></a>
                 <% } %>
                 <% } %>
+
+                <!-- Admin編輯刪除 -->
+                <div class="btn-group float-right my-2">
+                    <% if ((currentUser && currentUser.userRole) && (currentUser.userRole === 1 || (currentUser.userRole === 2 && currentUser.hasStore.includes(store._id)))){ %>
+                    <button type="button" class="btn btn-light my-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu my-2">
+
+                        <a class="dropdown-item" href="/stores/<%=store._id  %>/edit ">編輯店家</a>
+
+                        <button id="delete-btn" type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteStoreModal">
+                            刪除
+                        </button>
+                    </div>
+                    <%}%>
+                </div>
+
+
+
+
+
                 <!-- 店家標題開始 -->
                 <h2><%=store.name %></h2>
 
@@ -100,30 +122,6 @@
                                 <strong>
                                     <h3 class="mt-4">介紹</h3>
                                 </strong>
-                            </div>
-                            <div class="col-sm-1">
-                                <!-- Admin編輯刪除 -->
-                                <div>
-                                    <div class="btn-group dropleft">
-                                        <%  if (currentUser && currentUser.userRole === 0 ||
-                                                (currentUser.userRole === 1 && currentUser.hasStore.includes(store._id))){ %>
-                                        <button type="button" class="btn btn-light " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-
-                                            <a class="dropdown-item" href="/stores/<%=store._id  %>/edit ">編輯店家</a>
-
-                                            <button id="delete-btn" type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteStoreModal">
-                                                刪除
-                                            </button>
-
-                                        </div>
-                                        <% } %>
-                                    </div>
-
-                                </div>
-                                <!-- Admin編輯刪除 -->
                             </div>
                         </div>
 

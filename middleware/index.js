@@ -177,7 +177,7 @@ middlewareObj.isLoggedIn = function(req, res, next) {
 
 middlewareObj.isAdmin = async (req, res, next) => {
     if (req.isAuthenticated()) {
-        if (req.user.userRole !== 0) response.unAuthorized(res, "使用者非管理員，無法進行此操作！")
+        if (req.user.userRole !== userRole.ADMIN) response.unAuthorized(res, "使用者非管理員，無法進行此操作！")
         next();
     } else {
         response.unAuthorized(res, "使用者必須登入才能檢視內容")

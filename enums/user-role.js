@@ -1,8 +1,8 @@
 module.exports = Object.freeze({
-    ADMIN: 0,
-    STORE_OWNER: 1,
-    AGENT: 2,
-    END_USER: 3
+    ADMIN: 1,
+    STORE_OWNER: 2,
+    AGENT: 3,
+    END_USER: 4
 });
 
 //userRole
