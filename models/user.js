@@ -51,4 +51,5 @@ const UserSchema = new mongoose.Schema({
     fbToken: String,
     fbName: String
 }, { timestamps: true });
+
 module.exports = mongoose.model("User", UserSchema);

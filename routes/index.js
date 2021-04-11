@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const middleware = require('../middleware'); //will automaticlly include index.js
+const middleware = require('../middleware/index'); //will automaticlly include index.js
 const Notification = require("../models/notification");
 const User = require("../models/user");
 const Store = require("../models/store");
-const { isLoggedIn } = require('../middleware');;
 //const User = require('../models/user')
 
 
@@ -39,7 +38,7 @@ router.get("/notifications", middleware.isLoggedIn, async (req, res) => {
         res.render(`users/${req.user._id}`, { allNotifications })
 
     } catch (error) {
-        req.flash("error", error.message);
+        req.flash("error_msg", error.message);
         res.redirect('back')
     }
 });
@@ -53,7 +52,7 @@ router.get("/notifications/:id", middleware.isLoggedIn, async (req, res) => {
         res.redirect(`/stores/${notification.storeId}`) //redirect to the updated store!
 
     } catch (error) {
-        req.flash("error", error.message);
+        req.flash("error_msg", error.message);
         res.redirect('back')
     }
 });

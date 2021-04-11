@@ -10,7 +10,7 @@ router.get("/", function(req, res) {
         options: { sort: { createdAt: -1 } } // sorting the populated reviews array to show the latest first
     }).exec(function(err, store) {
         if (err || !store) {
-            req.flash("error", err.message);
+            req.flash("error_msg", err.message);
             return res.redirect("back");
         }
         res.render("reviews/index", { store: store });
@@ -21,7 +21,7 @@ router.get("/new", middleware.isLoggedIn, middleware.checkReviewExistence, funct
     // middleware.checkReviewExistence checks if a user already reviewed the store, only one review per user is allowed
     Store.findById(req.params.id, function(err, store) {
         if (err) {
-            req.flash("error", err.message);
+            req.flash("error_msg", err.message);
             return res.redirect("back");
         }
         res.render("reviews/new", { store: store });
@@ -34,12 +34,12 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, functio
     //lookup store using ID
     Store.findById(req.params.id).populate("reviews").exec(function(err, store) {
         if (err) {
-            req.flash("error", err.message);
+            req.flash("error_msg", err.message);
             return res.redirect("back");
         }
         Review.create(req.body.review, function(err, review) {
             if (err) {
-                req.flash("error", err.message);
+                req.flash("error_msg", err.message);
                 return res.redirect("back");
             }
             //add author username/id and associated store to the review
@@ -58,7 +58,7 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, functio
             store.rating = calculateAverage(store.reviews);
             //save store
             store.save();
-            req.flash("success", "Your review has been successfully added.");
+            req.flash("success_msg", "Your review has been successfully added.");
             res.redirect('/stores/' + store._id);
         });
     });
@@ -73,7 +73,7 @@ router.get("/:review_id/edit", async (req, res) => {
         res.render("reviews/edit", { store, review });
 
     } catch (err) {
-        req.flash("error", "No store or review found");
+        req.flash("error_msg", "No store or review found");
     }
 });
 
@@ -81,19 +81,19 @@ router.get("/:review_id/edit", async (req, res) => {
 router.put("/:review_id", middleware.checkReviewOwnership, function(req, res) {
     Review.findByIdAndUpdate(req.params.review_id, req.body.review, { new: true }, function(err, updatedReview) {
         if (err) {
-            req.flash("error", err.message);
+            req.flash("error_msg", err.message);
             return res.redirect("back");
         }
         Store.findById(req.params.id).populate("reviews").exec(function(err, store) {
             if (err) {
-                req.flash("error", err.message);
+                req.flash("error_msg", err.message);
                 return res.redirect("back");
             }
             // recalculate store average
             store.rating = calculateAverage(store.reviews);
             //save changes
             store.save();
-            req.flash("success", "Your review was successfully edited.");
+            req.flash("success_msg", "Your review was successfully edited.");
             res.redirect('/stores/' + store._id);
         });
     });
@@ -102,19 +102,19 @@ router.put("/:review_id", middleware.checkReviewOwnership, function(req, res) {
 router.delete("/:review_id", middleware.checkReviewOwnership, function(req, res) {
     Review.findByIdAndRemove(req.params.review_id, function(err) {
         if (err) {
-            req.flash("error", err.message);
+            req.flash("error_msg", err.message);
             return res.redirect("back");
         }
         Store.findByIdAndUpdate(req.params.id, { $pull: { reviews: req.params.review_id } }, { new: true }).populate("reviews").exec(function(err, store) {
             if (err) {
-                req.flash("error", err.message);
+                req.flash("error_msg", err.message);
                 return res.redirect("back");
             }
             // recalculate store average
             store.rating = calculateAverage(store.reviews);
             //save changes
             store.save();
-            req.flash("success", "Your review was deleted successfully.");
+            req.flash("success_msg", "Your review was deleted successfully.");
             res.redirect("/stores/" + req.params.id);
         });
     });

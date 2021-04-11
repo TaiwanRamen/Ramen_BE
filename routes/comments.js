@@ -27,13 +27,13 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
     Store.findById(req.params.id).populate("reviews").exec((err, store) => {
         if (err) {
             console.log(err);
-            req.flash("error", "店家不存在")
+            req.flash("error_msg", "店家不存在")
             return res.redirect("/stores")
         }
 
         Comment.create(req.body.comment, (err, comment) => {
             if (err) {
-                req.flash("error", "創建留言時出現問題，請聯絡網站管理員mepowenlin@gmail.com");
+                req.flash("error_msg", "創建留言時出現問題，請聯絡網站管理員mepowenlin@gmail.com");
                 console.log(err);
                 return res.redirect("back");
             }
@@ -54,7 +54,7 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
             //save comment in the store
             store.save()
             console.log(comment)
-            req.flash("success", "留言成功");
+            req.flash("success_msg", "留言成功");
             res.redirect('/stores/' + store._id);
         })
 
@@ -69,7 +69,7 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => 
     //first check the id is valid, then check the comment_id is valid.
     Store.findById(req.params.id, (err, foundStore) => {
         if (err || !foundStore) {
-            req.flash("error", "店家不存在");
+            req.flash("error_msg", "店家不存在");
             return res.redirect("back");
         }
         Comment.findById(req.params.comment_id, (err, foundComment) => {
@@ -90,17 +90,17 @@ router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
     Comment.findByIdAndUpdate(req.params.comment_id, data, (err, updatedComment) => {
         if (err) {
             console.log(err)
-            req.flash("error", "更新留言時出現問題，請聯絡網站管理員mepowenlin@gmail.com");
+            req.flash("error_msg", "更新留言時出現問題，請聯絡網站管理員mepowenlin@gmail.com");
             return res.redirect("back");
         }
         Store.findById(req.params.id).populate("comments").exec(function(err, store) {
             if (err) {
                 console.log(err)
-                req.flash("error", "更新留言時出現問題，請聯絡網站管理員mepowenlin@gmail.com");
+                req.flash("error_msg", "更新留言時出現問題，請聯絡網站管理員mepowenlin@gmail.com");
                 return res.redirect("back");
             }
             store.save();
-            req.flash("success", "更新留言成功");
+            req.flash("success_msg", "更新留言成功");
             res.redirect('/stores/' + store._id);
         });
 
@@ -112,7 +112,7 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
         if (err) {
             res.redirect("back");
         } else {
-            req.flash("success", "留言已刪除");
+            req.flash("success_msg", "留言已刪除");
             res.redirect("/stores/" + req.params.id);
         }
     })

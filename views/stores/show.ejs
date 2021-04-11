@@ -105,7 +105,8 @@
                                 <!-- Admin編輯刪除 -->
                                 <div>
                                     <div class="btn-group dropleft">
-                                        <%  if (currentUser && currentUser.isAdmin){ %>
+                                        <%  if (currentUser && currentUser.userRole === 0 ||
+                                                (currentUser.userRole === 1 && currentUser.hasStore.includes(store._id))){ %>
                                         <button type="button" class="btn btn-light " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                         </button>

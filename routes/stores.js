@@ -7,7 +7,8 @@ const express = require('express'),
     Review = require("../models/review"),
     Comment = require("../models/comment"),
     geocoder = require('../utils/here-geocode'),
-    uploadImageUrl = require('../utils/imgur-upload');
+    uploadImageUrl = require('../utils/imgur-upload'),
+    log = require('../modules/logger');
 
 //set filename to multer 
 const storage = multer.diskStorage({
@@ -56,7 +57,7 @@ router.get('/', async (req, res) => {
             }).exec()
 
             if (allStores.length < 1) {
-                req.flash("error", "找不到店家");
+                req.flash("error_msg", "找不到店家");
                 return res.redirect("back");
             }
             res.render("stores/index", {
@@ -180,7 +181,7 @@ router.get('/:id', (req, res) => {
         }
     }).exec(function(err, foundStore) {
         if (err || !foundStore) {
-            req.flash("error", "店家不存在");
+            req.flash("error_msg", "店家不存在");
             return res.redirect("/stores");
             //console.log(err);
         } else {
@@ -195,18 +196,14 @@ router.get('/:id', (req, res) => {
 });
 
 //EDIT Store
-router.get('/:id/edit', middleware.checkStoreOwnership, (req, res) => {
+router.get('/:id/edit', middleware.checkStoreOwnership, async (req, res) => {
     //if user logged in?
-    Store.findById(req.params.id, (err, foundStore) => {
-        if (err) {
-            req.flash("error", "Store doesn't exist.");
-        } else {
-            res.render("stores/edit", {
-                store: foundStore
-            })
-        }
-    })
-
+    try {
+        let store = await Store.findById(req.params.id);
+        res.render("stores/edit", {store})
+    } catch (error) {
+        log.error("store doesn't exist");
+    }
 })
 // UPDATE 
 router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async (req, res) => {
@@ -218,7 +215,7 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
             req.body.store.imageSmall = [imgurURL];
         }
         let data = req.body.store; //在ejs裡面包好了store[name, image, author]
-        console.log(data)
+        log.info("updated store:", data);
         //find and update
         await Store.findByIdAndUpdate(req.params.id, data);
         //讓我的follower 知道你更新了
@@ -236,7 +233,7 @@ router.put('/:id', middleware.checkStoreOwnership, upload.single('image'), async
         res.redirect("/stores/" + req.params.id);
 
     } catch (error) {
-        console.log(error);
+        log.error(error);
         req.flash('error_msg', error.message);
         return res.redirect('back');
     }
@@ -257,7 +254,7 @@ router.delete('/:id', middleware.checkStoreOwnership, async (req, res) => {
             }
         })
         store.remove();
-        req.flash("success", "Store deleted successfully!");
+        req.flash("success_msg", "Store deleted successfully!");
         res.redirect("/stores");
 
     } catch (error) {

@@ -19,7 +19,8 @@ const express = require('express'),
     cookieParser = require('cookie-parser'),
     morgan = require('morgan'),
     accessLogStream = require('./modules/accesslog-stream'),
-    errorhandler = require('errorhandler');
+    errorhandler = require('errorhandler'),
+    response = require('./modules/response-message');
 
 const app = express();
 app.use(morgan(':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', { stream: accessLogStream }))
@@ -99,13 +100,11 @@ app.use(async (req, res, next) => {
             let user = await User.findById(req.user._id).populate('notifications', null, { isRead: false }).exec();
             res.locals.notifications = user.notifications.reverse();
         } catch (error) {
-            console.log(error.message);
+            log.error(error.message);
         }
     }
-    //res.locals.error = req.flash('error');
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
-    res.locals.error = req.flash('error'); //msg from passport.js will put error in req.flash('error)
     next();
 })
 
@@ -116,7 +115,9 @@ app.locals.moment = moment;
 const limiter = rateLimit({
     windowMs: config.RATE_LIMIT_WINDOW,
     max: config.RATE_LIMIT, // 限制請求數量
-    message: 'Too many requests, please try again later!'
+    handler: (req, res) => {
+        response.tooManyRequests(res, "Too many request! Please try again later.")
+    },
 })
 app.use(limiter)
 

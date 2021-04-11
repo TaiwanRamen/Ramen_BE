@@ -64,10 +64,15 @@ const storeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
+    owners:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     tags: [{
         type: String
     }],
-    stillOpen: Boolean
+    stillOpen: Boolean,
+    openAt:String,
 }, {
     // if timestamps are set to true, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
     timestamps: true

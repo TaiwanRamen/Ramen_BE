@@ -4,11 +4,38 @@ const Comment = require('../models/comment');
 const User = require('../models/user');
 const Review = require("../models/review");
 const userRole = require("../enums/user-role");
+const log = require('../modules/logger');
+const response = require('../modules/response-message');
 
 
 const middlewareObj = {}
 
-middlewareObj.checkCommentOwnership = function(req, res, next) {
+middlewareObj.checkCommentOwnership = async (req, res, next) => {
+    try {
+        if (req.isAuthenticated()) {
+            let foundComment = await Comment.findById(req.params.comment_id);
+            if (!foundComment) {
+                req.flash("error_msg", "留言不存在");
+                res.redirect("back");
+            } else {
+                if (foundComment.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    req.flash("error_msg", "您並沒有權限執行此操作。如果您認為這是個錯誤，請聯絡網站管理員mepowenlin@gmail.com");
+                    res.redirect("back")
+                }
+            }
+        }
+    } catch (error) {
+        log.error(error);
+        req.flash("error_msg")
+        res.redirect("back"); //send to where the user originally from.
+    }
+
+
+
+
+
     if (req.isAuthenticated()) {
 
         Comment.findById(req.params.comment_id, (err, foundComment) => {
@@ -93,23 +120,24 @@ middlewareObj.checkUserOwnership = async (req, res, next) => {
 
 
 
-middlewareObj.checkReviewOwnership = function(req, res, next) {
-    if (req.isAuthenticated()) {
-        Review.findById(req.params.review_id, function(err, foundReview) {
-            if (err || !foundReview) {
-                res.redirect("back");
+middlewareObj.checkReviewOwnership = async (req, res, next) => {
+    try {
+        if (req.isAuthenticated()) {
+            let foundReview = await Review.findById(req.params.review_id);
+            if (!foundReview) res.redirect("back");
+
+            if (foundReview.author.id.equals(req.user._id)) {
+                next();
             } else {
-                // does user own the comment?
-                if (foundReview.author.id.equals(req.user._id)) {
-                    next();
-                } else {
-                    req.flash("error", "您並沒有權限執行此操作。如果您認為這是個錯誤，請聯絡網站管理員mepowenlin@gmail.com");
-                    res.redirect("back");
-                }
+                req.flash("error_msg", "您並沒有權限執行此操作。如果您認為這是個錯誤，請聯絡網站管理員mepowenlin@gmail.com");
+                res.redirect("back");
             }
-        });
-    } else {
-        req.flash("error", "使用者必須登入才能檢視內容");
+        } else {
+            req.flash("error_msg", "使用者必須登入才能檢視內容");
+            res.redirect("back");
+        }
+    } catch (error) {
+        log.error(error);
         res.redirect("back");
     }
 };
@@ -118,7 +146,7 @@ middlewareObj.checkReviewExistence = function(req, res, next) {
     if (req.isAuthenticated()) {
         Store.findById(req.params.id).populate("reviews").exec(function(err, foundStore) {
             if (err || !foundStore) {
-                req.flash("error", "店家不存在");
+                req.flash("error_msg", "店家不存在");
                 res.redirect("back");
             } else {
                 // check if req.user._id exists in foundStore.reviews
@@ -126,7 +154,7 @@ middlewareObj.checkReviewExistence = function(req, res, next) {
                     return review.author.id.equals(req.user._id);
                 });
                 if (foundUserReview) {
-                    req.flash("error", "您已經填寫過評論了");
+                    req.flash("error_msg", "您已經填寫過評論了");
                     return res.redirect("/stores/" + foundStore._id);
                 }
                 // if the review was not found, go to the next middleware
@@ -134,7 +162,7 @@ middlewareObj.checkReviewExistence = function(req, res, next) {
             }
         });
     } else {
-        req.flash("error", "使用者必須登入才能檢視內容");
+        req.flash("error_msg", "使用者必須登入才能檢視內容");
         res.redirect("back");
     }
 };
@@ -146,4 +174,14 @@ middlewareObj.isLoggedIn = function(req, res, next) {
     req.flash("error_msg", "使用者必須登入才能檢視內容");
     res.redirect("/");
 }
+
+middlewareObj.isAdmin = async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        if (req.user.userRole !== 0) response.unAuthorized(res, "使用者非管理員，無法進行此操作！")
+        next();
+    } else {
+        response.unAuthorized(res, "使用者必須登入才能檢視內容")
+    }
+}
+
 module.exports = middlewareObj;

@@ -358,7 +358,7 @@ router.get("/:id", middleware.checkUserOwnership, async (req, res) => {
         res.render("users/show", { user })
 
     } catch (error) {
-        req.flash("error", message.USER_NOT_FOUND);
+        req.flash("error_msg", message.USER_NOT_FOUND);
         res.redirect('/users/register')
     }
 });
@@ -372,7 +372,7 @@ router.get('/:id/edit', middleware.checkUserOwnership, async (req, res) => {
         res.render("users/edit", { user })
 
     } catch (error) {
-        req.flash("error", message.USER_NOT_FOUND);
+        req.flash("error_msg", message.USER_NOT_FOUND);
         res.redirect('/users/register')
     }
 })
