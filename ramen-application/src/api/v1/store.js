@@ -28,7 +28,7 @@ let upload = multer({
     fileFilter: imageFilter
 })
 
-
+//========  /api/vi/stores
 router.get('/', async (req, res) => {
     try {
         let perPage = 9;

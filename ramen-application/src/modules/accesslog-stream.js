@@ -13,7 +13,7 @@ const rfs = require("rotating-file-stream");
 const path = require('path');
 const stream = rfs.createStream(generator, {
     interval: "1h",
-    path: path.join(__dirname, '../logs'),
+    path: path.join(__dirname, '../../logs'),
     compress: (source, dest) => "cat " + source + " | gzip -c9 > " + dest
 });
 

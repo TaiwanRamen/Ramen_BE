@@ -1,8 +1,8 @@
 node_modules/
-safe-zone/
+src/safe-zone/
 SSL/
 data/
 databases/
-logs/
+src/logs/
 .env
 userData

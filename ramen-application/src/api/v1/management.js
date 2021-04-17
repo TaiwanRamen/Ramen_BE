@@ -6,7 +6,7 @@ const express = require('express'),
     passport = require('passport'),
     passportJWT = passport.authenticate('jwt', { session: false }),
     dataValidation = require('../../middleware/data-validation'),
-    middleware = require('../../middleware/index'),
+    middleware = require('../../middleware'),
     { startSession } = require('mongoose'),
     response = require('../../modules/response-message');
 

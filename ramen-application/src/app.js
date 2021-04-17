@@ -20,9 +20,14 @@ const express = require('express'),
     morgan = require('morgan'),
     accessLogStream = require('./modules/accesslog-stream'),
     errorhandler = require('errorhandler'),
-    response = require('./modules/response-message');
+    response = require('./modules/response-message'),
+    promBundle = require("express-prom-bundle"),
+    metricsMiddleware = promBundle({includeMethod: true});
+
+
 
 const app = express();
+app.use(metricsMiddleware);
 app.use(morgan(':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', { stream: accessLogStream }))
 app.use(cors());
 app.use(cookieParser());
@@ -62,6 +67,8 @@ app.use(bodyParser.urlencoded({
 app.use(express.json());
 app.use(express.static("public")); //去public找東西
 app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+
 
 //error handler
 if (!isProduction) {
@@ -123,7 +130,7 @@ app.use(limiter)
 
 //Routes
 //pertain the route from the index
-app.use('/', require('./routes/index'));
+app.use('/', require('./routes'));
 app.use('/api/v1', require('./api/v1/api-router'));
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
@@ -136,7 +143,7 @@ app.get('/:else', (req, res) => {
 })
 
 //handle http server and socket io
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 const server = app.listen(PORT, log.info(`Server started on port ${PORT}`));
 const io = socket(server);
