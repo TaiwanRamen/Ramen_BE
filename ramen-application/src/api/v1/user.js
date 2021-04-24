@@ -29,11 +29,9 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
         else if(req.user) {
             // Generate token
             const token = await signToken(req.user);
-            res.cookie('access_token', token, {
-                httpOnly: true
-            });
-            res.status(200).json({ success: true });
+            res.status(200).json({ success: true, user: req.user, token});
         } else {
+            console.log('401');
             res.status(401).json({
                 success: false,
                 message: 'Auth failed'

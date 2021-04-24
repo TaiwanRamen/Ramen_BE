@@ -29,7 +29,12 @@ const express = require('express'),
 const app = express();
 app.use(metricsMiddleware);
 app.use(morgan(':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', { stream: accessLogStream }))
-app.use(cors());
+const corsOptions ={
+    origin:process.env.FE_DOMAIN,
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public')) ;//dirname是你現在script跑的位置。
 app.use(helmet({ contentSecurityPolicy: isProduction ? undefined : false }));
