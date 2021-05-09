@@ -6,4 +6,5 @@ databases/
 src/logs/
 .env
 userData
+
 logs/

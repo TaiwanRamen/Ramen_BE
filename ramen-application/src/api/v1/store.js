@@ -1,35 +1,14 @@
+//========  /api/vi/stores
+
 const express = require('express'),
     router = express.Router(),
     Store = require('../../models/store'),
-    Notifications = require('../../models/notification'),
-    middleware = require('../../middleware'), //will automaticlly include index.js
-    multer = require('multer'),
-    Review = require("../../models/review"),
-    Comment = require("../../models/comment"),
-    geocoder = require('../../utils/here-geocode'),
-    uploadImageUrl = require('../../utils/imgur-upload');
+    passport = require('passport'),
+    passportJWT = passport.authenticate('jwt', { session: false }),
+    response = require('../../modules/response-message');
 
-//set filename to multer
-const storage = multer.diskStorage({
-    filename: function(req, file, callback) {
-        callback(null, Date.now() + file.originalname);
-    }
-});
-//only allow jpeg, jpeg, png, gif to be uploaded
-let imageFilter = function(req, file, cb) {
-    // accept image files only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        return cb(new Error('Only image files are allowed!'), false);
-    }
-    cb(null, true);
-};
-let upload = multer({
-    storage: storage,
-    fileFilter: imageFilter
-})
 
-//========  /api/vi/stores
-router.get('/', async (req, res) => {
+router.get('/', passportJWT, async (req, res) => {
     try {
         let perPage = 9;
         let pageQuery = parseInt(req.query.page);
@@ -56,10 +35,7 @@ router.get('/', async (req, res) => {
                 ],
             }).exec()
 
-            if (allStores.length < 1) {
-                return res.status(404).send("找不到店家");
-            }
-            res.status(200).send({
+            return response.success(res, {
                 stores: allStores,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
@@ -71,8 +47,7 @@ router.get('/', async (req, res) => {
             const allStores = await Store.find().collation({ locale: 'zh@collation=zhuyin' })
                 .sort({ rating: -1, city: 1 }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();;
             const count = await Store.countDocuments().exec();
-
-            res.status(200).send({
+            return response.success(res,{
                 mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
                 stores: allStores,
                 current: pageNumber,
@@ -81,55 +56,41 @@ router.get('/', async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).send("internal server error");
+        return response.internalServerError(res, error.message);
         console.log(error)
     }
 });
 
-//Create == add new store to DB
-//you can upload the image
-router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res) => {
-    //req.file comming from multer, default store image in temp
-    console.log(req.file.path);
+//get store
+router.get('/:id',  async (req, res) => {
     try {
-        //add location to store
-        if (Math.abs(parseFloat(req.body.longitude)) > 180 || Math.abs(parseFloat(req.body.latitude)) > 90) {
-            throw new Error('Location coordination out of range.')
+        // let foundStore = await Store.findById(req.params.id).populate("comments").populate({
+        //     path: "reviews",
+        //     options: {
+        //         sort: {
+        //             createdAt: -1
+        //         }
+        //     }
+        // });
+        let foundStore = await Store.findById(req.params.id);
+        if (!foundStore) {
+            return response.notFound(res, "找不到店家");
         }
-
-        let foundStore = Store.findOne({'name': req.body.store.name});
-        if(!!foundStore) throw new Error(`店家名稱 ${req.body.store.name} 已存在`);
-
-        let imgurURL = await uploadImageUrl(req.file.path);
-        req.body.store.imageSmall = [imgurURL];
-
-        // add author to store
-        req.body.store.author = {
-            id: req.user._id,
-            username: req.user.fbName
+        let isStoreOwner = false;
+        if (req.user && req.user.hasStore.includes(req.params.id)) {
+            isStoreOwner = true;
         }
-
-
-        let locObj = await geocoder(req.body.store.address); //from geocoder here
-        req.body.store.address = locObj.address;
-        req.body.store.city = locObj.city;
-        req.body.store.location = {
-            type: 'Point',
-            coordinates: [locObj.longitude, locObj.latitude]
-        }
-        //console.log(req.body.store)
-        //塞到db裡面
-        let store = await Store.create(req.body.store);
-
-        res.redirect('/stores/' + store.id);
-
+        return response.success(res, {
+            mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
+            store: foundStore,
+            isStoreOwner: isStoreOwner
+        })
+        
     } catch (error) {
-        console.log(error);
-        req.flash('error_msg', error.message);
-        return res.redirect('back');
-    }
+        return response.internalServerError(res, error.message);
+        console.log(error)
+    };
 });
-
 
 
 

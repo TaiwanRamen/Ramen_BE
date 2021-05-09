@@ -5,8 +5,10 @@ const express = require('express'),
     passport = require('passport'),
     JWT = require('jsonwebtoken'),
     config = require('../../config/golbal-config'),
-    passportJWT = passport.authenticate('jwt', { session: false }),
-    axios = require('axios');
+    passportJWT = passport.authenticate('jwt', { session: true }),
+    axios = require('axios'),
+    response = require('../../modules/response-message');
+
 
 signToken = async (user) => {
     return await JWT.sign({
@@ -20,36 +22,59 @@ signToken = async (user) => {
 router.post('/oauth/facebook', passport.authenticate('facebookToken'),
     async (req, res) => {
         if(req.user.err){
-            res.status(401).json({
-                success: false,
-                message: 'Auth failed',
-                error: req.user.err
-            })
+            response.unAuthorized(res, req.user.err.message);
         }
         else if(req.user) {
             // Generate token
             const token = await signToken(req.user);
-            res.status(200).json({ success: true, user: req.user, token});
+            response.success(res, { user: req.user, token })
         } else {
-            console.log('401');
-            res.status(401).json({
-                success: false,
-                message: 'Auth failed'
-            })
+            response.unAuthorized(res, "臉書登入失敗");
         }
     }, (error, req, res, next) => {
         if(error) {
-            res.status(400).json({success: false, message: 'Auth failed', error})
+            response.badRequest(res, error);
         }
     }
 )
 
-router.get('/profile', passportJWT,
+router.get('/userInfo', passportJWT,
     async (req, res, next) => {
         if(req.user){
             let {password, __v, ...user } = req.user._doc; //remove password and other sensitive info from user object
-            res.status(200).send(user);
+            response.success(res, user);
         }
+        response.notFound(res, "找不到使用者");
+    });
+
+router.get('/unReadNotificationCount', passportJWT,
+    async (req, res, next) => {
+        if(req.user){
+            let notificationsCount = 0;
+            let user = await User.findById(req.user._id).populate({
+                path: 'notifications',
+                options: { sort: { "createdAt": -1 } }
+            }).exec();
+            let userNotifications = user.notifications;
+            userNotifications = userNotifications.filter(notification => notification.isRead !== true);
+            response.success(res, userNotifications.length);
+        }
+        else {
+            response.notFound(res, "找不到使用者");
+        }
+    });
+
+
+router.get('/notifications', passportJWT,
+    async (req, res, next) => {
+        if(req.user){
+            let user = await User.findById(req.user._id).populate({
+                path: 'notifications',
+                options: { sort: { "createdAt": -1 } }
+            }).exec();
+            response.success(res, user.notifications.count);
+        }
+        response.notFound(res, "找不到使用者");
     });
 
 router.get('/isUserInRamenGroup', passport.authenticate('facebookToken', { session: false }),
@@ -72,8 +97,7 @@ router.get('/isUserInRamenGroup', passport.authenticate('facebookToken', { sessi
             log.error(err.message);
             isUserInGroup = true;
         }
-
-        res.status(200).send({isUserInGroup});
+        response.success(res, {isUserInGroup});
     });
 
 module.exports = router

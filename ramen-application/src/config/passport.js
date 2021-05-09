@@ -65,7 +65,6 @@ module.exports = (passport) => {
 
     const jwtAuthUser = async (req, payload, done) => {
         try {
-            console.log("payload:", payload)
             let user = await User.findById(payload.sub);
             if (!user) {
                 return done(null, false);
@@ -96,7 +95,6 @@ module.exports = (passport) => {
         if (req && req.cookies) {
             token = req.cookies['access_token'];
         }
-        console.log('have cookies :', token)
         return token;
     }
 
