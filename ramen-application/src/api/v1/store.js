@@ -3,6 +3,7 @@
 const express = require('express'),
     router = express.Router(),
     Store = require('../../models/store'),
+    User = require('../../models/user'),
     passport = require('passport'),
     passportJWT = passport.authenticate('jwt', { session: false }),
     response = require('../../modules/response-message');
@@ -92,6 +93,56 @@ router.get('/:id',  async (req, res) => {
     };
 });
 
+router.put('/:id/follow',  passportJWT, async (req, res) => {
+    let storeId = req.params.id;
+    let userId = req.user._id;
+    let store = await Store.findById(storeId);
+    try {
+        store.followers.push(userId);
+        await store.save();
+        let user = await User.findById(userId);
+        user.followedStore.push(storeId);
+        await user.save();
+        console.log('成功追蹤' + store.name);
+        response.success(res, "success following: " + storeId );
+        // req.flash('success_msg', '成功追蹤' + store.name);
+    } catch (error) {
+        console.log('無法追蹤' + store.name);
+        response.internalServerError(res, "cannot follow: " + storeId );
+        // req.flash('error_msg', '無法追蹤' + store.name);
+        // res.redirect(`/stores/${store._id}`);
+    }
+});
+
+router.put('/:id/unfollow', passportJWT, async (req, res) => {
+    let storeId = req.params.id;
+    let userId = req.user._id;
+    let store = await Store.findById(storeId);
+    try {
+        let storeIndex = store.followers.indexOf(userId);
+        if (storeIndex > -1) {
+            store.followers.splice(storeIndex, 1);
+            await store.save();
+            // console.log('成功取消追蹤' + store.name);
+            // req.followerslash('success_msg', '成功取消追蹤' + store.name);
+        }
+        let user = await User.findById(userId);
+        let userIndex = user.followedStore.indexOf(storeId);
+        if (userIndex > -1) {
+            user.followedStore.splice(userIndex, 1);
+            await store.save();
+        }
+        console.log('成功取消追蹤' + store.name);
+        response.success(res,"success unfollowing: " + storeId );
+
+    } catch (error) {
+        console.log('無法取消追蹤' + store.name)
+
+        req.flash('error_msg', '無法取消追蹤' + store.name);
+        response.internalServerError(res, "cannot unfollow: " + storeId );
+        // res.redirect(`/stores/${store._id}`);
+    }
+})
 
 
 function escapeRegex(text) {
