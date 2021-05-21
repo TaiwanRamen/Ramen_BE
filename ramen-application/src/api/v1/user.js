@@ -10,7 +10,7 @@ const express = require('express'),
     response = require('../../modules/response-message');
 
 
-signToken = async (user) => {
+const signToken = async (user) => {
     return await JWT.sign({
         iss: 'Taiwan Ramen-Club',
         sub: user._id,
@@ -77,15 +77,39 @@ router.get('/notifications', passportJWT,
         }
     });
 
-router.get('/followedStore', passportJWT,
-    async (req, res, next) => {
+router.get('/followedStore', passportJWT, async (req, res, next) => {
+
+    try {
+        let perPage = 9;
+        let pageQuery = parseInt(req.query.page);
+        let pageNumber = pageQuery ? pageQuery : 1;
+
         if (req.user) {
-            let user = await User.findById(req.user._id);
-            response.success(res, user.followedStore);
+            let user = await User.findById(req.user._id).populate({
+                path: 'followedStore',
+                options: {
+                    sort: { created: -1},
+                    skip: (perPage * pageNumber) - perPage,
+                    limit: perPage
+                }
+            }).exec();
+
+            const count = req.user.followedStore.length;
+
+            return response.success(res, {
+                stores: user.followedStore,
+                current: pageNumber,
+                pages: Math.ceil(count / perPage),
+            });
         } else {
-            response.notFound(res, "找不到使用者");
+            return response.notFound(res, "找不到使用者");
         }
-    });
+
+    } catch (error) {
+        return response.internalServerError(res, error.message);
+        console.log(error)
+    }
+});
 
 router.get('/isUserInRamenGroup', passport.authenticate('facebookToken', {session: false}),
     async (req, res) => {

@@ -5,7 +5,7 @@ const express = require('express'),
     Store = require('../../models/store'),
     User = require('../../models/user'),
     passport = require('passport'),
-    passportJWT = passport.authenticate('jwt', { session: false }),
+    passportJWT = passport.authenticate('jwt', {session: false}),
     response = require('../../modules/response-message');
 
 
@@ -21,18 +21,18 @@ router.get('/', passportJWT, async (req, res) => {
             //search from all the fields included in $or
             const allStores = await Store.find({
                 $or: [
-                    { name: regex },
-                    { city: regex },
-                    { descriptionText: regex },
+                    {name: regex},
+                    {city: regex},
+                    {descriptionText: regex},
                 ],
-            }).collation({ locale: 'zh@collation=zhuyin' })
-                .sort({ rating: -1, city: 1 })
+            }).collation({locale: 'zh@collation=zhuyin'})
+                .sort({rating: -1, city: 1})
                 .skip((perPage * pageNumber) - perPage).limit(perPage).exec();
             const count = await Store.countDocuments({
                 $or: [
-                    { name: regex },
-                    { city: regex },
-                    { descriptionText: regex },
+                    {name: regex},
+                    {city: regex},
+                    {descriptionText: regex},
                 ],
             }).exec()
 
@@ -45,10 +45,11 @@ router.get('/', passportJWT, async (req, res) => {
 
         } else {
             //get all stores from DB
-            const allStores = await Store.find().collation({ locale: 'zh@collation=zhuyin' })
-                .sort({ rating: -1, city: 1 }).skip((perPage * pageNumber) - perPage).limit(perPage).exec();;
+            const allStores = await Store.find().collation({locale: 'zh@collation=zhuyin'})
+                .sort({rating: -1, city: 1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
+            ;
             const count = await Store.countDocuments().exec();
-            return response.success(res,{
+            return response.success(res, {
                 mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
                 stores: allStores,
                 current: pageNumber,
@@ -63,7 +64,7 @@ router.get('/', passportJWT, async (req, res) => {
 });
 
 //get store
-router.get('/:id',  async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         // let foundStore = await Store.findById(req.params.id).populate("comments").populate({
         //     path: "reviews",
@@ -86,31 +87,35 @@ router.get('/:id',  async (req, res) => {
             store: foundStore,
             isStoreOwner: isStoreOwner
         })
-        
+
     } catch (error) {
         return response.internalServerError(res, error.message);
         console.log(error)
-    };
+    }
+    ;
 });
 
-router.put('/:id/follow',  passportJWT, async (req, res) => {
+router.put('/:id/follow', passportJWT, async (req, res) => {
     let storeId = req.params.id;
     let userId = req.user._id;
     let store = await Store.findById(storeId);
+    let user = await User.findById(userId);
     try {
+        let storeIndex = store.followers.indexOf(userId);
+        let userIndex = user.followedStore.indexOf(storeId);
+        if (storeIndex > -1 || userIndex > -1) {
+            throw new Error("user already follow store");
+        }
         store.followers.push(userId);
         await store.save();
-        let user = await User.findById(userId);
         user.followedStore.push(storeId);
         await user.save();
         console.log('成功追蹤' + store.name);
-        response.success(res, "success following: " + storeId );
+        response.success(res, "success following: " + storeId);
         // req.flash('success_msg', '成功追蹤' + store.name);
     } catch (error) {
-        console.log('無法追蹤' + store.name);
-        response.internalServerError(res, "cannot follow: " + storeId );
-        // req.flash('error_msg', '無法追蹤' + store.name);
-        // res.redirect(`/stores/${store._id}`);
+        console.log('無法追蹤' + store.name, error);
+        response.internalServerError(res, `cannot follow ${storeId},  ${error.message}`);
     }
 });
 
@@ -120,27 +125,25 @@ router.put('/:id/unfollow', passportJWT, async (req, res) => {
     let store = await Store.findById(storeId);
     try {
         let storeIndex = store.followers.indexOf(userId);
+        console.log(storeIndex);
         if (storeIndex > -1) {
             store.followers.splice(storeIndex, 1);
             await store.save();
-            // console.log('成功取消追蹤' + store.name);
-            // req.followerslash('success_msg', '成功取消追蹤' + store.name);
         }
         let user = await User.findById(userId);
         let userIndex = user.followedStore.indexOf(storeId);
+        console.log(userIndex);
+
         if (userIndex > -1) {
             user.followedStore.splice(userIndex, 1);
-            await store.save();
+            await user.save();
         }
         console.log('成功取消追蹤' + store.name);
-        response.success(res,"success unfollowing: " + storeId );
+        response.success(res, "success unfollowing: " + storeId);
 
     } catch (error) {
         console.log('無法取消追蹤' + store.name)
-
-        req.flash('error_msg', '無法取消追蹤' + store.name);
-        response.internalServerError(res, "cannot unfollow: " + storeId );
-        // res.redirect(`/stores/${store._id}`);
+        response.internalServerError(res, "cannot unfollow: " + storeId);
     }
 })
 
@@ -148,7 +151,6 @@ router.put('/:id/unfollow', passportJWT, async (req, res) => {
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
 }
-
 
 
 module.exports = router
