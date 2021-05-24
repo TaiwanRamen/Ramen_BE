@@ -13,16 +13,13 @@ const express = require('express'),
     middleware = require('../../middleware');
 
 router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
-    try {
-        let foundStore = await Store.findById(req.params.storeId).populate({
-            path: "comments",
-            options: {sort: {createdAt: -1}}
-        });
-        if (!foundStore) return response.notFound(res, "店家不存在");
-        return response.success(res, foundStore.comments);
-    } catch (e) {
-        response.internalServerError(res, e.message);
-    }
+    let foundStore = await Store.findById(req.params.storeId).populate({
+        path: "comments",
+        options: {sort: {createdAt: -1}}
+    });
+    response.success(res, foundStore.comments);
+
+
 });
 
 module.exports = router

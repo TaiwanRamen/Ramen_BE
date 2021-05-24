@@ -178,17 +178,17 @@ router.delete('/:storeId', middleware.jwtAuth, middleware.isStoreOwner,
             let store = await Store.findById(storeId);
             if (!store) response.notFound(res, "店家不存在");
 
-            await Comment.remove({
+            await Comment.deleteMany({
                 "_id": {
                     $in: store.comments
                 }
             });
-            await Review.remove({
+            await Review.deleteMany({
                 "_id": {
                     $in: store.reviews
                 }
             })
-            await store.remove();
+            await store.deleteOne();
             await session.commitTransaction()
             session.endSession()
             response.success(res);
