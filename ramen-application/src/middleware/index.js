@@ -6,7 +6,7 @@ const Review = require("../models/review");
 const userRole = require("../enums/user-role");
 const log = require('../modules/logger');
 const response = require('../modules/response-message');
-
+passport = require('passport');
 
 const middlewareObj = {}
 
@@ -31,9 +31,6 @@ middlewareObj.checkCommentOwnership = async (req, res, next) => {
         req.flash("error_msg")
         res.redirect("back"); //send to where the user originally from.
     }
-
-
-
 
 
     if (req.isAuthenticated()) {
@@ -63,20 +60,15 @@ middlewareObj.checkCommentOwnership = async (req, res, next) => {
 }
 
 
-middlewareObj.checkStoreOwnership = async function(req, res, next) {
+middlewareObj.checkStoreOwnership = async function (req, res, next) {
     if (req.isAuthenticated()) {
         let foundUser = await User.findById(req.user._id);
 
-        await Store.findById(req.params.id, (err, foundStore) => {
+        const foundStore = await Store.findById(req.params.id, (err, foundStore) => {
             if (err || !foundStore) {
                 req.flash("error_msg", "店家不存在");
                 res.redirect("back");
             } else {
-                //if logged in, is he owned the store
-                //foundStore.autho.id is a mongoose object
-                //req.user._id is a string
-                //even if they looks the same, they are essentially different,
-                // so we have to use mongoose method .equals()
                 if (foundUser.userRole == userRole.ADMIN || (foundUser.userRole == userRole.STORE_OWNER && foundStore.author.id.equals(req.user._id))) {
                     next();
                 } else {
@@ -119,7 +111,6 @@ middlewareObj.checkUserOwnership = async (req, res, next) => {
 };
 
 
-
 middlewareObj.checkReviewOwnership = async (req, res, next) => {
     try {
         if (req.isAuthenticated()) {
@@ -142,15 +133,15 @@ middlewareObj.checkReviewOwnership = async (req, res, next) => {
     }
 };
 
-middlewareObj.checkReviewExistence = function(req, res, next) {
+middlewareObj.checkReviewExistence = function (req, res, next) {
     if (req.isAuthenticated()) {
-        Store.findById(req.params.id).populate("reviews").exec(function(err, foundStore) {
+        Store.findById(req.params.id).populate("reviews").exec(function (err, foundStore) {
             if (err || !foundStore) {
                 req.flash("error_msg", "店家不存在");
                 res.redirect("back");
             } else {
                 // check if req.user._id exists in foundStore.reviews
-                var foundUserReview = foundStore.reviews.some(function(review) {
+                var foundUserReview = foundStore.reviews.some(function (review) {
                     return review.author.id.equals(req.user._id);
                 });
                 if (foundUserReview) {
@@ -167,12 +158,23 @@ middlewareObj.checkReviewExistence = function(req, res, next) {
     }
 };
 
-middlewareObj.isLoggedIn = function(req, res, next) {
+
+middlewareObj.jwtAuth = async (req, res, next) => {
+    passport.authenticate('jwt',
+        {session: false, failWithError: true},
+        (err, user, info) => {
+            if (err) return next(err);
+            if (!user) response.unAuthorized(res, "使用者未登入或是登入超時")
+            req.user = user;
+            next();
+        })(req, res, next);
+}
+
+middlewareObj.isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
-        return next();
+
     }
-    req.flash("error_msg", "使用者必須登入才能檢視內容");
-    res.redirect("/");
+    response.unAuthorized(res, "使用者必須登入才能檢視內容");
 }
 
 middlewareObj.isAdmin = async (req, res, next) => {
@@ -183,5 +185,21 @@ middlewareObj.isAdmin = async (req, res, next) => {
         response.unAuthorized(res, "使用者必須登入才能檢視內容")
     }
 }
+
+
+middlewareObj.isStoreOwner = async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        let foundUser = await User.findById(req.user._id);
+        let foundStore = await Store.findById(req.params.id);
+        if (foundUser.userRole === userRole.ADMIN || (foundUser.userRole === userRole.STORE_OWNER && foundStore.owners.contains(req.user._id))) {
+            next();
+        } else {
+            response.unAuthorized(res, "使用者非店家管理者");
+        }
+    } else {
+        response.unAuthorized(res, "使用者必須登入才能檢視內容");
+    }
+};
+
 
 module.exports = middlewareObj;

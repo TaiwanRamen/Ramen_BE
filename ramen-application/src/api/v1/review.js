@@ -4,18 +4,16 @@ const express = require('express'),
     router = express.Router(),
     Store = require('../../models/store'),
     Notifications = require('../../models/notification'),
-    middleware = require('../../middleware'), //will automaticlly include index.js
+    middleware = require('../../middleware'),
     multer = require('multer'),
     Review = require("../../models/review"),
     Comment = require("../../models/comment"),
     geocoder = require('../../utils/here-geocode'),
     uploadImageUrl = require('../../utils/imgur-upload'),
-    passport = require('passport'),
-    passportJWT = passport.authenticate('jwt', { session: false }),
     response = require('../../modules/response-message');
 
 //get reviews from store id
-router.get('/:id', async (req, res) => {
+router.get('/:id', middleware.jwtAuth, async (req, res) => {
     try {
         let foundStore = await Store.findById(req.params.id).populate({
             path: "reviews",

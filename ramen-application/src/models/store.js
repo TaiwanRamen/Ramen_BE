@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const storeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Please add a store ID'], //error message
+        required: [true, 'Please add a store name'], //error message
         unique: true,
     },
     imageLarge: [{

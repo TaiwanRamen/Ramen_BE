@@ -4,12 +4,13 @@ const express = require('express'),
     router = express.Router(),
     Store = require('../../models/store'),
     User = require('../../models/user'),
-    passport = require('passport'),
-    passportJWT = passport.authenticate('jwt', {session: false}),
-    response = require('../../modules/response-message');
+    Comment = require('../../models/comment'),
+    Review = require("../../models/review"),
+    response = require('../../modules/response-message'),
+    middleware = require('../../middleware'),
+    {startSession} = require('mongoose');
 
-
-router.get('/', passportJWT, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let perPage = 9;
         let pageQuery = parseInt(req.query.page);
@@ -66,14 +67,6 @@ router.get('/', passportJWT, async (req, res) => {
 //get store
 router.get('/:id', async (req, res) => {
     try {
-        // let foundStore = await Store.findById(req.params.id).populate("comments").populate({
-        //     path: "reviews",
-        //     options: {
-        //         sort: {
-        //             createdAt: -1
-        //         }
-        //     }
-        // });
         let foundStore = await Store.findById(req.params.id);
         if (!foundStore) {
             return response.notFound(res, "找不到店家");
@@ -95,7 +88,7 @@ router.get('/:id', async (req, res) => {
     ;
 });
 
-router.put('/:id/follow', passportJWT, async (req, res) => {
+router.put('/:id/follow', middleware.jwtAuth, async (req, res) => {
     let storeId = req.params.id;
     let userId = req.user._id;
     let store = await Store.findById(storeId);
@@ -119,7 +112,7 @@ router.put('/:id/follow', passportJWT, async (req, res) => {
     }
 });
 
-router.put('/:id/unfollow', passportJWT, async (req, res) => {
+router.put('/:id/unfollow', middleware.jwtAuth, async (req, res) => {
     let storeId = req.params.id;
     let userId = req.user._id;
     let store = await Store.findById(storeId);
@@ -147,6 +140,65 @@ router.put('/:id/unfollow', passportJWT, async (req, res) => {
     }
 })
 
+router.put('/:id/unfollow', middleware.jwtAuth, async (req, res) => {
+    let storeId = req.params.id;
+    let userId = req.user._id;
+    let store = await Store.findById(storeId);
+    try {
+        let storeIndex = store.followers.indexOf(userId);
+        console.log(storeIndex);
+        if (storeIndex > -1) {
+            store.followers.splice(storeIndex, 1);
+            await store.save();
+        }
+        let user = await User.findById(userId);
+        let userIndex = user.followedStore.indexOf(storeId);
+        console.log(userIndex);
+
+        if (userIndex > -1) {
+            user.followedStore.splice(userIndex, 1);
+            await user.save();
+        }
+        console.log('成功取消追蹤' + store.name);
+        response.success(res, "success unfollowing: " + storeId);
+
+    } catch (error) {
+        console.log('無法取消追蹤' + store.name)
+        response.internalServerError(res, "cannot unfollow: " + storeId);
+    }
+})
+
+router.delete('/:storeId', middleware.jwtAuth, middleware.isStoreOwner,
+    async (req, res) => {
+        const session = await startSession();
+
+        try {
+            const storeId = req.params.storeId;
+            session.startTransaction();
+            let store = await Store.findById(storeId);
+            if (!store) response.notFound(res, "店家不存在");
+
+            await Comment.remove({
+                "_id": {
+                    $in: store.comments
+                }
+            });
+            await Review.remove({
+                "_id": {
+                    $in: store.reviews
+                }
+            })
+            await store.remove();
+            await session.commitTransaction()
+            session.endSession()
+            response.success(res);
+        } catch (error) {
+            session.endSession()
+            console.log(error)
+            response.internalServerError(res, error.message)
+        }
+
+    })
 
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")

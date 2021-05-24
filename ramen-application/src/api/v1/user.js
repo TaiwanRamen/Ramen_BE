@@ -5,8 +5,8 @@ const express = require('express'),
     passport = require('passport'),
     JWT = require('jsonwebtoken'),
     config = require('../../config/golbal-config'),
-    passportJWT = passport.authenticate('jwt', {session: true}),
     axios = require('axios'),
+    middleware = require('../../middleware'),
     response = require('../../modules/response-message');
 
 
@@ -26,6 +26,7 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
         } else if (req.user) {
             // Generate token
             const token = await signToken(req.user);
+            res.cookie('access_token', token, {maxAge: 900000, httpOnly: true});
             response.success(res, {user: req.user, token})
         } else {
             response.unAuthorized(res, "臉書登入失敗");
@@ -37,7 +38,7 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
     }
 )
 
-router.get('/userInfo', passportJWT,
+router.get('/userInfo', middleware.jwtAuth,
     async (req, res, next) => {
         if (req.user) {
             let {password, __v, ...user} = req.user._doc; //remove password and other sensitive info from user object
@@ -46,7 +47,7 @@ router.get('/userInfo', passportJWT,
         response.notFound(res, "找不到使用者");
     });
 
-router.get('/unReadNotificationCount', passportJWT,
+router.get('/unReadNotificationCount', middleware.jwtAuth,
     async (req, res, next) => {
         if (req.user) {
             let notificationsCount = 0;
@@ -63,7 +64,7 @@ router.get('/unReadNotificationCount', passportJWT,
     });
 
 
-router.get('/notifications', passportJWT,
+router.get('/notifications', middleware.jwtAuth,
     async (req, res, next) => {
         if (req.user) {
             let user = await User.findById(req.user._id).populate({
@@ -77,7 +78,7 @@ router.get('/notifications', passportJWT,
         }
     });
 
-router.get('/followedStore', passportJWT, async (req, res, next) => {
+router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
 
     try {
         let perPage = 9;
@@ -88,9 +89,8 @@ router.get('/followedStore', passportJWT, async (req, res, next) => {
             let user = await User.findById(req.user._id).populate({
                 path: 'followedStore',
                 options: {
-                    sort: { created: -1},
                     skip: (perPage * pageNumber) - perPage,
-                    limit: perPage
+                    limit: perPage,
                 }
             }).exec();
 
@@ -107,7 +107,6 @@ router.get('/followedStore', passportJWT, async (req, res, next) => {
 
     } catch (error) {
         return response.internalServerError(res, error.message);
-        console.log(error)
     }
 });
 

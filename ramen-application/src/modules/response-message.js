@@ -13,7 +13,7 @@ response.success = (res, data) => {
 response.unAuthorized = (res, error) => {
     res.status(StatusCodes.UNAUTHORIZED).json({
         code: ResponseCode.FAIL,
-        error: error
+        message: error
     })
 }
 
@@ -21,7 +21,7 @@ response.unAuthorized = (res, error) => {
 response.notFound = (res, error) => {
     res.status(StatusCodes.NOT_FOUND).json({
         code: ResponseCode.FAIL,
-        error: error
+        message: error
     })
 }
 
@@ -29,7 +29,7 @@ response.notFound = (res, error) => {
 response.conflicts = (res, error) => {
     res.status(StatusCodes.CONFLICT).json({
         code: ResponseCode.FAIL,
-        error: error
+        message: error
     })
 }
 
@@ -37,21 +37,21 @@ response.conflicts = (res, error) => {
 response.badRequest = (res, error) => {
     res.status(StatusCodes.BAD_REQUEST).json({
         code: ResponseCode.FAIL,
-        error: error
+        message: error
     })
 }
 
 response.tooManyRequests = (res, error) => {
     res.status(StatusCodes.TOO_MANY_REQUESTS).json({
         code: ResponseCode.FAIL,
-        error: error
+        message: error
     })
 }
 
 response.internalServerError = (res, error) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         code: ResponseCode.FAIL,
-        error: error
+        message: error
     })
 }
 

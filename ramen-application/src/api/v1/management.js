@@ -4,31 +4,32 @@ const express = require('express'),
     Store = require('../../models/store'),
     User = require('../../models/user'),
     passport = require('passport'),
-    passportJWT = passport.authenticate('jwt', { session: false }),
+    passportJWT = passport.authenticate('jwt', {session: false}),
     dataValidation = require('../../middleware/data-validation'),
     middleware = require('../../middleware'),
-    { startSession } = require('mongoose'),
+    {startSession} = require('mongoose'),
     response = require('../../modules/response-message');
 
 
-router.post('/registerStoreOwner', passportJWT, middleware.isAdmin ,dataValidation.registerOrRemoveStoreOwner,
+router.post('/registerStoreOwner', passportJWT, middleware.isAdmin, dataValidation.registerOrRemoveStoreOwner,
     async (req, res) => {
         const session = await startSession();
+
         try {
             session.startTransaction();
             console.log(req.body.storeId);
             console.log(req.body.storeOwnerId)
             let store = await Store.findById(req.body.storeId);
             let user = await User.findById(req.body.storeOwnerId);
-            if(!store || !user) response.notFound(res, "user or store not found");
+            if (!store) response.notFound(res, "找不到店家");
 
 
-            if(!store.owners.includes(req.body.storeOwnerId) && !user.hasStore.includes(req.body.storeId)){
+            if (!store.owners.includes(req.body.storeOwnerId) && !user.hasStore.includes(req.body.storeId)) {
                 store.owners.push(req.body.storeOwnerId);
                 user.hasStore.push(req.body.storeId);
 
             } else {
-                throw new Error("user already owns the store");
+                response.conflicts(res, "使用者已是店家管理員")
             }
 
             store.save();
@@ -45,7 +46,7 @@ router.post('/registerStoreOwner', passportJWT, middleware.isAdmin ,dataValidati
     }
 )
 
-router.delete('/removeStoreOwner', passportJWT, middleware.isAdmin ,dataValidation.registerOrRemoveStoreOwner,
+router.delete('/removeStoreOwner', passportJWT, middleware.isAdmin, dataValidation.registerOrRemoveStoreOwner,
     async (req, res) => {
         const session = await startSession();
         try {
@@ -55,7 +56,7 @@ router.delete('/removeStoreOwner', passportJWT, middleware.isAdmin ,dataValidati
             let store = await Store.findById(req.body.storeId);
             let user = await User.findById(req.body.storeOwnerId);
 
-            if(!store || !user) response.notFound(res, "user or store not found");
+            if (!store || !user) response.notFound(res, "user or store not found");
 
             let userHasStoreIndex = user.hasStore.indexOf(req.body.storeId);
             let storeOwnerIndex = store.owners.indexOf(req.body.storeOwnerId);
@@ -77,7 +78,6 @@ router.delete('/removeStoreOwner', passportJWT, middleware.isAdmin ,dataValidati
         }
     }
 )
-
 
 
 module.exports = router
