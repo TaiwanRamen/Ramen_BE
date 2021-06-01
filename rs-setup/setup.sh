@@ -2,7 +2,7 @@
 
 MONGODB1=mongo1
 MONGODB2=mongo2
-MONGODB2=mongo3
+MONGODB3=mongo3
 
 echo "Waiting for startup.."
 until curl http://${MONGODB1}:27017/serverStatus\?text\=1 2>&1 | grep uptime | head -1; do

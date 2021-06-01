@@ -18,7 +18,7 @@ services:
   mongo1:
     hostname: mongo1
     container_name: localmongo1
-    image: mongo
+    image: mongo:latest
     expose:
       - 27017
     ports:
@@ -45,7 +45,7 @@ services:
   mongo2:
     hostname: mongo2
     container_name: localmongo2
-    image: mongo
+    image: mongo:latest
     expose:
       - 27017
     ports:
@@ -72,7 +72,7 @@ services:
   mongo3:
     hostname: mongo3
     container_name: localmongo3
-    image: mongo
+    image: mongo:latest
     expose:
       - 27017
     ports:
@@ -101,18 +101,19 @@ services:
 
 
 
-#  mongo_seed:
-#    image: mongo:latest
-#    links:
-#      - mongo1
-#    volumes:
-#      - ./mongo-seed:/mongo-seed
-#    networks:
-#      default:
-#    command:
-#      bash -c "chmod +x /mongo-seed/restore.sh && /mongo-seed/restore.sh"
-#    depends_on:
-#      - mongo-setup
+  mongo_seed:
+    image: mongo:latest
+    links:
+      - mongo1
+    volumes:
+      - ./mongo-seed:/mongo-seed
+    networks:
+      default:
+    command:
+      bash -c "chmod +x /mongo-seed/restore.sh && /mongo-seed/restore.sh"
+    depends_on:
+      - mongo-setup
+
 #  redis:
 #    image: redis:5.0.4-alpine
 #    ports:
