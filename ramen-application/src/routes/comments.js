@@ -7,7 +7,7 @@ const Comment = require('../models/comment');
 const middleware = require('../middleware') //will automaticlly include index.js
 
 //comment create
-router.get('/new', middleware.isLoggedIn, (req, res) => {
+router.get('/new', (req, res) => {
     //find store by id
     Store.findById(req.params.id, (err, store) => {
         if (err) {

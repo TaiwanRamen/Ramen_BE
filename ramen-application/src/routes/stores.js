@@ -141,6 +141,8 @@ router.get('/location', async (req, res) => {
             let maxDistance = req.query.maxDistance ? req.query.maxDistance : 1000;
 
             let foundStore = await Store.aggregate([{
+
+                //change to geoWithin for mongoose 5.12.12
                 '$geoNear': {
                     'near': {
                         'type': 'Point',

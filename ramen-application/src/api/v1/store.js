@@ -140,34 +140,6 @@ router.put('/:id/unfollow', middleware.jwtAuth, async (req, res) => {
     }
 })
 
-router.put('/:id/unfollow', middleware.jwtAuth, async (req, res) => {
-    let storeId = req.params.id;
-    let userId = req.user._id;
-    let store = await Store.findById(storeId);
-    try {
-        let storeIndex = store.followers.indexOf(userId);
-        console.log(storeIndex);
-        if (storeIndex > -1) {
-            store.followers.splice(storeIndex, 1);
-            await store.save();
-        }
-        let user = await User.findById(userId);
-        let userIndex = user.followedStore.indexOf(storeId);
-        console.log(userIndex);
-
-        if (userIndex > -1) {
-            user.followedStore.splice(userIndex, 1);
-            await user.save();
-        }
-        console.log('成功取消追蹤' + store.name);
-        response.success(res, "success unfollowing: " + storeId);
-
-    } catch (error) {
-        console.log('無法取消追蹤' + store.name)
-        response.internalServerError(res, "cannot unfollow: " + storeId);
-    }
-})
-
 router.delete('/:storeId', middleware.jwtAuth, middleware.isStoreOwner,
     async (req, res) => {
         const session = await startSession();

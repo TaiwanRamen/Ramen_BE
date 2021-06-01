@@ -55,4 +55,11 @@ response.internalServerError = (res, error) => {
     })
 }
 
+response.unprocessableEntity = (res, error) => {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
+        code: ResponseCode.FAIL,
+        message: error
+    })
+}
+
 module.exports = response;

@@ -91,6 +91,7 @@ router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
                 options: {
                     skip: (perPage * pageNumber) - perPage,
                     limit: perPage,
+                    sort: {createdAt: -1}
                 }
             }).exec();
 

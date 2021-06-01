@@ -29,7 +29,7 @@ middlewareObj.checkCommentOwnership = async (req, res, next) => {
     } catch (error) {
         log.error(error);
         req.flash("error_msg")
-        res.redirect("back"); //send to where the user originally from.
+        res.redirect("back");
     }
 
 
@@ -164,17 +164,21 @@ middlewareObj.jwtAuth = async (req, res, next) => {
         {session: false, failWithError: true},
         (err, user, info) => {
             if (err) return next(err);
-            if (!user) response.unAuthorized(res, "使用者未登入或是登入超時")
-            req.user = user;
-            next();
+            if (user) {
+                req.user = user;
+                next();
+            } else {
+                response.unAuthorized(res, "無法執行此動作，使用者未登入或是登入超時，請重新登入")
+            }
         })(req, res, next);
 }
 
 middlewareObj.isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
-
+        next();
+    } else {
+        response.unAuthorized(res, "使用者必須登入才能檢視內容");
     }
-    response.unAuthorized(res, "使用者必須登入才能檢視內容");
 }
 
 middlewareObj.isAdmin = async (req, res, next) => {
