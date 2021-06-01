@@ -3,12 +3,12 @@ const mongoose = require('mongoose'),
 
 const mongooseConnection = async () => {
     try{
-        await mongoose.connect(process.env.DATABASE_URL, {
+        await mongoose.connect(process.env.DATABASE_URL_RS, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
             useCreateIndex: true,
-            //replicaSet: "rs"
+            replicaSet: "rs0"
         });
         log.info('MongoDB Connected...');
     } catch (error) {

@@ -96,11 +96,6 @@ services:
     networks:
       default:
 
-
-
-
-
-
   mongo_seed:
     image: mongo:latest
     links:
@@ -114,10 +109,10 @@ services:
     depends_on:
       - mongo-setup
 
-#  redis:
-#    image: redis:5.0.4-alpine
-#    ports:
-#      - '6379:6379'
+  redis:
+    image: redis:5.0.4-alpine
+    ports:
+      - '6379:6379'
 
 #  nodejs-application:
 #    build:

@@ -40,6 +40,7 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
 
         const count = countComment[0]?.count;
 
+
         const comments = foundStore.comments;
         const data = []
 
@@ -100,19 +101,17 @@ router.post('/new', middleware.jwtAuth, dataValidation.addComment,
 
             const store = await Store.findById(storeId).session(session);
 
-            if (!store) {
-                response.notFound(res, "無此店家")
-            }
+            if (!store) throw new Error("找不到店家");
 
-            const newComment = await Comment.create({
+            const newComment = await Comment.create([{
                 text: comment,
                 authorId: req.user._id,
                 storeId: storeId
-            }).session(session);
+            }], {session: session});
 
-            console.log(store.comments);
-            store.connents = store.connents.push(newComment._id)
-            await store.save().session(session)
+            store.comments.push(new mongoose.mongo.ObjectId(newComment[0]._id));
+
+            await store.save({session: session});
 
 
             await session.commitTransaction();
@@ -122,7 +121,7 @@ router.post('/new', middleware.jwtAuth, dataValidation.addComment,
             console.log(err)
             await session.abortTransaction();
             session.endSession();
-            response.internalServerError(res, `無法新增留言`)
+            response.internalServerError(res, `無法新增留言: ${err.message}`)
         }
 
     })
@@ -130,31 +129,31 @@ router.post('/new', middleware.jwtAuth, dataValidation.addComment,
 
 router.delete('/', middleware.jwtAuth, dataValidation.deleteComment,
     async (req, res) => {
-    const session = await startSession();
-    try {
-        session.startTransaction();
-        const commentId = req.query?.commentId;
-        const storeId = req.query?.storeId;
-        console.log(commentId)
-        console.log(storeId)
+        const session = await mongoose.startSession();
+        try {
+            session.startTransaction();
+            const commentId = req.query?.commentId;
+            const storeId = req.query?.storeId;
+            console.log(commentId)
+            console.log(storeId)
 
-        const store = await Store.findById(storeId);
-        if (!store) {
-            throw new Error("店家不存在");
+            const store = await Store.findById(storeId).session(session);
+            if (!store) {
+                throw new Error("店家不存在");
+            }
+
+            await Comment.findByIdAndRemove(commentId).session(session);
+            store.comments = store.comments.filter(item => item !== commentId);
+            await store.save({session: session});
+
+            await session.commitTransaction();
+            session.endSession();
+            response.success(res, "success");
+        } catch (err) {
+            await session.abortTransaction();
+            response.internalServerError(res, `無法刪除留言: ${err.message}`)
         }
-
-        await Comment.findByIdAndRemove(commentId);
-        store.comments = store.comments.filter(item => item !== commentId);
-        await store.save();
-
-        await session.commitTransaction();
-        session.endSession();
-        response.success(res, "success");
-    } catch (err) {
-        await session.abortTransaction();
-        response.internalServerError(res, `無法刪除留言: ${err.message}`)
-    }
-})
+    })
 
 
 module.exports = router
