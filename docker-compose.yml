@@ -1,21 +1,122 @@
-version: '3'
+version: "3.8"
+
 services:
-  mongodb:
+  mongo-setup:
+    container_name: mongo-setup
     image: mongo:latest
+    restart: on-failure
+    networks:
+      default:
+    volumes:
+      - ./rs-setup:/rs-setup
+    entrypoint: ["bash", "/rs-setup/setup.sh"]
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+
+  mongo1:
+    hostname: mongo1
+    container_name: localmongo1
+    image: mongo
+    expose:
+      - 27017
     ports:
       - 27017:27017
-  mongo_seed:
-    image: mongo:latest
-    links:
-      - mongodb
+    restart: always
+    entrypoint:
+      [
+          "/usr/bin/mongod",
+          "--bind_ip_all",
+          "--replSet",
+          "rs0",
+          "--journal",
+          "--dbpath",
+          "/data/db",
+          "--enableMajorityReadConcern",
+          "false",
+      ]
     volumes:
-      - ./mongo-seed:/mongo-seed
-    command:
-      bash -c "chmod +x /mongo-seed/restore.sh && /mongo-seed/restore.sh"
-  redis:
-    image: redis:5.0.4-alpine
+      - ./volumes/mongo/data1/db:/data/db
+      - ./volumes/mongo/data1/configdb:/data/configdb
+    networks:
+      default:
+
+  mongo2:
+    hostname: mongo2
+    container_name: localmongo2
+    image: mongo
+    expose:
+      - 27017
     ports:
-      - '6379:6379'
+      - 27018:27017
+    restart: always
+    entrypoint:
+      [
+          "/usr/bin/mongod",
+          "--bind_ip_all",
+          "--replSet",
+          "rs0",
+          "--journal",
+          "--dbpath",
+          "/data/db",
+          "--enableMajorityReadConcern",
+          "false",
+      ]
+    volumes:
+      - ./volumes/mongo/data2/db:/data/db
+      - ./volumes/mongo/data2/configdb:/data/configdb
+    networks:
+      default:
+
+  mongo3:
+    hostname: mongo3
+    container_name: localmongo3
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 27019:27017
+    restart: always
+    entrypoint:
+      [
+          "/usr/bin/mongod",
+          "--bind_ip_all",
+          "--replSet",
+          "rs0",
+          "--journal",
+          "--dbpath",
+          "/data/db",
+          "--enableMajorityReadConcern",
+          "false",
+      ]
+    volumes:
+      - ./volumes/mongo/data3/db:/data/db
+      - ./volumes/mongo/data3/configdb:/data/configdb
+    networks:
+      default:
+
+
+
+
+
+
+#  mongo_seed:
+#    image: mongo:latest
+#    links:
+#      - mongo1
+#    volumes:
+#      - ./mongo-seed:/mongo-seed
+#    networks:
+#      default:
+#    command:
+#      bash -c "chmod +x /mongo-seed/restore.sh && /mongo-seed/restore.sh"
+#    depends_on:
+#      - mongo-setup
+#  redis:
+#    image: redis:5.0.4-alpine
+#    ports:
+#      - '6379:6379'
 
 #  nodejs-application:
 #    build:
@@ -57,3 +158,7 @@ services:
 #        cd /grafana
 #        curl --request POST http://grafana:3000/api/datasources --header 'Content-Type: application/json' -d @datasources.json
 #        curl --request POST http://grafana:3000/api/dashboards/db --header 'Content-Type: application/json' -d @dashboard.json"
+
+networks:
+  default:
+    external: false
