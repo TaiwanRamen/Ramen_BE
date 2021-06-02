@@ -3,25 +3,58 @@
 const express = require('express'),
     router = express.Router(),
     Store = require('../../models/store'),
-    Notifications = require('../../models/notification'),
     middleware = require('../../middleware'),
+    mongoose = require('mongoose'),
     multer = require('multer'),
     Review = require("../../models/review"),
     Comment = require("../../models/comment"),
-    geocoder = require('../../utils/here-geocode'),
     uploadImageUrl = require('../../utils/imgur-upload'),
     response = require('../../modules/response-message');
 
-//get reviews from store id
 router.get('/:id', middleware.jwtAuth, async (req, res) => {
     try {
+        let perPage = 9;
+        let pageQuery = parseInt(req.query.page);
+        let pageNumber = pageQuery ? pageQuery : 1;
+        const store = await Store.findById(req.params.id);
+        const count = store.reviews.length;
+
         let foundStore = await Store.findById(req.params.id).populate({
             path: "reviews",
-            options: { sort: { createdAt: -1 } } // sorting the populated reviews array to show the latest first
+            options: {
+                skip: (perPage * pageNumber) - perPage,
+                limit: perPage,
+                sort: {createdAt: -1}
+            },
+            populate: {
+                path: 'author'
+            }
         });
         if (!foundStore) return response.notFound(res, "店家不存在");
-        console.log(foundStore.reviews);
-        return response.success(res, foundStore.reviews);
+
+
+        const reviews = foundStore.reviews;
+
+        const result = reviews.map(review => {
+            const {_id, avatar, username} = review.author;
+            return {
+                _id: review._id,
+                rating: review.rating,
+                text: review.text,
+                createdAt: review.createdAt,
+                updatedAt: review.updatedAt,
+                __v: review.__v,
+                store: review.store,
+                author: {id: _id, avatar, username}
+            }
+        })
+
+
+        return response.success(res, {
+            current: pageNumber,
+            pages: Math.ceil(count / perPage),
+            reviews: result
+        });
     } catch (e) {
         return response.internalServerError(res, e.message);
     }

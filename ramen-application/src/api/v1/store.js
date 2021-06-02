@@ -6,6 +6,7 @@ const express = require('express'),
     User = require('../../models/user'),
     Comment = require('../../models/comment'),
     Review = require("../../models/review"),
+    mongoose = require('mongoose'),
     response = require('../../modules/response-message'),
     middleware = require('../../middleware'),
     {startSession} = require('mongoose');
@@ -103,12 +104,10 @@ router.put('/:id/follow', middleware.jwtAuth, async (req, res) => {
         await store.save();
         user.followedStore.push(storeId);
         await user.save();
-        console.log('成功追蹤' + store.name);
-        response.success(res, "success following: " + storeId);
+        return response.success(res, "success following: " + storeId);
         // req.flash('success_msg', '成功追蹤' + store.name);
     } catch (error) {
-        console.log('無法追蹤' + store.name, error);
-        response.internalServerError(res, `cannot follow ${storeId},  ${error.message}`);
+        return response.internalServerError(res, `cannot follow ${storeId},  ${error.message}`);
     }
 });
 
@@ -118,56 +117,60 @@ router.put('/:id/unfollow', middleware.jwtAuth, async (req, res) => {
     let store = await Store.findById(storeId);
     try {
         let storeIndex = store.followers.indexOf(userId);
-        console.log(storeIndex);
         if (storeIndex > -1) {
             store.followers.splice(storeIndex, 1);
             await store.save();
         }
         let user = await User.findById(userId);
         let userIndex = user.followedStore.indexOf(storeId);
-        console.log(userIndex);
 
         if (userIndex > -1) {
             user.followedStore.splice(userIndex, 1);
             await user.save();
         }
-        console.log('成功取消追蹤' + store.name);
-        response.success(res, "success unfollowing: " + storeId);
+        return response.success(res, "success unfollowing: " + storeId);
 
     } catch (error) {
         console.log('無法取消追蹤' + store.name)
-        response.internalServerError(res, "cannot unfollow: " + storeId);
+        return response.internalServerError(res, "cannot unfollow: " + storeId);
     }
 })
 
 router.delete('/:storeId', middleware.jwtAuth, middleware.isStoreOwner,
     async (req, res) => {
-        const session = await startSession();
+        const session = await mongoose.startSession();
 
         try {
-            const storeId = req.params.storeId;
             session.startTransaction();
-            let store = await Store.findById(storeId);
-            if (!store) response.notFound(res, "店家不存在");
 
-            await Comment.deleteMany({
-                "_id": {
-                    $in: store.comments
-                }
-            });
+            const storeId = req.params.storeId;
+            let store = await Store.findById(storeId).session(session);
+            if (!store) return response.notFound(res, "店家不存在");
+
+
+
             await Review.deleteMany({
                 "_id": {
                     $in: store.reviews
                 }
-            })
-            await store.deleteOne();
-            await session.commitTransaction()
+            },{ session: session })
+
+            await Comment.deleteMany({
+                "_id": {
+                    $in: store.comments
+                },
+            },{ session: session });
+
+            await store.deleteOne({ session: session });
+
+            await session.commitTransaction();
             session.endSession()
-            response.success(res);
+            return response.success(res);
         } catch (error) {
-            session.endSession()
             console.log(error)
-            response.internalServerError(res, error.message)
+            await session.abortTransaction();
+            session.endSession();
+            return response.internalServerError(res, `無法刪除店家: ${error.message}`)
         }
 
     })

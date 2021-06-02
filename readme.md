@@ -158,6 +158,11 @@ v  find store througe navigating through map
 
 * 加入index預先顯示灰色的block，
 
+2021/06/03
+* add data validation
+* use replica set to achieve transactional
+* finish comment
+
 ## License
 
 #### [MIT](./LICENSE)

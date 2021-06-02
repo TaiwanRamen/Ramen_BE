@@ -6,9 +6,6 @@ const notificationSchema = mongoose.Schema({
         type: Boolean,
         default: false
     }
-}, {
-    // if timestamps are set to true, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
-    timestamps: true
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model("Notification", notificationSchema);

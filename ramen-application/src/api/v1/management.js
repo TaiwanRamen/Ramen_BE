@@ -5,14 +5,13 @@ const express = require('express'),
     Store = require('../../models/store'),
     User = require('../../models/user'),
     passport = require('passport'),
-    passportJWT = passport.authenticate('jwt', {session: false}),
     dataValidation = require('../../middleware/dataValidate'),
     middleware = require('../../middleware'),
     {startSession} = require('mongoose'),
     response = require('../../modules/response-message');
 
 
-router.post('/registerStoreOwner', passportJWT, middleware.isAdmin, dataValidation.registerOrRemoveStoreOwner,
+router.post('/registerStoreOwner', middleware.jwtAuth, middleware.isAdmin, dataValidation.registerOrRemoveStoreOwner,
     async (req, res) => {
         const session = await mongoose.startSession();
         try {
@@ -47,7 +46,7 @@ router.post('/registerStoreOwner', passportJWT, middleware.isAdmin, dataValidati
     }
 )
 
-router.delete('/removeStoreOwner', passportJWT, middleware.isAdmin, dataValidation.registerOrRemoveStoreOwner,
+router.delete('/removeStoreOwner', middleware.jwtAuth, middleware.isAdmin, dataValidation.registerOrRemoveStoreOwner,
     async (req, res) => {
         const session = await mongoose.startSession();
         try {

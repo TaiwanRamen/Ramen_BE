@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const commentSchema = mongoose.Schema({
     text: String,
-    createdAt: {type: Date, default: Date.now()},
     authorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -10,7 +9,7 @@ const commentSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Store"
     },
-});
+}, {timestamps: true});
 
 const Comment = mongoose.model("Comment", commentSchema);
 

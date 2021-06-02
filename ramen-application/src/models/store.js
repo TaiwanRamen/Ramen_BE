@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const storeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Please add a store name'], //error message
+        required: [true, 'Please add a store name'],
         unique: true,
     },
     imageLarge: [{
@@ -27,14 +27,14 @@ const storeSchema = new mongoose.Schema({
     address: String,
     location: {
         type: {
-            type: String, // Don't do `{ location: { type: String } }`
-            enum: ['Point'], // 'location.type' must be 'Point'
+            type: String,
+            enum: ['Point'],
         },
         coordinates: {
             type: [Number],
             index: '2dsphere'
         },
-        formattedAddress: String
+        geoHash: String
     },
     rating: {
         type: Number,
@@ -46,7 +46,7 @@ const storeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Review"
     }],
-    createdAt: { type: Date, default: Date.now() },
+    createdAt: {type: Date, default: Date.now()},
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -54,8 +54,6 @@ const storeSchema = new mongoose.Schema({
         },
         username: String
     },
-    //comments object ids
-    //ref: model refer to 
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
@@ -64,7 +62,7 @@ const storeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    owners:[{
+    owners: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
@@ -72,11 +70,8 @@ const storeSchema = new mongoose.Schema({
         type: String
     }],
     stillOpen: Boolean,
-    openAt:String,
-}, {
-    // if timestamps are set to true, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
-    timestamps: true
-});
+    openAt: String,
+}, {timestamps: true});
 
 
 module.exports = mongoose.model("Store", storeSchema);

@@ -17,6 +17,13 @@ response.unAuthorized = (res, error) => {
     })
 }
 
+response.forbidden = (res, error) => {
+    res.status(StatusCodes.FORBIDDEN).json({
+        code: ResponseCode.FAIL,
+        message: error
+    })
+}
+
 
 response.notFound = (res, error) => {
     res.status(StatusCodes.NOT_FOUND).json({

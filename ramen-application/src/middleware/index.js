@@ -183,7 +183,7 @@ middlewareObj.isLoggedIn = (req, res, next) => {
 
 middlewareObj.isAdmin = async (req, res, next) => {
     if (req.isAuthenticated()) {
-        if (req.user.userRole !== userRole.ADMIN) response.unAuthorized(res, "使用者非管理員，無法進行此操作！")
+        if (req.user.userRole !== userRole.ADMIN) response.forbidden(res, "使用者非管理員，無法進行此操作！")
         next();
     } else {
         response.unAuthorized(res, "使用者必須登入才能檢視內容")
@@ -195,13 +195,34 @@ middlewareObj.isStoreOwner = async (req, res, next) => {
     if (req.isAuthenticated()) {
         let foundUser = await User.findById(req.user._id);
         let foundStore = await Store.findById(req.params.id);
+        if (foundStore) response.notFound(res, "找不到店家")
+
         if (foundUser.userRole === userRole.ADMIN || (foundUser.userRole === userRole.STORE_OWNER && foundStore.owners.contains(req.user._id))) {
             next();
         } else {
-            response.unAuthorized(res, "使用者非店家管理者");
+            response.forbidden(res, "使用者非店家管理者");
         }
     } else {
         response.unAuthorized(res, "使用者必須登入才能檢視內容");
+    }
+};
+
+
+middlewareObj.isCommentOwner = async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        const commentId = req.query?.commentId;
+        console.log(commentId)
+        let foundComment = await Comment.findById(commentId);
+        if (!foundComment) return response.notFound(res, "找不到留言")
+
+        if (req.user._id.equals(foundComment.authorId)) {
+            next()
+        } else {
+            return response.forbidden(res, "使用者非留言擁有者");
+        }
+
+    } else {
+        return response.unAuthorized(res, "使用者必須登入才能檢視內容");
     }
 };
 

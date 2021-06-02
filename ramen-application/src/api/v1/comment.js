@@ -1,14 +1,13 @@
 //=== /api/v1/comments
 const express = require('express'),
+    {body} = require('express-validator'),
     mongoose = require('mongoose'),
     router = express.Router(),
     log = require('../../modules/logger'),
     Store = require('../../models/store'),
     User = require('../../models/user'),
     passport = require('passport'),
-    passportJWT = passport.authenticate('jwt', {session: false}),
     dataValidation = require('../../middleware/dataValidate'),
-    {startSession} = require('mongoose'),
     response = require('../../modules/response-message'),
     Comment = require('../../models/comment'),
     middleware = require('../../middleware');
@@ -32,6 +31,8 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
             return response.notFound(res, "無此店家")
         }
 
+        console.log(foundStore.comments)
+
         const countComment = await Store.aggregate([
             {$match: {_id: new mongoose.Types.ObjectId(req.params.storeId)}},
             {$project: {count: {$size: '$comments'}}},
@@ -42,6 +43,8 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
 
 
         const comments = foundStore.comments;
+
+
         const data = []
 
         if (comments) {
@@ -55,7 +58,7 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
                     author: {
                         avatar: author?.avatar,
                         id: author?._id,
-                        username: author?.username ? author.username : author.fbName
+                        username: author?.username
                     }
                 })
             }
@@ -71,24 +74,7 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
     }
 })
 
-router.put('/:commentId', middleware.jwtAuth, async (req, res) => {
-    try {
-        const commentId = req.params.commentId;
-        const updatedComment = req.body?.comment;
-        const comment = await Comment.findById(commentId);
-
-        comment.text = updatedComment;
-
-        await comment.save()
-
-        response.success(res, "success");
-    } catch (err) {
-        response.internalServerError(res, "無法編輯留言")
-    }
-
-})
-
-router.post('/new', middleware.jwtAuth, dataValidation.addComment,
+router.post('/new', middleware.jwtAuth, body('comment').not().isEmpty().trim().escape(), dataValidation.addComment,
     async (req, res) => {
         const session = await mongoose.startSession();
         try {
@@ -127,7 +113,25 @@ router.post('/new', middleware.jwtAuth, dataValidation.addComment,
     })
 
 
-router.delete('/', middleware.jwtAuth, dataValidation.deleteComment,
+router.put('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().escape(),
+    async (req, res) => {
+        try {
+            const commentId = req.query?.commentId;
+            const updatedComment = req.body?.comment;
+            const comment = await Comment.findById(commentId);
+
+            comment.text = updatedComment;
+
+            await comment.save()
+
+            response.success(res, "success");
+        } catch (err) {
+            response.internalServerError(res, "無法編輯留言")
+        }
+
+    })
+
+router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidation.deleteComment,
     async (req, res) => {
         const session = await mongoose.startSession();
         try {
@@ -144,6 +148,7 @@ router.delete('/', middleware.jwtAuth, dataValidation.deleteComment,
 
             await Comment.findByIdAndRemove(commentId).session(session);
             store.comments = store.comments.filter(item => item !== commentId);
+
             await store.save({session: session});
 
             await session.commitTransaction();
@@ -151,6 +156,7 @@ router.delete('/', middleware.jwtAuth, dataValidation.deleteComment,
             response.success(res, "success");
         } catch (err) {
             await session.abortTransaction();
+            session.endSession();
             response.internalServerError(res, `無法刪除留言: ${err.message}`)
         }
     })
