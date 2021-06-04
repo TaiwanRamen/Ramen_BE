@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true })
 const Store = require('../models/store');
 const Comment = require('../models/comment');
-const middleware = require('../middleware') //will automaticlly include index.js
+const middleware = require('../middleware/checkAuth') //will automaticlly include checkAuth.js
 
 //comment create
 router.get('/new', (req, res) => {

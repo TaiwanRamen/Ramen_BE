@@ -2,8 +2,8 @@ const express = require('express'),
     router = express.Router(),
     log = require('../../modules/logger'),
     Store = require('../../models/store'),
-    middleware = require('../../middleware'),
-    response = require("../../modules/response-message");
+    middleware = require('../../middleware/checkAuth'),
+    response = require("../../modules/responseMessage");
 
 
 //==============================================================

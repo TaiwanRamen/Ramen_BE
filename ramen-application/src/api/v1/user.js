@@ -6,8 +6,8 @@ const express = require('express'),
     JWT = require('jsonwebtoken'),
     config = require('../../config/golbal-config'),
     axios = require('axios'),
-    middleware = require('../../middleware'),
-    response = require('../../modules/response-message');
+    middleware = require('../../middleware/checkAuth'),
+    response = require('../../modules/responseMessage');
 
 
 const signToken = async (user) => {

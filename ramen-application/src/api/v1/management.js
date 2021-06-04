@@ -6,9 +6,8 @@ const express = require('express'),
     User = require('../../models/user'),
     passport = require('passport'),
     dataValidation = require('../../middleware/dataValidate'),
-    middleware = require('../../middleware'),
-    {startSession} = require('mongoose'),
-    response = require('../../modules/response-message');
+    middleware = require('../../middleware/checkAuth'),
+    response = require('../../modules/responseMessage');
 
 
 router.post('/registerStoreOwner', middleware.jwtAuth, middleware.isAdmin, dataValidation.registerOrRemoveStoreOwner,

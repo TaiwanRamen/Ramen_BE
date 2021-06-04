@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const response = require('../modules/response-message');
+const response = require('../modules/responseMessage');
 const {body, validationResult} = require('express-validator')
 
 const dataValidate = {}
@@ -78,7 +78,7 @@ dataValidate.addReview = async (req, res, next) => {
     const schema = Joi.object({
         storeId: idFormat,
         review: Joi.string(),
-        rating: Joi.number().min(-1).max(5).integer()
+        rating: Joi.number().min(0).max(5).integer()
     });
 
     const {error} = schema.validate(req.body);

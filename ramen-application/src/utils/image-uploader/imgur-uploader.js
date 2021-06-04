@@ -1,7 +1,7 @@
 const FormData = require('form-data'),
     fs = require("fs"),
     axios = require("axios"),
-    log = require("../modules/logger");
+    log = require("../../modules/logger");
 
 module.exports = async (imagePath) => {
     try{

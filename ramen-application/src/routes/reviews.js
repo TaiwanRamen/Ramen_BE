@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router({ mergeParams: true });
 var Store = require("../models/store");
 var Review = require("../models/review");
-var middleware = require("../middleware");
+var middleware = require("../middleware/checkAuth");
 
 router.get("/", function(req, res) {
     Store.findById(req.params.id).populate({

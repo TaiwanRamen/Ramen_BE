@@ -2,12 +2,12 @@ const express = require('express'),
     router = express.Router(),
     Store = require('../models/store'),
     Notifications = require('../models/notification'),
-    middleware = require('../middleware'), //will automaticlly include index.js
+    middleware = require('../middleware/checkAuth'), //will automaticlly include checkAuth.js
     multer = require('multer'),
     Review = require("../models/review"),
     Comment = require("../models/comment"),
     geocoder = require('../utils/here-geocode'),
-    uploadImageUrl = require('../utils/imgur-upload'),
+    uploadImageUrl = require('../utils/image-uploader/imgur-uploader'),
     log = require('../modules/logger');
 
 //set filename to multer 

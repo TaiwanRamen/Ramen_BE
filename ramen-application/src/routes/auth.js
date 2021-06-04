@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const middleware = require('../middleware'); //will automaticlly include index.js
+const middleware = require('../middleware/checkAuth'); //will automaticlly include checkAuth.js
 
 //facebook 驗證。
 router.get('/facebook', (req, res, next) => {

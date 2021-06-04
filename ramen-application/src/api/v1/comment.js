@@ -8,9 +8,9 @@ const express = require('express'),
     User = require('../../models/user'),
     passport = require('passport'),
     dataValidation = require('../../middleware/dataValidate'),
-    response = require('../../modules/response-message'),
+    response = require('../../modules/responseMessage'),
     Comment = require('../../models/comment'),
-    middleware = require('../../middleware');
+    middleware = require('../../middleware/checkAuth');
 
 router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
     try {
@@ -30,8 +30,6 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
         if (!foundStore) {
             return response.notFound(res, "無此店家")
         }
-
-        console.log(foundStore.comments)
 
         const countComment = await Store.aggregate([
             {$match: {_id: new mongoose.Types.ObjectId(req.params.storeId)}},

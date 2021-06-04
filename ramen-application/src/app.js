@@ -18,9 +18,9 @@ const express = require('express'),
     cors = require('cors'),
     cookieParser = require('cookie-parser'),
     morgan = require('morgan'),
-    accessLogStream = require('./modules/accesslog-stream'),
+    accessLogStream = require('./modules/accesslogStream'),
     errorhandler = require('errorhandler'),
-    response = require('./modules/response-message'),
+    response = require('./modules/responseMessage'),
     promBundle = require("express-prom-bundle"),
     metricsMiddleware = promBundle({includeMethod: true});
 

@@ -6,7 +6,7 @@ apiRouter.use('/user', require('./user'));
 apiRouter.use('/stores', require('./store'));
 apiRouter.use('/management', require('./management'));
 apiRouter.use('/comments', require('./comment'));
-apiRouter.use('/review', require('./review'));
+apiRouter.use('/reviews', require('./review'));
 
 
 module.exports = apiRouter

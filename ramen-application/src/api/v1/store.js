@@ -7,8 +7,8 @@ const express = require('express'),
     Comment = require('../../models/comment'),
     Review = require("../../models/review"),
     mongoose = require('mongoose'),
-    response = require('../../modules/response-message'),
-    middleware = require('../../middleware'),
+    response = require('../../modules/responseMessage'),
+    middleware = require('../../middleware/checkAuth'),
     {startSession} = require('mongoose');
 
 router.get('/', async (req, res) => {
@@ -68,14 +68,26 @@ router.get('/', async (req, res) => {
 //get store
 router.get('/:id', async (req, res) => {
     try {
-        let foundStore = await Store.findById(req.params.id);
+        const storeId = req.params.id
+        let foundStore = await Store.findById(storeId);
         if (!foundStore) {
             return response.notFound(res, "找不到店家");
         }
         let isStoreOwner = false;
-        if (req.user && req.user.hasStore.includes(req.params.id)) {
+        if (req.user && req.user.hasStore.includes(storeId)) {
             isStoreOwner = true;
         }
+
+        const avgRating = await Store.aggregate([
+            {$match: {_id: new mongoose.Types.ObjectId(storeId)}},
+            {$lookup: {from: 'reviews', localField: 'reviews', foreignField: '_id', as: 'reviewObjs'}},
+            {$project: {average:{$avg: "$reviewObjs.rating"}}},
+            {$limit: 1}
+        ])
+
+        foundStore.rating = avgRating[0].average;
+        await foundStore.save();
+
         return response.success(res, {
             mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
             store: foundStore,
@@ -84,9 +96,7 @@ router.get('/:id', async (req, res) => {
 
     } catch (error) {
         return response.internalServerError(res, error.message);
-        console.log(error)
     }
-    ;
 });
 
 router.put('/:id/follow', middleware.jwtAuth, async (req, res) => {
@@ -148,20 +158,19 @@ router.delete('/:storeId', middleware.jwtAuth, middleware.isStoreOwner,
             if (!store) return response.notFound(res, "店家不存在");
 
 
-
             await Review.deleteMany({
                 "_id": {
                     $in: store.reviews
                 }
-            },{ session: session })
+            }, {session: session})
 
             await Comment.deleteMany({
                 "_id": {
                     $in: store.comments
                 },
-            },{ session: session });
+            }, {session: session});
 
-            await store.deleteOne({ session: session });
+            await store.deleteOne({session: session});
 
             await session.commitTransaction();
             session.endSession()
