@@ -40,6 +40,28 @@ dataValidate.addComment = async (req, res, next) => {
     if (error) {
         console.log(error)
         switch (error.details[0].context.key) {
+            case 'commentId':
+                response.unprocessableEntity(res, 'valid comment should be provided!');
+                break
+            case 'comment':
+                response.unprocessableEntity(res, 'storeId should be provided correctly!');
+                break;
+        }
+    } else {
+        next()
+    }
+}
+
+dataValidate.editComment = async (req, res, next) => {
+    const schema = Joi.object({
+        commentId: idFormat,
+        comment: Joi.string()
+    });
+    const {error} = schema.validate(req.body);
+
+    if (error) {
+        console.log(error)
+        switch (error.details[0].context.key) {
             case 'comment':
                 response.unprocessableEntity(res, 'valid comment should be provided!');
                 break
@@ -59,7 +81,7 @@ dataValidate.deleteComment = async (req, res, next) => {
         storeId: idFormat
     });
 
-    const {error} = schema.validate(req.query);
+    const {error} = schema.validate(req.body);
     if (error) {
         console.log(error)
         switch (error.details[0].context.key) {

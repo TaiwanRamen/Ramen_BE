@@ -210,12 +210,12 @@ middlewareObj.isStoreOwner = async (req, res, next) => {
 
 middlewareObj.isCommentOwner = async (req, res, next) => {
     if (req.isAuthenticated()) {
-        const commentId = req.query?.commentId;
+        const commentId = req.body?.commentId;
         let foundComment = await Comment.findById(commentId);
         if (!foundComment) return response.notFound(res, "找不到留言")
 
         if (req.user._id.equals(foundComment.authorId)) {
-            req.locals.foundComment = foundComment;
+            res.locals.foundComment = foundComment;
             next()
         } else {
             return response.forbidden(res, "使用者非留言擁有者");

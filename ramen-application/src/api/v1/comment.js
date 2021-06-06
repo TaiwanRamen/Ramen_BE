@@ -72,7 +72,7 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
     }
 })
 
-router.post('/new', middleware.jwtAuth, body('comment').not().isEmpty().trim().escape(), dataValidation.addComment,
+router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().escape(), dataValidation.addComment,
     async (req, res) => {
         const session = await mongoose.startSession();
         try {
@@ -111,17 +111,15 @@ router.post('/new', middleware.jwtAuth, body('comment').not().isEmpty().trim().e
     })
 
 
-router.put('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().escape(),
+router.put('/', middleware.jwtAuth, middleware.isCommentOwner, body('comment').not().isEmpty().trim().escape(), dataValidation.editComment,
     async (req, res) => {
         try {
-            sdpofj
-            const commentId = req.query?.commentId;
             const updatedComment = req.body?.comment;
-            const comment = await Comment.findById(commentId);
+            const comment = res.locals.foundComment;
 
             comment.text = updatedComment;
 
-            await comment.save()
+            await comment.save();
 
             response.success(res, "success");
         } catch (err) {
@@ -135,8 +133,8 @@ router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidation
         const session = await mongoose.startSession();
         try {
             session.startTransaction();
-            const commentId = req.query?.commentId;
-            const storeId = req.query?.storeId;
+            const commentId = req.body?.commentId;
+            const storeId = req.body?.storeId;
             console.log(commentId)
             console.log(storeId)
 
