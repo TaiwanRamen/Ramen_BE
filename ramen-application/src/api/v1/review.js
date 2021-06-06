@@ -4,12 +4,15 @@ const express = require('express'),
     mongoose = require('mongoose'),
     router = express.Router(),
     Store = require('../../models/store'),
+    User = require('../../models/user'),
     middleware = require('../../middleware/checkAuth'),
     {body} = require('express-validator'),
     dataValidation = require('../../middleware/dataValidate'),
     uploadImage = require('../../modules/uploadImage'),
     response = require('../../modules/responseMessage'),
     Review = require('../../models/review'),
+    createDOMPurify = require('dompurify'),
+    {JSDOM} = require('jsdom'),
     uploadImageUrl = require('../../utils/image-uploader/imgur-uploader');
 
 
@@ -21,6 +24,7 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
         const store = await Store.findById(req.params.storeId);
         const count = store.reviews.length;
 
+        //如果user review則不顯示
         let foundStore = await Store.findById(req.params.storeId).populate({
             path: "reviews",
             options: {
@@ -63,6 +67,42 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
     }
 });
 
+
+router.get('/userReview/:storeId', middleware.jwtAuth, async (req, res) => {
+    try {
+        const storeId = req.params.storeId;
+        const user = await User.findById(req.user._id).populate({
+            path: 'reviews'
+        });
+        const reviews = user.reviews;
+        const userReview = reviews.find(review => review.store.equals(storeId));
+
+        if (!userReview || userReview.length < 1) {
+            return response.success(res, {
+                review: null
+            });
+        }
+
+        const result = {
+            _id: userReview._id,
+            rating: userReview.rating,
+            text: userReview.text,
+            createdAt: userReview.createdAt,
+            updatedAt: userReview.updatedAt,
+            __v: userReview.__v,
+            store: userReview.store,
+            author: {id: user._id, avatar: user.avatar, username: user.username}
+        }
+
+        return response.success(res, {
+            review: result
+        });
+    } catch (e) {
+        console.log(e)
+        return response.internalServerError(res, e.message);
+    }
+});
+
 router.post('/image', middleware.jwtAuth, uploadImage, async (req, res) => {
     try {
         let imgurURL = await uploadImageUrl(req.file.path);
@@ -73,14 +113,18 @@ router.post('/image', middleware.jwtAuth, uploadImage, async (req, res) => {
 
 })
 
-router.post('/new', middleware.jwtAuth, body('review').not().isEmpty().trim().escape(), dataValidation.addReview, async (req, res) => {
+router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) => {
     const session = await mongoose.startSession();
     try {
+        const window = new JSDOM('').window;
+        const DOMPurify = createDOMPurify(window);
+
         const storeId = req.body.storeId;
         const authorId = req.user._id;
-        const review = req.body.review;
+        const review = DOMPurify.sanitize(req.body.review);
         const rating = req.body.rating;
         session.startTransaction();
+        const user = req.user;
 
         let store = await Store.findById(storeId).session(session);
 
@@ -95,10 +139,11 @@ router.post('/new', middleware.jwtAuth, body('review').not().isEmpty().trim().es
             store: storeId
         }], {session: session});
 
-
         store.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
-
         await store.save({session: session});
+
+        user.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
+        await user.save({session: session});
 
         await session.commitTransaction();
         session.endSession();
@@ -112,5 +157,59 @@ router.post('/new', middleware.jwtAuth, body('review').not().isEmpty().trim().es
 
 })
 
+router.put('/', middleware.jwtAuth, middleware.isReviewOwner,  dataValidation.editReview, async (req, res) => {
+    try {
+        const updatedReview = req.body?.review;
+        const updatedRating = req.body?.rating;
 
+        const foundReview = res.locals.foundReview;
+
+        foundReview.text = updatedReview;
+        foundReview.rating = updatedRating;
+
+        await foundReview.save()
+
+        response.success(res, "success");
+    } catch (err) {
+        console.log(err)
+        response.internalServerError(res, "無法編輯留言")
+    }
+
+})
+
+
+router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.deleteReview,
+    async (req, res) => {
+        const session = await mongoose.startSession();
+        try {
+            session.startTransaction();
+            const reviewId = req.body?.reviewId;
+            const storeId = req.body?.storeId;
+            console.log(reviewId)
+            console.log(storeId)
+
+            const store = await Store.findById(storeId).session(session);
+            if (!store) {
+                throw new Error("店家不存在");
+            }
+
+            await Review.findByIdAndRemove(reviewId).session(session);
+            store.reviews = store.reviews.filter(item => item !== reviewId);
+
+            await store.save({session: session});
+
+            const user = req.user;
+            user.reviews = user.reviews.filter(item => item !== reviewId);
+
+            await user.save({session: session});
+
+            await session.commitTransaction();
+            session.endSession();
+            response.success(res, "success");
+        } catch (err) {
+            await session.abortTransaction();
+            session.endSession();
+            response.internalServerError(res, `無法刪除留言: ${err.message}`)
+        }
+    })
 module.exports = router

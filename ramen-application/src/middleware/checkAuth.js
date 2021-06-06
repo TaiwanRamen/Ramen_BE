@@ -211,14 +211,34 @@ middlewareObj.isStoreOwner = async (req, res, next) => {
 middlewareObj.isCommentOwner = async (req, res, next) => {
     if (req.isAuthenticated()) {
         const commentId = req.query?.commentId;
-        console.log(commentId)
         let foundComment = await Comment.findById(commentId);
         if (!foundComment) return response.notFound(res, "找不到留言")
 
         if (req.user._id.equals(foundComment.authorId)) {
+            req.locals.foundComment = foundComment;
             next()
         } else {
             return response.forbidden(res, "使用者非留言擁有者");
+        }
+
+    } else {
+        return response.unAuthorized(res, "使用者必須登入才能檢視內容");
+    }
+};
+
+
+middlewareObj.isReviewOwner = async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        const reviewId = req.body?.reviewId;
+        let foundReview = await Review.findById(reviewId);
+        if (!foundReview) return response.notFound(res, "找不到評論")
+
+        console.log(foundReview)
+        if (req.user._id.equals(foundReview.author)) {
+            res.locals.foundReview = foundReview;
+            next()
+        } else {
+            return response.forbidden(res, "使用者非評論擁有者");
         }
 
     } else {

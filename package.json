@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "dompurify": "^2.2.9",
     "express-validator": "^6.11.1",
+    "jsdom": "^16.6.0",
     "sharp": "^0.28.3"
   }
 }
