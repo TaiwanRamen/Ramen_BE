@@ -6,14 +6,11 @@ const express = require('express'),
     socket = require('socket.io'),
     bodyParser = require('body-parser'),
     passport = require('passport'),
-    mathodOverride = require("method-override"),
-    flash = require('connect-flash'),
     User = require('./models/user'),
     config = require('./config/golbal-config'),
     session = require('express-session'),
     helmet = require('helmet'),
     rateLimit = require('express-rate-limit'),
-    moment = require('moment'),
     log = require('./modules/logger'),
     cors = require('cors'),
     cookieParser = require('cookie-parser'),
@@ -35,11 +32,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 app.use(cookieParser());
-app.use(express.static(__dirname + '/public'));//dirname是你現在script跑的位置。
 app.use(helmet({contentSecurityPolicy: isProduction ? undefined : false}));
-app.use(mathodOverride("_method"));
-app.use(flash());
-app.use('/public/images/', express.static('./public/images'));
 require('./config/passport')(passport);
 require("./db/connectDB");
 require("./db/connectRedis");
@@ -70,10 +63,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.json());
-app.use(express.static("public")); //去public找東西
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-
 
 //error handler
 if (!isProduction) {
@@ -96,13 +85,8 @@ app.use(async (req, res, next) => {
             log.error(error.message);
         }
     }
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error_msg = req.flash('error_msg');
     next();
 })
-
-moment.locale('zh-tw');
-app.locals.moment = moment;
 
 //rate limit for each ip
 const limiter = rateLimit({
@@ -115,15 +99,8 @@ const limiter = rateLimit({
 app.use(limiter)
 
 
-//Routes
-//pertain the route from the index
-app.use('/', require('./routes'));
+//api routes
 app.use('/api/v1', require('./api/v1/api-router'));
-app.use('/auth', require('./routes/auth'));
-app.use('/users', require('./routes/users'));
-app.use('/stores/:id/comments', require('./routes/comments'));
-app.use('/stores/:id/reviews', require('./routes/reviews'));
-app.use('/stores', require('./routes/stores'));
 
 app.get('/:else', (req, res) => {
     res.send("No such pass exist.");

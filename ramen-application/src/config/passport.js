@@ -1,44 +1,11 @@
-const LocalStrategy = require('passport-local').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
 const JwtStrategy = require('passport-jwt').Strategy;
 const config = require("./golbal-config");
-const bcrypt = require('bcryptjs');
 const log = require('../modules/logger');
 const User = require('../models/user');
 
-
-
 module.exports = (passport) => {
 
-    const localAuthUser = async (email, password, done) => {
-
-        try {
-            //Match user
-            log.info('Matching user:', email)
-            const user = await User.findOne({ email: email });
-
-            // if no user match, return done
-            if (!user) {
-                log.info("email not registered:", email);
-                return done(null, false, { message: '該電子信箱未註冊' });
-            }
-            if (!user.password){
-                log.info("user " + user._id + "already registered through facebook")
-                return done(null, false, { message: '該使用者已透過Facebook註冊，請使用Facebook登入' });
-            }
-
-            if (await bcrypt.compare(password, user.password)) {
-                return done(null, user)
-            } else {
-                log.info("password fail", email);
-                return done(null, false, { message: '密碼錯誤' })
-            }
-        } catch (err) {
-            log.error(err);
-            done(null, false, { message: '系統出現問題，請稍後再試。' })
-        }
-    }
     const facebookAuthUser = async (req, token, refreshToken, profile, done) => {
         try {
             let user = await User.findOne({ 'fbUid': profile.id })
@@ -98,17 +65,6 @@ module.exports = (passport) => {
         return token;
     }
 
-    passport.use('local', new LocalStrategy({ usernameField: 'email' }, localAuthUser));
-
-    //FOR WEB
-    passport.use('facebook', new FacebookStrategy({
-        clientID: process.env.FB_API_ID,
-        clientSecret: process.env.FB_API_SECRET,
-        callbackURL: process.env.FB_CALLBACK_URL,
-        profileFields: ['id', 'displayName', 'name', 'gender', 'picture.type(large)', 'email']
-    }, facebookAuthUser));
-
-    //FOR API
     passport.use('facebookToken', new FacebookTokenStrategy({
         clientID: process.env.FB_API_ID,
         clientSecret: process.env.FB_API_SECRET,
@@ -116,9 +72,6 @@ module.exports = (passport) => {
         profileFields: ['id', 'displayName', 'name', 'gender', 'picture.type(large)', 'email']
     }, facebookAuthUser));
 
-
-    // JSON WEB TOKENS STRATEGY
-    // USED FOR API CALL
     passport.use('jwt', new JwtStrategy({
         jwtFromRequest: cookieExtractor,
         secretOrKey: process.env.JWT_SIGNING_KEY,

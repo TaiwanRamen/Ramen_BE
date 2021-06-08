@@ -5,6 +5,9 @@ const express = require('express'),
     passport = require('passport'),
     JWT = require('jsonwebtoken'),
     config = require('../../config/golbal-config'),
+    mongoose = require('mongoose'),
+    Notifications = require('../../models/notification'),
+
     axios = require('axios'),
     middleware = require('../../middleware/checkAuth'),
     response = require('../../modules/responseMessage');
@@ -47,17 +50,29 @@ router.get('/userInfo', middleware.jwtAuth,
         response.notFound(res, "找不到使用者");
     });
 
-router.get('/unReadNotificationCount', middleware.jwtAuth,
+router.get('/unReadNotiCount', middleware.jwtAuth,
     async (req, res, next) => {
         if (req.user) {
-            let notificationsCount = 0;
-            let user = await User.findById(req.user._id).populate({
-                path: 'notifications',
-                options: {sort: {"createdAt": -1}}
-            }).exec();
-            let userNotifications = user.notifications;
-            userNotifications = userNotifications.filter(notification => notification.isRead !== true);
-            response.success(res, userNotifications.length);
+            const userNotificationCount = await User.aggregate([
+                {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
+                {$lookup: {from: 'notifications', localField: 'notifications', foreignField: '_id', as: 'notiArr'}},
+                {
+                    $project: {
+                        "count": {
+                            "$size": {
+                                "$filter": {
+                                    "input": "$notiArr",
+                                    "cond": {"$eq": ["$$this.isRead", false]}
+                                }
+                            }
+                        }
+                    }
+                },
+                {$limit: 1}
+            ])
+            const count = userNotificationCount[0]?.count;
+
+            response.success(res, count);
         } else {
             response.notFound(res, "找不到使用者");
         }

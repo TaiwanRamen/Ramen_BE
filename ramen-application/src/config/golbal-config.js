@@ -1,13 +1,5 @@
 require('dotenv').config();
 module.exports = {
-    // the 'strength' of our bcrypt hashing algorithm
-    // 14 is a good strength at the present time based on the strength of
-    // commodity computers
-    BCRYPT_WORK_FACTOR: 14,
-
-    // the mongodb error code which means you are attempting to create a duplicate
-    // object
-    DUPLICATE_KEY_ERROR: 11000,
 
     // sessions will last for 30 minutes
     SESSION_DURATION: 1000 * 60 * 10,

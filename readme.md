@@ -90,7 +90,6 @@ and more...
 * [mongoDB](https://www.mongodb.com/)
 * [mongoose](http://mongoosejs.com/)
 * [async](http://caolan.github.io/async/)
-* [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 * [passport](http://www.passportjs.org/)
 * [passport-local](https://github.com/jaredhanson/passport-local#passport-local)
 * [passport-facebook](https://github.com/jaredhanson/passport-facebook)
@@ -100,7 +99,6 @@ and more...
 * [moment](https://momentjs.com/)
 * [imgur](https://api.imgur.com/)
 * [here-geocoder](https://developer.here.com/)
-* [connect-flash](https://github.com/jaredhanson/connect-flash#connect-flash)
 
 ### Database
 
