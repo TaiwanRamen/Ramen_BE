@@ -5,6 +5,7 @@ data/
 databases/
 src/logs/
 .env
+tmp/
 userData
 volumes/
 logs/

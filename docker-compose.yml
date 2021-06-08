@@ -111,6 +111,7 @@ services:
 
   redis:
     image: redis:5.0.4-alpine
+    command: redis-server --requirepass password
     ports:
       - '6379:6379'
 

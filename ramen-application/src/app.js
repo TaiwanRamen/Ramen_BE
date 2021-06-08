@@ -25,24 +25,24 @@ const express = require('express'),
     metricsMiddleware = promBundle({includeMethod: true});
 
 
-
 const app = express();
 app.use(metricsMiddleware);
-app.use(morgan(':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', { stream: accessLogStream }))
-const corsOptions ={
-    origin:process.env.FE_DOMAIN,
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
+app.use(morgan(':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', {stream: accessLogStream}))
+const corsOptions = {
+    origin: process.env.FE_DOMAIN,
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200
 }
 app.use(cors(corsOptions));
 app.use(cookieParser());
-app.use(express.static(__dirname + '/public')) ;//dirname是你現在script跑的位置。
-app.use(helmet({ contentSecurityPolicy: isProduction ? undefined : false }));
+app.use(express.static(__dirname + '/public'));//dirname是你現在script跑的位置。
+app.use(helmet({contentSecurityPolicy: isProduction ? undefined : false}));
 app.use(mathodOverride("_method"));
 app.use(flash());
 app.use('/public/images/', express.static('./public/images'));
 require('./config/passport')(passport);
 require("./db/connectDB");
+require("./db/connectRedis");
 require("./config/smtp");
 
 
@@ -80,7 +80,7 @@ if (!isProduction) {
     app.use(errorhandler());
 }
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     response.internalServerError(res, err.message);
 });
 
@@ -90,7 +90,7 @@ app.use(async (req, res, next) => {
     res.locals.currentUser = req.user;
     if (req.user) {
         try {
-            let user = await User.findById(req.user._id).populate('notifications', null, { isRead: false }).exec();
+            let user = await User.findById(req.user._id).populate('notifications', null, {isRead: false}).exec();
             res.locals.notifications = user.notifications.reverse();
         } catch (error) {
             log.error(error.message);
@@ -113,6 +113,7 @@ const limiter = rateLimit({
     },
 })
 app.use(limiter)
+
 
 //Routes
 //pertain the route from the index
