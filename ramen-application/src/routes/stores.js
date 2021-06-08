@@ -137,7 +137,7 @@ router.post('/', middleware.isLoggedIn, upload.single('image'), async (req, res)
 router.get('/location', async (req, res) => {
     try {
         //found the nearest store 
-        if (req.query.lat && req.query.lng) {
+        if (req.query.lat && req.query.lon) {
             let maxDistance = req.query.maxDistance ? req.query.maxDistance : 1000;
 
             let foundStore = await Store.aggregate([{
@@ -146,7 +146,7 @@ router.get('/location', async (req, res) => {
                 '$geoNear': {
                     'near': {
                         'type': 'Point',
-                        'coordinates': [parseFloat(req.query.lng), parseFloat(req.query.lat)]
+                        'coordinates': [parseFloat(req.query.lon), parseFloat(req.query.lat)]
                     },
                     'spherical': true,
                     'distanceField': "distance",

@@ -6,7 +6,6 @@ const express = require('express'),
     log = require('../../modules/logger'),
     Store = require('../../models/store'),
     User = require('../../models/user'),
-    passport = require('passport'),
     dataValidation = require('../../middleware/dataValidate'),
     response = require('../../modules/responseMessage'),
     Comment = require('../../models/comment'),
@@ -67,7 +66,7 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
             pages: Math.ceil(count / perPage),
         });
     } catch (err) {
-        console.log(err)
+        log.error(err);
         response.internalServerError(res, "無法顯示店家留言")
     }
 })
@@ -80,8 +79,6 @@ router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().esca
 
             const storeId = req.body?.storeId;
             const comment = req.body?.comment;
-
-            console.log(req.body);
 
             const store = await Store.findById(storeId).session(session);
 
@@ -102,7 +99,7 @@ router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().esca
             session.endSession();
             response.success(res, "success");
         } catch (err) {
-            console.log(err)
+            log.error(err)
             await session.abortTransaction();
             session.endSession();
             response.internalServerError(res, `無法新增留言: ${err.message}`)
@@ -154,6 +151,7 @@ router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidation
         } catch (err) {
             await session.abortTransaction();
             session.endSession();
+            log.error(err);
             response.internalServerError(res, `無法刪除留言: ${err.message}`)
         }
     })

@@ -13,7 +13,7 @@ module.exports = function getLonLat(address) {
             let location = {};
             location.address = response.data.items[0].title;
             location.city = response.data.items[0].address.county;
-            location.longitude = response.data.items[0].position.lng;
+            location.longitude = response.data.items[0].position.lon;
             location.latitude = response.data.items[0].position.lat;
             console.log(location);
             resolve(location)

@@ -217,7 +217,7 @@
         //因為地圖的bound會根據地圖大小計算，所以要先取得地圖寬度。
         let mapWidth = document.getElementById("map").clientWidth;
         let mapHeight = document.getElementById("map").clientHeight;
-        let bound = geoViewport.bounds([center.lng, center.lat], Math.ceil(zoom), [mapWidth, mapHeight]);
+        let bound = geoViewport.bounds([center.lon, center.lat], Math.ceil(zoom), [mapWidth, mapHeight]);
         //console.log(mapWidth, mapHeight);
         fetch(`${mapUrl}/get-store?W=${bound[0]}&S=${bound[1]}&E=${bound[2]}&N=${bound[3]}`, {method: 'GET'})
             .then((response) => {

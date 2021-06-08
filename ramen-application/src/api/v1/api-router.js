@@ -7,6 +7,7 @@ apiRouter.use('/stores', require('./store'));
 apiRouter.use('/management', require('./management'));
 apiRouter.use('/comments', require('./comment'));
 apiRouter.use('/reviews', require('./review'));
+apiRouter.use('/metro', require('./metro'));
 
 
 module.exports = apiRouter

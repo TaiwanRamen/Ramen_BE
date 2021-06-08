@@ -181,4 +181,57 @@ dataValidate.deleteReview = async (req, res, next) => {
 }
 
 
+dataValidate.metro = async (req, res, next) => {
+
+    const schema = Joi.object({
+        city: Joi.string().allow("taipei", "kaohsiung", "taichung"),
+        stationCode: Joi.string().required(),
+        maxDistance: Joi.number()
+    });
+
+    const {error} = schema.validate(req.query);
+
+    if (error) {
+        console.log(error)
+        switch (error.details[0].context.key) {
+            case 'city':
+                response.unprocessableEntity(res, 'valid city should be provided!');
+                break
+            case 'stationCode':
+                response.unprocessableEntity(res, 'valid stationCode should be provided!');
+                break;
+            case 'maxDistance':
+                response.unprocessableEntity(res, 'valid maxDistance should be provided!');
+                break;
+        }
+    } else {
+        next()
+    }
+}
+
+
+dataValidate.metroCloseToStore = async (req, res, next) => {
+
+    const schema = Joi.object({
+        storeId: idFormat,
+        maxDistance: Joi.number()
+    });
+
+    const {error} = schema.validate(req.query);
+
+    if (error) {
+        console.log(error)
+        switch (error.details[0].context.key) {
+            case 'storeId':
+                response.unprocessableEntity(res, 'valid storeId should be provided!');
+                break;
+            case 'maxDistance':
+                response.unprocessableEntity(res, 'valid maxDistance should be provided!');
+                break
+        }
+    } else {
+        next()
+    }
+}
+
 module.exports = dataValidate;

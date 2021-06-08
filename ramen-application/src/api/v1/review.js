@@ -12,6 +12,7 @@ const express = require('express'),
     response = require('../../modules/responseMessage'),
     Review = require('../../models/review'),
     createDOMPurify = require('dompurify'),
+    log = require('../../modules/logger'),
     {JSDOM} = require('jsdom'),
     uploadImageUrl = require('../../utils/image-uploader/imgur-uploader');
 
@@ -61,9 +62,9 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
             pages: Math.ceil(count / perPage),
             reviews: result
         });
-    } catch (e) {
-        console.log(e)
-        return response.internalServerError(res, e.message);
+    } catch (err) {
+        log.error(err);
+        return response.internalServerError(res, err.message);
     }
 });
 
@@ -97,9 +98,9 @@ router.get('/userReview/:storeId', middleware.jwtAuth, async (req, res) => {
         return response.success(res, {
             review: result
         });
-    } catch (e) {
-        console.log(e)
-        return response.internalServerError(res, e.message);
+    } catch (err) {
+        log.error(err);
+        return response.internalServerError(res, err.message);
     }
 });
 
@@ -107,10 +108,10 @@ router.post('/image', middleware.jwtAuth, uploadImage, async (req, res) => {
     try {
         let imgurURL = await uploadImageUrl(req.file.path);
         return response.success(res, {imageUrl: imgurURL})
-    } catch (e) {
+    } catch (err) {
+        log.error(err);
         return response.internalServerError(res, "上傳圖片失敗")
     }
-
 })
 
 router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) => {
@@ -149,7 +150,7 @@ router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) 
         session.endSession();
         response.success(res, "success");
     } catch (err) {
-        console.log(err)
+        log.error(err);
         await session.abortTransaction();
         session.endSession();
         response.internalServerError(res, `無法新增評論: ${err.message}`)
@@ -157,7 +158,7 @@ router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) 
 
 })
 
-router.put('/', middleware.jwtAuth, middleware.isReviewOwner,  dataValidation.editReview, async (req, res) => {
+router.put('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.editReview, async (req, res) => {
     try {
         const updatedReview = req.body?.review;
         const updatedRating = req.body?.rating;
@@ -171,7 +172,7 @@ router.put('/', middleware.jwtAuth, middleware.isReviewOwner,  dataValidation.ed
 
         response.success(res, "success");
     } catch (err) {
-        console.log(err)
+        log.error(err);
         response.internalServerError(res, "無法編輯留言")
     }
 
@@ -207,6 +208,7 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
             session.endSession();
             response.success(res, "success");
         } catch (err) {
+            log.error(err);
             await session.abortTransaction();
             session.endSession();
             response.internalServerError(res, `無法刪除留言: ${err.message}`)
