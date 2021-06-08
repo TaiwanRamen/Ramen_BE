@@ -141,9 +141,9 @@ router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidation
             }
 
             await Comment.findByIdAndRemove(commentId).session(session);
-            store.comments = store.comments.filter(item => item !== commentId);
-
+            store.comments = store.comments.filter(item => item.toString() !== commentId);
             await store.save({session: session});
+
 
             await session.commitTransaction();
             session.endSession();

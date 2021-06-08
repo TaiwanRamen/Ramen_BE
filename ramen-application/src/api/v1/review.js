@@ -195,12 +195,12 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
             }
 
             await Review.findByIdAndRemove(reviewId).session(session);
-            store.reviews = store.reviews.filter(item => item !== reviewId);
+            store.reviews = store.reviews.filter(item => item.toString() !== reviewId);
 
             await store.save({session: session});
 
             const user = req.user;
-            user.reviews = user.reviews.filter(item => item !== reviewId);
+            user.reviews = user.reviews.filter(item => item.toString() !== reviewId);
 
             await user.save({session: session});
 

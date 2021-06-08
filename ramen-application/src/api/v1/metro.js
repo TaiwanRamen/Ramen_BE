@@ -10,31 +10,26 @@ const express = require('express'),
     log = require('../../modules/logger'),
     redisClient = require('../../db/connectRedis');
 
-router.get('/test', async (req, res) => {
-    //await redisClient.setex("redis:123", 60, "yoyoyo")
-    let data = await redisClient.get("redis:123")
-    console.log(data)
-    res.send(data)
-})
 
 router.get('/', middleware.jwtAuth, dataValidation.metro, async (req, res) => {
     try {
         const stationCode = req.query.stationCode;
         let maxDistance = req.query.maxDistance ? req.query.maxDistance : 2000; //meter
-        let metro = await Metro.findOne({stationCode: stationCode})
 
-        if (!metro) {
-            return response.notFound(res, `找不到捷運站${stationCode}`);
-        }
         const key = `metro:storesNearMetro:${stationCode}`
 
         let cachedData = await redisClient.get(key);
 
         if (cachedData) {
-            console.log(cachedData)
             return response.success(res, {
                 stores: JSON.parse(cachedData)
             });
+        }
+
+        let metro = await Metro.findOne({stationCode: stationCode})
+
+        if (!metro) {
+            return response.notFound(res, `找不到捷運站${stationCode}`);
         }
 
         const stationLocation = metro.location.coordinates;
@@ -68,40 +63,52 @@ router.get('/closeToStore', middleware.jwtAuth, dataValidation.metroCloseToStore
         const storeId = req.query.storeId;
         const maxDistance = req.query.maxDistance ? req.query.maxDistance : 2000; //meter
 
+        const key = `metro:metroNearStore:${storeId}`
+
+        let cachedData = await redisClient.get(key);
+
+        if (cachedData) {
+            return response.success(res, {
+                stations: JSON.parse(cachedData)
+            });
+        }
 
         const foundStore = await Store.findById(storeId);
         if (!foundStore) {
             return response.notFound(res, `找不到捷運站${stationCode}`);
-        } else {
-
-            const stationLocation = foundStore.location.coordinates;
-
-            const foundStation = await Metro.aggregate([
-                {
-                    '$geoNear': {
-                        'near': {
-                            'type': 'Point',
-                            'coordinates': stationLocation
-                        },
-                        'spherical': true,
-                        'distanceField': "distance",
-                        "distanceMultiplier": 0.001,
-                        'maxDistance': parseFloat(maxDistance)
-                    }
-
-                },
-                {$limit: 3}
-            ]);
-            const result = foundStation.map(station => {
-                return {
-                    city: station.city,
-                    name: station.name,
-                    lineCode: station.lineCode,
-                    distance: station.distance.toFixed(2)
-                }
-            })
-            return response.success(res, {stations: result});
         }
+
+        const stationLocation = foundStore.location.coordinates;
+
+        const foundStation = await Metro.aggregate([
+            {
+                '$geoNear': {
+                    'near': {
+                        'type': 'Point',
+                        'coordinates': stationLocation
+                    },
+                    'spherical': true,
+                    'distanceField': "distance",
+                    "distanceMultiplier": 0.001,
+                    'maxDistance': parseFloat(maxDistance)
+                }
+
+            },
+            {$limit: 3}
+        ]);
+        const result = foundStation.map(station => {
+            return {
+                city: station.city,
+                name: station.name,
+                lineCode: station.lineCode,
+                distance: station.distance.toFixed(2)
+            }
+        })
+
+        await redisClient.set(key, JSON.stringify(result));
+
+        return response.success(res, {stations: result});
+
 
     } catch (err) {
         log.error(err);
