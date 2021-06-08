@@ -6,7 +6,6 @@ const express = require('express'),
     Store = require('../../models/store'),
     User = require('../../models/user'),
     middleware = require('../../middleware/checkAuth'),
-    {body} = require('express-validator'),
     dataValidation = require('../../middleware/dataValidate'),
     uploadImage = require('../../modules/uploadImage'),
     response = require('../../modules/responseMessage'),
@@ -186,8 +185,6 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
             session.startTransaction();
             const reviewId = req.body?.reviewId;
             const storeId = req.body?.storeId;
-            console.log(reviewId)
-            console.log(storeId)
 
             const store = await Store.findById(storeId).session(session);
             if (!store) {
