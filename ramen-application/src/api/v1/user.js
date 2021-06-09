@@ -7,7 +7,6 @@ const express = require('express'),
     config = require('../../config/golbal-config'),
     mongoose = require('mongoose'),
     Notifications = require('../../models/notification'),
-
     axios = require('axios'),
     middleware = require('../../middleware/checkAuth'),
     response = require('../../modules/responseMessage');
@@ -71,7 +70,6 @@ router.get('/unReadNotiCount', middleware.jwtAuth,
                 {$limit: 1}
             ])
             const count = userNotificationCount[0]?.count;
-
             response.success(res, count);
         } else {
             response.notFound(res, "找不到使用者");
@@ -79,19 +77,45 @@ router.get('/unReadNotiCount', middleware.jwtAuth,
     });
 
 
-router.get('/notifications', middleware.jwtAuth,
-    async (req, res, next) => {
+router.get('/notifications', middleware.jwtAuth, async (req, res, next) => {
+    try {
+        let perPage = 9;
+        let pageQuery = parseInt(req.query.page);
+        let pageNumber = pageQuery ? pageQuery : 1;
+
         if (req.user) {
             let user = await User.findById(req.user._id).populate({
                 path: 'notifications',
-                options: {sort: {"createdAt": -1}}
+                options: {
+                    skip: (perPage * pageNumber) - perPage,
+                    limit: perPage,
+                    sort: {createdAt: -1}
+                }
             }).exec();
-            response.success(res, user.notifications.count);
+
+            const count = req.user.notifications.length;
+
+            response.success(res, {
+                notifications: user.notifications,
+                current: pageNumber,
+                pages: Math.ceil(count / perPage),
+            });
+
+            for (let notification of user.notifications) {
+                notification.isRead = true;
+                await notification.save();
+            }
+
+            return null;
         } else {
             response.notFound(res, "找不到使用者");
 
         }
-    });
+
+    } catch (error) {
+        return response.internalServerError(res, error.message);
+    }
+});
 
 router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
 
