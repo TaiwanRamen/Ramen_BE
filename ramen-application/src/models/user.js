@@ -13,9 +13,6 @@ const UserSchema = new mongoose.Schema({
         sparse: true,
         lowercase: true
     },
-    password: {
-        type: String,
-    },
     avatar: {
         type: String,
         required: true,
@@ -49,7 +46,6 @@ const UserSchema = new mongoose.Schema({
     }],
     fbUid: String,
     fbToken: String,
-    fbName: String
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", UserSchema);

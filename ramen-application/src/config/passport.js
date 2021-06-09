@@ -20,7 +20,7 @@ module.exports = (passport) => {
                 console.log(refreshToken);
                 let newUser = new User();
                 updateUserInfoWhenLogin(newUser, profile, token, refreshToken);
-                newUser.isVerified = true;
+                newUser.isVerified = false;
                 await newUser.save()
                 return done(null, newUser);
             }
@@ -46,7 +46,7 @@ module.exports = (passport) => {
 
     const updateUserInfoWhenLogin = (user, profile, token, refreshToken) => {
         user.fbUid = profile.id;
-        user.fbToken = (!!token) ? token.access_token : refreshToken.access_token;
+        user.fbToken = (!!token) ? token : refreshToken;
         user.username = profile.name.givenName + ' ' + profile.name.familyName;
         if (!!profile.emails) {
             user.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first

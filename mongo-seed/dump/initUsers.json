@@ -4,8 +4,7 @@
       "$oid": "5f547ead0ffce00017b38cb7"
     },
     "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    "isActivated": true,
-    "isAdmin": true,
+    "isVerified": true,
     "notifications": [
       {
         "$oid": "5f60efc984a42700173ba3bc"
@@ -31,23 +30,17 @@
     ],
     "followers": [],
     "reviews": [],
-    "uid": "3694920833893412",
-    "token": "EAADLdWHMbooBAK5YHTWsfjhjeZCPnHieBTylUxlgHgzDbhnAKecLaLjQVgGP4uTOdf8KL1upnVEbDRQv8kyeAQqwg075eFZBxOgejVvK29ofazezyldy8fACS9pGDNMxNZCmtwWjg8SZBpVy5YHtr1ApyJ8j3r8hNu8k3ZAGhbwZDZD",
-    "username": "Lin Julian",
-    "uuid": "e979e794-e72a-4668-8199-255c50323f3c",
+    "fbUid": "3694320833893415",
+    "username": "Handsome Julian",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1599372973236"
-      }
+      "$date": "2021-06-09T11:23:44.906Z"
     },
     "updatedAt": {
       "$date": {
         "$numberLong": "1612966771826"
       }
     },
-    "__v": {
-      "$numberInt": "7"
-    },
+    "__v": 0,
     "followedStore": []
   },
   {
@@ -60,8 +53,6 @@
     "reviews": [],
     "username": "juju123",
     "email": "mepowenlin@gmail.com",
-    "password": "$2a$10$PVIwwkZxSZfYUTBFybWvy.eKS1XjcHPmjIzWT1aPCBO1EmOiQnI96",
-    "uuid": "0f7c5818-df01-4aba-80b3-4066e8a21df9",
     "createdAt": {
       "$date": "2020-09-09T02:55:16.847Z"
     },
@@ -72,5 +63,27 @@
     "hasStore": [],
     "isVerified": true,
     "userRole": 1
+  },
+  {
+    "_id": {
+      "$oid": "60c0a37e2b4e700a341b9b75"
+    },
+    "avatar": "https://graph.facebook.com/v2.6/3694920833893412/picture?type=large",
+    "isVerified": false,
+    "userRole": 4,
+    "hasStore": [],
+    "notifications": [],
+    "followedStore": [],
+    "reviews": [],
+    "fbUid": "3694920833893412",
+    "username": "Lin Julian",
+    "email": "sres3416@gmail.com",
+    "createdAt": {
+      "$date": "2021-06-09T11:18:22.538Z"
+    },
+    "updatedAt": {
+      "$date": "2021-06-09T11:23:44.906Z"
+    },
+    "__v": 0
   }
 ]

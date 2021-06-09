@@ -6,7 +6,6 @@ const express = require('express'),
     JWT = require('jsonwebtoken'),
     config = require('../../config/golbal-config'),
     mongoose = require('mongoose'),
-    Notifications = require('../../models/notification'),
     axios = require('axios'),
     middleware = require('../../middleware/checkAuth'),
     response = require('../../modules/responseMessage');
