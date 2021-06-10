@@ -3,8 +3,9 @@
 const express = require('express'),
     mongoose = require('mongoose'),
     router = express.Router(),
-    Store = require('../../models/store'),
     User = require('../../models/user'),
+    StoreRelation = require('../../models/storeRelation'),
+    Store = require('../../models/store'),
     middleware = require('../../middleware/checkAuth'),
     dataValidation = require('../../middleware/dataValidate'),
     uploadImage = require('../../modules/uploadImage'),
@@ -21,11 +22,8 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
         let perPage = 9;
         let pageQuery = parseInt(req.query.page);
         let pageNumber = pageQuery ? pageQuery : 1;
-        const store = await Store.findById(req.params.storeId);
-        const count = store.reviews.length;
 
-        //如果user review則不顯示
-        let foundStore = await Store.findById(req.params.storeId).populate({
+        let foundStoreRelation = await StoreRelation.findOne({'storeId': req.params.storeId}).populate({
             path: "reviews",
             options: {
                 skip: (perPage * pageNumber) - perPage,
@@ -35,11 +33,10 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
             populate: {
                 path: 'author'
             }
-        });
-        if (!foundStore) return response.notFound(res, "店家不存在");
+        })
+        if (!foundStoreRelation) return response.notFound(res, "店家不存在");
 
-
-        const reviews = foundStore.reviews;
+        const reviews = foundStoreRelation.reviews;
 
         const result = reviews.map(review => {
             const {_id, avatar, username} = review.author;
@@ -54,6 +51,13 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
                 author: {id: _id, avatar, username}
             }
         })
+
+        const countReview = await StoreRelation.aggregate([
+            {$match: {storeId: new mongoose.Types.ObjectId(req.params.storeId)}},
+            {$project: {count: {$size: '$reviews'}}},
+            {$limit: 1}
+        ])
+        const count = countReview[0]?.count;
 
 
         return response.success(res, {
@@ -126,9 +130,11 @@ router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) 
         session.startTransaction();
         const user = req.user;
 
-        let store = await Store.findById(storeId).session(session);
 
-        if (!store) {
+        const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
+        const store = await Store.findById(storeId).session(session);
+
+        if (!storeRelation || !store) {
             throw new Error("store not found")
         }
 
@@ -139,39 +145,56 @@ router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) 
             store: storeId
         }], {session: session});
 
-        store.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
-        await store.save({session: session});
+        storeRelation.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
+        await storeRelation.save({session: session});
 
         user.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
         await user.save({session: session});
 
+        await changeStoreRaging(storeId, store, session);
+
         await session.commitTransaction();
         session.endSession();
+        log.info(`Added review ${newReview[0]._id} to store ${storeId}`)
         response.success(res, "success");
     } catch (err) {
         log.error(err);
         await session.abortTransaction();
-        session.endSession();
+        await session.endSession();
         response.internalServerError(res, `無法新增評論: ${err.message}`)
     }
 
 })
 
 router.put('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.editReview, async (req, res) => {
+    const session = await mongoose.startSession();
     try {
-        const updatedReview = req.body?.review;
-        const updatedRating = req.body?.rating;
-
+        const updatedReview = req.body.review;
+        const updatedRating = req.body.rating;
+        const storeId = req.body.storeId;
         const foundReview = res.locals.foundReview;
+        session.startTransaction();
+
+        const store = await Store.findById(storeId).session(session);
+
+        if (!store) {
+            throw new Error("store not found")
+        }
 
         foundReview.text = updatedReview;
         foundReview.rating = updatedRating;
+        await foundReview.save({session: session});
 
-        await foundReview.save()
+        await changeStoreRaging(storeId, store, session);
 
+        await session.commitTransaction();
+        await session.endSession();
+        log.info(`edit review to store ${storeId}`)
         response.success(res, "success");
     } catch (err) {
         log.error(err);
+        await session.abortTransaction();
+        await session.endSession();
         response.internalServerError(res, "無法編輯留言")
     }
 
@@ -186,23 +209,29 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
             const reviewId = req.body?.reviewId;
             const storeId = req.body?.storeId;
 
+
+            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
             const store = await Store.findById(storeId).session(session);
-            if (!store) {
-                throw new Error("店家不存在");
+
+            if (!storeRelation || !store) {
+                throw new Error("store not found")
             }
 
             await Review.findByIdAndRemove(reviewId).session(session);
-            store.reviews = store.reviews.filter(item => item.toString() !== reviewId);
+            storeRelation.reviews = storeRelation.reviews.filter(item => item.toString() !== reviewId);
 
-            await store.save({session: session});
+            await storeRelation.save({session: session});
 
             const user = req.user;
             user.reviews = user.reviews.filter(item => item.toString() !== reviewId);
 
             await user.save({session: session});
 
+            await changeStoreRaging(storeId, store, session);
+
             await session.commitTransaction();
             session.endSession();
+            log.info(`Removed review ${reviewId} to store ${storeId}`)
             response.success(res, "success");
         } catch (err) {
             log.error(err);
@@ -211,4 +240,15 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
             response.internalServerError(res, `無法刪除留言: ${err.message}`)
         }
     })
+
+const changeStoreRaging = async (storeId, store, session) => {
+    const avgRating = await StoreRelation.aggregate([
+        {$match: {storeId: new mongoose.Types.ObjectId(storeId)}},
+        {$lookup: {from: 'reviews', localField: 'reviews', foreignField: '_id', as: 'reviewObjs'}},
+        {$project: {average: {$avg: "$reviewObjs.rating"}}},
+        {$limit: 1}
+    ]).session(session);
+    store.rating = avgRating[0].average;
+    await store.save({session: session});
+}
 module.exports = router

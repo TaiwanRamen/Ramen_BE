@@ -2,9 +2,8 @@ const express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     log = require('../../modules/logger'),
-    Store = require('../../models/store'),
     User = require('../../models/user'),
-    passport = require('passport'),
+    StoreRelation = require('../../models/storeRelation'),
     dataValidation = require('../../middleware/dataValidate'),
     middleware = require('../../middleware/checkAuth'),
     response = require('../../modules/responseMessage');
@@ -15,31 +14,33 @@ router.post('/registerStoreOwner', middleware.jwtAuth, middleware.isAdmin, dataV
         const session = await mongoose.startSession();
         try {
             session.startTransaction();
-            console.log(req.body.storeId);
-            console.log(req.body.storeOwnerId)
-            let store = await Store.findById(req.body.storeId).session(session);
+
+            let storeId = req.body.storeId;
+            let storeOwnerId = req.body.storeOwnerId;
+
+            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
             let user = await User.findById(req.body.storeOwnerId).session(session);
 
-            if (!store) throw new Error("找不到店家");
+            if (!storeRelation || !user) throw new Error("找不到使用者或是店家")
 
-            if (!store.owners.includes(req.body.storeOwnerId) && !user.hasStore.includes(req.body.storeId)) {
-                store.owners.push(req.body.storeOwnerId);
-                user.hasStore.push(req.body.storeId);
-
+            if (!storeRelation.owners.includes(storeOwnerId) && !user.hasStore.includes(storeId)) {
+                storeRelation.owners.push(storeOwnerId);
+                user.hasStore.push(storeId);
             } else {
                 throw new Error("使用者已是店家管理員");
             }
 
-            await store.save({session: session});
+            await storeRelation.save({session: session});
             await user.save({session: session});
 
             await session.commitTransaction()
             session.endSession()
+            log.info("registered owner {} from store {}", storeOwnerId, storeId)
             response.success(res);
         } catch (error) {
             await session.abortTransaction();
             session.endSession();
-            console.log(error)
+            log.error(error);
             response.internalServerError(res, error.message)
         }
     }
@@ -50,30 +51,34 @@ router.delete('/removeStoreOwner', middleware.jwtAuth, middleware.isAdmin, dataV
         const session = await mongoose.startSession();
         try {
             session.startTransaction();
-            console.log(req.body.storeId);
-            console.log(req.body.storeOwnerId);
-            let store = await Store.findById(req.body.storeId).session(session);
+
+            const storeId = req.body.storeId;
+            const storeOwnerId = req.body.storeOwnerId;
+
+            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
             let user = await User.findById(req.body.storeOwnerId).session(session);
 
-            if (!store || !user) throw new Error("找不到使用者或是店家")
+            if (!storeRelation || !user) throw new Error("找不到使用者或是店家")
 
-            let userHasStoreIndex = user.hasStore.indexOf(req.body.storeId);
-            let storeOwnerIndex = store.owners.indexOf(req.body.storeOwnerId);
+            let userHasStoreIndex = user.hasStore.indexOf(storeId);
+            let storeOwnerIndex = storeRelation.owners.indexOf(storeOwnerId);
+
             if (userHasStoreIndex > -1 && storeOwnerIndex > -1) {
                 user.hasStore.splice(userHasStoreIndex, 1);
-                store.owners.splice(storeOwnerIndex, 1);
+                storeRelation.owners.splice(storeOwnerIndex, 1);
                 await user.save({session: session});
-                await store.save({session: session});
+                await storeRelation.save({session: session});
             }
             await session.commitTransaction()
             session.endSession()
-            response.success(res);
+            log.info("removed owner {} from store {}", storeOwnerId, storeId)
+            return response.success(res);
 
         } catch (error) {
             await session.abortTransaction();
             session.endSession();
-            console.log(error)
-            response.internalServerError(res, error.message)
+            log.error(error);
+            return response.internalServerError(res, error.message)
         }
     }
 )

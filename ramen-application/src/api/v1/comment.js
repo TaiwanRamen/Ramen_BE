@@ -4,7 +4,7 @@ const express = require('express'),
     mongoose = require('mongoose'),
     router = express.Router(),
     log = require('../../modules/logger'),
-    Store = require('../../models/store'),
+    StoreRelation = require('../../models/storeRelation'),
     User = require('../../models/user'),
     dataValidation = require('../../middleware/dataValidate'),
     response = require('../../modules/responseMessage'),
@@ -17,21 +17,20 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
         let pageQuery = parseInt(req.query.page);
         let pageNumber = pageQuery ? pageQuery : 1;
 
-        let foundStore = await Store.findById(req.params.storeId).populate({
+        let foundStoreRelation = await StoreRelation.findOne({'storeId': req.params.storeId}).populate({
             path: "comments",
             options: {
                 skip: (perPage * pageNumber) - perPage,
                 limit: perPage,
                 sort: {createdAt: -1}
             }
-        }).exec();
-
-        if (!foundStore) {
+        })
+        if (!foundStoreRelation) {
             return response.notFound(res, "無此店家")
         }
 
-        const countComment = await Store.aggregate([
-            {$match: {_id: new mongoose.Types.ObjectId(req.params.storeId)}},
+        const countComment = await StoreRelation.aggregate([
+            {$match: {storeId: new mongoose.Types.ObjectId(req.params.storeId)}},
             {$project: {count: {$size: '$comments'}}},
             {$limit: 1}
         ])
@@ -39,7 +38,7 @@ router.get('/:storeId', middleware.jwtAuth, async (req, res) => {
         const count = countComment[0]?.count;
 
 
-        const comments = foundStore.comments;
+        const comments = foundStoreRelation.comments;
 
 
         const data = []
@@ -80,9 +79,9 @@ router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().esca
             const storeId = req.body?.storeId;
             const comment = req.body?.comment;
 
-            const store = await Store.findById(storeId).session(session);
+            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
 
-            if (!store) throw new Error("找不到店家");
+            if (!storeRelation) throw new Error("找不到店家");
 
             const newComment = await Comment.create([{
                 text: comment,
@@ -90,10 +89,9 @@ router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().esca
                 storeId: storeId
             }], {session: session});
 
-            store.comments.push(new mongoose.mongo.ObjectId(newComment[0]._id));
+            storeRelation.comments.push(new mongoose.mongo.ObjectId(newComment[0]._id));
 
-            await store.save({session: session});
-
+            await storeRelation.save({session: session});
 
             await session.commitTransaction();
             session.endSession();
@@ -132,17 +130,15 @@ router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidation
             session.startTransaction();
             const commentId = req.body?.commentId;
             const storeId = req.body?.storeId;
-            console.log(commentId)
-            console.log(storeId)
 
-            const store = await Store.findById(storeId).session(session);
-            if (!store) {
+            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
+            if (!storeRelation) {
                 throw new Error("店家不存在");
             }
 
             await Comment.findByIdAndRemove(commentId).session(session);
-            store.comments = store.comments.filter(item => item.toString() !== commentId);
-            await store.save({session: session});
+            storeRelation.comments = storeRelation.comments.filter(item => item.toString() !== commentId);
+            await storeRelation.save({session: session});
 
 
             await session.commitTransaction();

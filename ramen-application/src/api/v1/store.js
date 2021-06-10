@@ -3,13 +3,14 @@
 const express = require('express'),
     router = express.Router(),
     Store = require('../../models/store'),
+    StoreRelation = require('../../models/storeRelation'),
     User = require('../../models/user'),
     Comment = require('../../models/comment'),
     Review = require("../../models/review"),
     mongoose = require('mongoose'),
     response = require('../../modules/responseMessage'),
     middleware = require('../../middleware/checkAuth'),
-    {startSession} = require('mongoose');
+    log = require('../../modules/logger');
 
 router.get('/', async (req, res) => {
     try {
@@ -20,16 +21,15 @@ router.get('/', async (req, res) => {
         if (req.query.search) {
             const regex = new RegExp(escapeRegex(req.query.search), 'gi');
 
-            //search from all the fields included in $or
-            const allStores = await Store.find({
-                $or: [
-                    {name: regex},
-                    {city: regex},
-                    {descriptionText: regex},
-                ],
-            }).collation({locale: 'zh@collation=zhuyin'})
-                .sort({rating: -1, city: 1})
-                .skip((perPage * pageNumber) - perPage).limit(perPage).exec();
+            const allStores = await Store.aggregate([
+                {$match: {$or: [{name: regex}, {city: regex}, {descriptionText: regex}]}},
+                {$sort: {rating: -1, city: 1}},
+                {$skip: (perPage * pageNumber) - perPage},
+                {$limit: perPage},
+                {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
+                {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
+            ])
+
             const count = await Store.countDocuments({
                 $or: [
                     {name: regex},
@@ -46,10 +46,15 @@ router.get('/', async (req, res) => {
             });
 
         } else {
-            //get all stores from DB
-            const allStores = await Store.find().collation({locale: 'zh@collation=zhuyin'})
-                .sort({rating: -1, city: 1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec();
-            ;
+
+            const allStores = await Store.aggregate([
+                {$sort: {rating: -1, city: 1}},
+                {$skip: (perPage * pageNumber) - perPage},
+                {$limit: perPage},
+                {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
+                {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
+            ])
+
             const count = await Store.countDocuments().exec();
             return response.success(res, {
                 mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
@@ -61,36 +66,36 @@ router.get('/', async (req, res) => {
         }
     } catch (error) {
         return response.internalServerError(res, error.message);
-        console.log(error)
     }
 });
 
 //get store
-router.get('/:id', async (req, res) => {
+router.get('/:storeId', async (req, res) => {
     try {
-        const storeId = req.params.id
-        let foundStore = await Store.findById(storeId);
-        if (!foundStore) {
+        const storeId = req.params.storeId;
+
+        let store = await Store.aggregate([
+            {$match: {_id: new mongoose.Types.ObjectId(storeId)}},
+            {$limit: 1},
+            {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
+            {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
+        ])
+
+
+        if (!store[0]) {
             return response.notFound(res, "找不到店家");
         }
+
+
         let isStoreOwner = false;
         if (req.user && req.user.hasStore.includes(storeId)) {
             isStoreOwner = true;
         }
 
-        const avgRating = await Store.aggregate([
-            {$match: {_id: new mongoose.Types.ObjectId(storeId)}},
-            {$lookup: {from: 'reviews', localField: 'reviews', foreignField: '_id', as: 'reviewObjs'}},
-            {$project: {average:{$avg: "$reviewObjs.rating"}}},
-            {$limit: 1}
-        ])
-
-        foundStore.rating = avgRating[0].average;
-        await foundStore.save();
 
         return response.success(res, {
             mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
-            store: foundStore,
+            store: store[0],
             isStoreOwner: isStoreOwner
         })
 
@@ -99,49 +104,81 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id/follow', middleware.jwtAuth, async (req, res) => {
-    let storeId = req.params.id;
-    let userId = req.user._id;
-    let store = await Store.findById(storeId);
-    let user = await User.findById(userId);
+router.get('/:storeId/isUserFollowing', middleware.jwtAuth, async (req, res) => {
     try {
-        let storeIndex = store.followers.indexOf(userId);
+        let userId = req.user._id;
+        let storeId = req.params.storeId;
+        const storeRelation = await StoreRelation.findOne({'storeId': storeId});
+        const isUserFollowing = storeRelation.followers.includes(userId);
+
+        return response.success(res, {isUserFollowing: isUserFollowing});
+    } catch (error) {
+        log.error(error);
+        return response.internalServerError(res, `cannot fetch isUserFollowing`);
+    }
+
+})
+
+router.put('/:storeId/follow', middleware.jwtAuth, async (req, res) => {
+    let storeId = req.params.storeId;
+    let userId = req.user._id;
+    let user = req.user;
+
+    const session = await mongoose.startSession();
+    try {
+        session.startTransaction();
+        const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
+        let storeIndex = storeRelation.followers.indexOf(userId);
         let userIndex = user.followedStore.indexOf(storeId);
         if (storeIndex > -1 || userIndex > -1) {
             throw new Error("user already follow store");
         }
-        store.followers.push(userId);
-        await store.save();
+        storeRelation.followers.push(userId);
+        await storeRelation.save({session: session});
         user.followedStore.push(storeId);
-        await user.save();
+        await user.save({session: session});
+
+        await session.commitTransaction();
+        session.endSession();
+
         return response.success(res, "success following: " + storeId);
-        // req.flash('success_msg', '成功追蹤' + store.name);
     } catch (error) {
+        log.error(error);
+        await session.abortTransaction();
+        await session.endSession();
         return response.internalServerError(res, `cannot follow ${storeId},  ${error.message}`);
     }
 });
 
-router.put('/:id/unfollow', middleware.jwtAuth, async (req, res) => {
-    let storeId = req.params.id;
+router.put('/:storeId/unfollow', middleware.jwtAuth, async (req, res) => {
+    let storeId = req.params.storeId;
     let userId = req.user._id;
-    let store = await Store.findById(storeId);
+    let user = req.user;
+
+    const session = await mongoose.startSession();
     try {
-        let storeIndex = store.followers.indexOf(userId);
+        session.startTransaction();
+        const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
+
+        let storeIndex = storeRelation.followers.indexOf(userId);
         if (storeIndex > -1) {
-            store.followers.splice(storeIndex, 1);
-            await store.save();
+            storeRelation.followers.splice(storeIndex, 1);
+            await storeRelation.save({session: session});
         }
-        let user = await User.findById(userId);
         let userIndex = user.followedStore.indexOf(storeId);
 
         if (userIndex > -1) {
             user.followedStore.splice(userIndex, 1);
-            await user.save();
+            await user.save({session: session});
         }
+        await session.commitTransaction();
+        session.endSession();
         return response.success(res, "success unfollowing: " + storeId);
 
     } catch (error) {
-        console.log('無法取消追蹤' + store.name)
+        log.error(error);
+        await session.abortTransaction();
+        await session.endSession();
         return response.internalServerError(res, "cannot unfollow: " + storeId);
     }
 })
@@ -155,22 +192,27 @@ router.delete('/:storeId', middleware.jwtAuth, middleware.isStoreOwner,
 
             const storeId = req.params.storeId;
             let store = await Store.findById(storeId).session(session);
-            if (!store) return response.notFound(res, "店家不存在");
+
+            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
+
+            if (!store || !storeRelation) return response.notFound(res, "店家不存在");
 
 
             await Review.deleteMany({
                 "_id": {
-                    $in: store.reviews
+                    $in: storeRelation.reviews
                 }
             }, {session: session})
 
             await Comment.deleteMany({
                 "_id": {
-                    $in: store.comments
+                    $in: storeRelation.comments
                 },
             }, {session: session});
 
             await store.deleteOne({session: session});
+            await storeRelation.deleteOne({session: session});
+
 
             await session.commitTransaction();
             session.endSession()

@@ -19,7 +19,7 @@ middlewareObj.jwtAuth = async (req, res, next) => {
                 req.user = user;
                 next();
             } else {
-                response.unAuthorized(res, "無法執行此動作，使用者未登入或是登入超時，請重新登入")
+               return response.unAuthorized(res, "無法執行此動作，使用者未登入或是登入超時，請重新登入")
             }
         })(req, res, next);
 }
@@ -28,16 +28,16 @@ middlewareObj.isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
         next();
     } else {
-        response.unAuthorized(res, "使用者必須登入才能檢視內容");
+        return response.unAuthorized(res, "使用者必須登入才能檢視內容");
     }
 }
 
 middlewareObj.isAdmin = async (req, res, next) => {
     if (req.isAuthenticated()) {
-        if (req.user.userRole !== userRole.ADMIN) response.forbidden(res, "使用者非管理員，無法進行此操作！")
+        if (req.user.userRole !== userRole.ADMIN) return response.forbidden(res, "使用者非管理員，無法進行此操作！")
         next();
     } else {
-        response.unAuthorized(res, "使用者必須登入才能檢視內容")
+        return response.unAuthorized(res, "使用者必須登入才能檢視內容")
     }
 }
 
@@ -51,10 +51,10 @@ middlewareObj.isStoreOwner = async (req, res, next) => {
         if (foundUser.userRole === userRole.ADMIN || (foundUser.userRole === userRole.STORE_OWNER && foundStore.owners.contains(req.user._id))) {
             next();
         } else {
-            response.forbidden(res, "使用者非店家管理者");
+            return response.forbidden(res, "使用者非店家管理者");
         }
     } else {
-        response.unAuthorized(res, "使用者必須登入才能檢視內容");
+        return response.unAuthorized(res, "使用者必須登入才能檢視內容");
     }
 };
 

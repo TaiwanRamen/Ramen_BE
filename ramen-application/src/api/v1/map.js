@@ -12,47 +12,38 @@ const express = require('express'),
 //==============================================================
 router.get('/get-store', middleware.jwtAuth, async (req, res) => {
     try {
+        const N = parseFloat(req.query.N);
+        const S = parseFloat(req.query.S);
+        const E = parseFloat(req.query.E);
+        const W = parseFloat(req.query.W);
+
         const mapBound = {
             type: 'Polygon',
             coordinates: [
-                [
-                    [req.query.W, req.query.N], //NW
-                    [req.query.W, req.query.S], //SW
-                    [req.query.E, req.query.S], //SE
-                    [req.query.E, req.query.N], //NE
-                    [req.query.W, req.query.N], //NW
-                ]
+                [[W, N], [W, S], [E, S], [E, N], [W, N],]
             ]
         };
 
         let foundStores;
 
         if (req.query.search) {
-            const search = new RegExp(escapeRegex(req.query.search), 'gi');
-            foundStores = await Store.find({
-                $or: [
-                    { name: search },
-                    { city: search },
-                    { descriptionText: search },
-                ],
-            }).collation({ locale: 'zh@collation=zhuyin' })
-                .sort({ rating: -1, city: 1 })
+            const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+
+            foundStores = await Store.aggregate([
+                {$match: {$or: [{name: regex}, {city: regex}, {descriptionText: regex}]}},
+                {$match: {'location': {$geoWithin: {$geometry: mapBound}}}},
+                {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
+                {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
+            ])
+
         } else {
-            foundStores = await Store.find().collation({ locale: 'zh@collation=zhuyin' }).where('location').within(mapBound);
+            foundStores = await Store.aggregate([
+                {$match: {'location': {$geoWithin: {$geometry: mapBound}}}},
+                {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
+                {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
+            ])
         }
-        //
-        // let filteredStore = foundStores.map((store) => {
-        //     return {
-        //         location: store.location,
-        //         _id: store._id,
-        //         name: store.name,
-        //         descriptionText: store.descriptionText.substring(0, 100),
-        //         city: store.city,
-        //         rating: store.rating,
-        //         imageSmall: store.imageSmall,
-        //         reviewsCount: store.reviews.length
-        //     }
-        // })
+
         response.success(res, foundStores);
     } catch (err) {
         log.info(err)

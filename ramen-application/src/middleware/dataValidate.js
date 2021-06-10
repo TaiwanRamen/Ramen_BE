@@ -130,6 +130,7 @@ dataValidate.addReview = async (req, res, next) => {
 dataValidate.editReview = async (req, res, next) => {
 
     const schema = Joi.object({
+        storeId: idFormat,
         reviewId: idFormat,
         review: Joi.string(),
         rating: Joi.number().min(0).max(5).integer()
@@ -140,6 +141,9 @@ dataValidate.editReview = async (req, res, next) => {
     if (error) {
         console.log(error)
         switch (error.details[0].context.key) {
+            case 'storeId':
+                response.unprocessableEntity(res, 'valid storeId should be provided!');
+                break;
             case 'reviewId':
                 response.unprocessableEntity(res, 'valid reviewId should be provided!');
                 break;
