@@ -42,30 +42,7 @@ const storeSchema = new mongoose.Schema({
         min: 0,
         max: 5
     },
-    reviews: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review"
-    }],
     createdAt: {type: Date, default: Date.now()},
-    author: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        username: String
-    },
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment"
-    }],
-    followers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    owners: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
     tags: [{
         type: String
     }],

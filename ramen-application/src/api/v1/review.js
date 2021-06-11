@@ -151,7 +151,7 @@ router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) 
         user.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
         await user.save({session: session});
 
-        await changeStoreRaging(storeId, store, session);
+        await changeStoreRating(storeId, store, session);
 
         await session.commitTransaction();
         session.endSession();
@@ -185,7 +185,7 @@ router.put('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.edi
         foundReview.rating = updatedRating;
         await foundReview.save({session: session});
 
-        await changeStoreRaging(storeId, store, session);
+        await changeStoreRating(storeId, store, session);
 
         await session.commitTransaction();
         await session.endSession();
@@ -227,7 +227,7 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
 
             await user.save({session: session});
 
-            await changeStoreRaging(storeId, store, session);
+            await changeStoreRating(storeId, store, session);
 
             await session.commitTransaction();
             session.endSession();
@@ -241,7 +241,7 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
         }
     })
 
-const changeStoreRaging = async (storeId, store, session) => {
+const changeStoreRating = async (storeId, store, session) => {
     const avgRating = await StoreRelation.aggregate([
         {$match: {storeId: new mongoose.Types.ObjectId(storeId)}},
         {$lookup: {from: 'reviews', localField: 'reviews', foreignField: '_id', as: 'reviewObjs'}},

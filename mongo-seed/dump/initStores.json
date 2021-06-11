@@ -12,13 +12,13 @@
       "coordinates": [
         120.66028849999998,
         24.1520405
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:34:48.300Z"
     },
     "__v": 2,
     "address": "403台中市西區中美街382號",
-    "comments": [],
     "city": "台中市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipMNy4XzMRdn5j6qy-YO9Q80zNZ9E_FtPkdafizH=s1536",
@@ -32,8 +32,7 @@
       "https://lh3.ggpht.com/p/AF1QipP5CSwjs8cShzkN1dGX-y6RDfcdCEY5DDFdneUp=s512",
       "https://lh3.ggpht.com/p/AF1QipPcy9Mgg9G4BT_J1EM1k711rlqEelwz5H9yq0hm=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -48,13 +47,13 @@
       "coordinates": [
         121.54328500000001,
         25.030858000000002
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:35:20.678Z"
     },
     "__v": 2,
     "address": "106台北市大安區復興南路二段",
-    "comments": [],
     "city": "台北市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipNKQIeNt7M24W3T4rOdEOYekMpPSBsbMK2cYSq6=s1536",
@@ -68,8 +67,7 @@
       "https://lh3.ggpht.com/p/AF1QipMG1SgO23KQpA9-L0orudBmg1DdaZ9j8o0poclk=s512",
       "https://lh3.ggpht.com/p/AF1QipOfg1127uv_I_uB2PEkkkCLIrgshXzbWfgn30bN=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -84,13 +82,13 @@
       "coordinates": [
         120.2082038,
         22.989886000000002
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:34:41.994Z"
     },
     "__v": 2,
     "address": "700台南市中西區城隍街50號",
-    "comments": [],
     "city": "台南市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipPRw4179fELz6EX1qOHcDHLiKGJGHzackj_B9as=s1536",
@@ -105,8 +103,7 @@
       "https://lh3.ggpht.com/p/AF1QipPPcLlWYGIlf1rswnGzIM2iNy11I9nBjlPL7zqN=s512",
       "https://lh3.ggpht.com/p/AF1QipO-71WQiChVqAZeQudnjLQmSSMlLM2CjekiZiaX=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -121,13 +118,13 @@
       "coordinates": [
         121.55526300000002,
         25.04192450000001
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:35:23.831Z"
     },
     "__v": 2,
     "address": "106台北市大安區延吉街137巷22號",
-    "comments": [],
     "city": "台北市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipPq_FPd82uqGTntjWg93yGuMr8wXKXMpNgTjoOb=s1536",
@@ -142,8 +139,7 @@
       "https://lh3.ggpht.com/p/AF1QipPPtUiATAovUIuNjuooFljKJgCkS7COh1Qu8Dq3=s512",
       "https://lh3.ggpht.com/p/AF1QipN-NpfaNokEstttrlTs_OyBd8OuNN7HtH_lHtwr=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -158,13 +154,13 @@
       "coordinates": [
         121.52425280000001,
         25.066209600000025
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:35:22.750Z"
     },
     "__v": 2,
     "address": "10491台北市中山区雙城街32巷2號1 1c號",
-    "comments": [],
     "city": "台北市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipOJiH6H3XzHX5roAp7Z5X-136PLskEO3lS40HmP=s1536",
@@ -178,8 +174,7 @@
       "https://lh3.ggpht.com/p/AF1QipOnkly9qr6hB7AM5UIrpyg8i0xFnDErrcY311UV=s512",
       "https://lh3.ggpht.com/p/AF1QipOJfJRQTjWjvORLKZPpqEGYODIeYPzUPS9xhemS=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -194,13 +189,13 @@
       "coordinates": [
         120.96740199999999,
         24.807740000000006
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:34:59.826Z"
     },
     "__v": 2,
     "address": "300新竹市北區世界街114號",
-    "comments": [],
     "city": "新竹市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipP6zgx6Vy_ae0d5CjYItb2w4XKxa8vDewgWtXlz=s1536",
@@ -215,8 +210,7 @@
       "https://lh3.ggpht.com/p/AF1QipNVHbdEbL8xPdXCiOg2VuZ9ZiN882o39NZxfN4K=s512",
       "https://lh3.ggpht.com/p/AF1QipM-JZnPpnoV1IZRV6qumMkkkyZnlnpA75YGUmqB=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -231,13 +225,13 @@
       "coordinates": [
         121.541745,
         25.0472268
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:35:21.744Z"
     },
     "__v": 2,
     "address": "104台北市中山區八德路二段279號",
-    "comments": [],
     "city": "台北市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipNTPm3SPQr6k1DUfgDfT2xT3UYRwJpRD-ti0Vpx=s1536",
@@ -251,8 +245,7 @@
       "https://lh3.ggpht.com/p/AF1QipONurVWd1-rJgjVbiuoGely4ENtpQkJqGZo-R5f=s512",
       "https://lh3.ggpht.com/p/AF1QipPyBWm5U0OIcNZ1FxFBKQUdW5d2kku3n2iBRY7I=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -267,13 +260,13 @@
       "coordinates": [
         121.72174099999997,
         25.120750600000044
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:34:58.813Z"
     },
     "__v": 2,
     "address": "204基隆市安樂區麥金路199號1",
-    "comments": [],
     "city": "基隆市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipORm2OAkkGM27pjNbYEfNEK5UsTUSthJ69O0qco=s1536",
@@ -288,8 +281,7 @@
       "https://lh3.ggpht.com/p/AF1QipMkJdaiZ1SYzHy6ddn3lW-SY81U-FfE8YG3on8R=s512",
       "https://lh3.ggpht.com/p/AF1QipOZu5_5X5nATHURt6Pl7qa-z09EGoX9mbcyBUK4=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -304,13 +296,13 @@
       "coordinates": [
         121.56700069999998,
         25.086192499999985
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:35:12.352Z"
     },
     "__v": 2,
     "address": "114台北市內湖區環山路一段33號",
-    "comments": [],
     "city": "台北市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipMW-Sgv4EW_zx6O4B-9hkiIc4J8RwLTLU6mJLdl=s1536",
@@ -324,8 +316,7 @@
       "https://lh3.ggpht.com/p/AF1QipOUZOtZ79s1v39V_g-9X9lNVNFiKbNo7FlWl1gC=s512",
       "https://lh3.ggpht.com/p/AF1QipOZEyMXMABETUbsGMXyxvUOPRTOiO62QNY7Ffsi=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -340,13 +331,13 @@
       "coordinates": [
         121.52747840000008,
         25.0932886
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:35:16.562Z"
     },
     "__v": 2,
     "address": "111台北市士林區中山北路五段505巷1號",
-    "comments": [],
     "city": "台北市",
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipPDiT0mkFUgZNdfK0hHyBQ-F4XArIhV2Sz74Ed7=s1536",
@@ -360,8 +351,7 @@
       "https://lh3.ggpht.com/p/AF1QipP9z-q9QNI8NhGyhAxclzBGKs4-N5-bBCL1fjFM=s512",
       "https://lh3.ggpht.com/p/AF1QipNE8i7-_G0-_QvItXeFr0ApEBdcK1tMKtmbYZdS=s512"
     ],
-    "rating": 0,
-    "reviews": []
+    "rating": 0
   },
   {
     "_id": {
@@ -376,24 +366,14 @@
       "coordinates": [
         121.50682979999999,
         25.04330829999999
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:34:42.980Z"
     },
     "__v": 10,
     "address": "108台北市萬華區成都路27巷12號",
     "city": "台北市",
-    "comments": [
-      {
-        "$oid": "5f55dc993ea7e80017a7bcc6"
-      },
-      {
-        "$oid": "60ad21cd6b844782735438bd"
-      },
-      {
-        "$oid": "60ad21dc6b844782735438be"
-      }
-    ],
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipO5eMH6ZlBe-i4uMRhrsjBAohMS_A0KzZ8s4pOc=s1536",
       "https://lh3.ggpht.com/p/AF1QipMk39iTH0yGtYFyEPXpfNwiDZTdX-8YooQk2rLF=s1536"
@@ -407,27 +387,10 @@
       "https://lh3.ggpht.com/p/AF1QipNbH7F7DNEFHJxQiFL3sbplEBk8rrULNqzdkxTX=s512"
     ],
     "rating": 4,
-    "reviews": [
-      {
-        "$oid": "5f60f00684a42700173ba3ad"
-      },
-      {
-        "$oid": "5f60f00684a42700173ba3be"
-      }
-    ],
     "updatedAt": {
       "$date": "2021-05-25T16:12:12.655Z"
     },
-    "followers": [
-      {
-        "$oid": "5f547ead0ffce00017b38cb7"
-      },
-      {
-        "$oid": "5f584414766fed00170ad2f2"
-      }
-    ],
-    "tags": [],
-    "owners": []
+    "tags": []
   },
   {
     "_id": {
@@ -442,17 +405,16 @@
       "coordinates": [
         121.5230943,
         25.051707299999997
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:34:37.515Z"
     },
     "__v": 8,
     "address": "104台北市中山區中山北路一段135巷1號",
     "city": "台北市",
-    "comments": [],
     "image": [],
     "rating": 0,
-    "reviews": [],
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipPbb2uCy4L7V2XvwL5vCsrXE1DF1Vs5rfzloCQU=s1536",
       "https://lh3.ggpht.com/p/AF1QipPkcJd_yq7ClV2gFFqudl8-hGmskSEnZ6CPxQ-h=s1536",
@@ -484,17 +446,16 @@
       "coordinates": [
         120.30517140000003,
         22.624837700000022
-      ]},
+      ]
+    },
     "createdAt": {
       "$date": "2020-08-27T09:34:38.620Z"
     },
     "__v": 7,
     "address": "800高雄市新興區五福二路194號",
-    "comments": [],
     "city": "高雄市",
     "image": [],
     "rating": 0,
-    "reviews": [],
     "imageLarge": [
       "https://lh3.ggpht.com/p/AF1QipPdi_-ZO0vvAhkv_y0j8o1AGnaxSsm8pT_7ApXD=s1536"
     ],

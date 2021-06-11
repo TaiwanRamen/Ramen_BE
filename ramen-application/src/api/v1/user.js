@@ -112,6 +112,7 @@ router.get('/notifications', middleware.jwtAuth, async (req, res, next) => {
         }
 
     } catch (error) {
+        console.log(error)
         return response.internalServerError(res, error.message);
     }
 });
@@ -124,19 +125,36 @@ router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
         let pageNumber = pageQuery ? pageQuery : 1;
 
         if (req.user) {
-            let user = await User.findById(req.user._id).populate({
-                path: 'followedStore',
-                options: {
-                    skip: (perPage * pageNumber) - perPage,
-                    limit: perPage,
-                    sort: {createdAt: -1}
-                }
-            }).exec();
+            const foundUser = await User.aggregate([
+                {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
+                {
+                    $lookup: {
+                        from: "stores",
+                        let: {"followedStore": "$followedStore"},
+                        pipeline: [
+                            {$match: {$expr: {$in: ["$_id", "$$followedStore"]}}},
+                            {
+                                $lookup: {
+                                    "from": 'storerelations',
+                                    "localField": '_id',
+                                    "foreignField": 'storeId',
+                                    "as": 'storeRelations'
+                                }
+                            },
+                            {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}},
+                            {$sort: {"updatedAt": -1}}
+                        ],
+                        as: "followedStore"
+                    }
+                },
+                {$project: {followedStore: 1}},
+                {$limit: 1}
+            ])
 
             const count = req.user.followedStore.length;
 
             return response.success(res, {
-                stores: user.followedStore,
+                stores: foundUser[0].followedStore,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
             });
@@ -145,6 +163,59 @@ router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
         }
 
     } catch (error) {
+        console.log(error)
+        return response.internalServerError(res, error.message);
+    }
+});
+
+
+router.get('/reviewedStore', middleware.jwtAuth, async (req, res, next) => {
+
+    try {
+        let perPage = 9;
+        let pageQuery = parseInt(req.query.page);
+        let pageNumber = pageQuery ? pageQuery : 1;
+
+        if (req.user) {
+            const foundUser = await User.aggregate([
+                {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
+                {
+                    $lookup: {
+                        from: "reviews",
+                        let: {"reviews": "$reviews"},
+                        pipeline: [
+                            {"$match": {"$expr": {"$in": ["$_id", "$$reviews"]}}},
+                            {
+                                "$lookup": {
+                                    "from": 'stores',
+                                    "localField": 'store',
+                                    "foreignField": '_id',
+                                    "as": 'store'
+                                }
+                            },
+                            {"$unwind":{path: "$store", preserveNullAndEmptyArrays: true}},
+                            {"$sort": {"updatedAt": -1}}
+                        ],
+                        "as" : "reviews"
+                    }
+                },
+                {$project: {reviews: 1}},
+                {$limit: 1}
+            ])
+
+            const count = req.user.reviews.length;
+
+            return response.success(res, {
+                reviews: foundUser[0].reviews,
+                current: pageNumber,
+                pages: Math.ceil(count / perPage),
+            });
+        } else {
+            return response.notFound(res, "找不到使用者");
+        }
+
+    } catch (error) {
+        console.log(error)
         return response.internalServerError(res, error.message);
     }
 });

@@ -23,13 +23,13 @@ const storeRelationSchema = new mongoose.Schema({
     }],
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
     }],
     owners: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
     }],
-}, );
+},);
 
 
 module.exports = mongoose.model("StoreRelation", storeRelationSchema);

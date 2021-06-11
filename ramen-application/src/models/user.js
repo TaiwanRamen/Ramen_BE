@@ -1,5 +1,9 @@
 const mongoose = require("mongoose"),
-    userRole = require("../enums/user-role");
+    userRole = require("../enums/user-role"),
+    Store = require('./store'),
+    Notification = require('./notification'),
+    Review = require('./review')
+
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -30,19 +34,19 @@ const UserSchema = new mongoose.Schema({
     },
     hasStore: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Store'
+        ref: "Store"
     }],
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Notification'
+        ref: "Notification"
     }],
     followedStore: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Store'
+        ref: "Store"
     }],
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Review'
+        ref: "Review"
     }],
     fbUid: String,
     fbToken: String,

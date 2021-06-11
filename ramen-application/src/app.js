@@ -39,6 +39,7 @@ require("./db/connectRedis");
 require("./config/smtp");
 
 
+
 //PASSPORT CONFIGURATION
 app.use(session({
     cookieName: "connect.sid",
@@ -72,21 +73,6 @@ if (!isProduction) {
 app.use(function (err, req, res, next) {
     response.internalServerError(res, err.message);
 });
-
-//Global variable
-//can call the currentUser success_msg and error_msg from anywhere
-app.use(async (req, res, next) => {
-    res.locals.currentUser = req.user;
-    if (req.user) {
-        try {
-            let user = await User.findById(req.user._id).populate('notifications', null, {isRead: false}).exec();
-            res.locals.notifications = user.notifications.reverse();
-        } catch (error) {
-            log.error(error.message);
-        }
-    }
-    next();
-})
 
 //rate limit for each ip
 const limiter = rateLimit({
