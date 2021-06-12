@@ -4,7 +4,6 @@ const Comment = require('../models/comment');
 const User = require('../models/user');
 const Review = require("../models/review");
 const userRole = require("../enums/user-role");
-const log = require('../modules/logger');
 const response = require('../modules/responseMessage');
 passport = require('passport');
 

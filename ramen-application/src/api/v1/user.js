@@ -3,37 +3,28 @@ const express = require('express'),
     log = require('../../modules/logger'),
     User = require('../../models/user'),
     passport = require('passport'),
-    JWT = require('jsonwebtoken'),
-    config = require('../../config/golbal-config'),
     mongoose = require('mongoose'),
     axios = require('axios'),
     middleware = require('../../middleware/checkAuth'),
-    response = require('../../modules/responseMessage');
+    response = require('../../modules/responseMessage'),
+    userService = require('../../service/user.service'),
+    pagination = require('../../utils/pagination')
 
-
-const signToken = async (user) => {
-    return await JWT.sign({
-        iss: 'Taiwan Ramen-Club',
-        sub: user._id,
-        iat: new Date().getTime(), // current time
-        exp: new Date(new Date().getTime() + config.JWT_MAX_AGE).getTime()
-    }, process.env.JWT_SIGNING_KEY, {algorithm: config.JWT_SIGNING_ALGORITHM});
-}
 
 router.post('/oauth/facebook', passport.authenticate('facebookToken'),
     async (req, res) => {
-        if (req.user.err) {
-            response.unAuthorized(res, req.user.err.message);
-        } else if (req.user) {
-            // Generate token
-            const token = await signToken(req.user);
-            res.cookie('access_token', token, {maxAge: 900000, httpOnly: true});
-            response.success(res, {user: req.user, token})
-        } else {
-            response.unAuthorized(res, "臉書登入失敗");
-        }
-    }, (error, req, res, next) => {
-        if (error) {
+        try {
+            const user = req.user;
+            if (user.err) {
+                response.unAuthorized(res, req.user.err.message);
+            } else if (user) {
+                const token = await userService.signToken(user);
+                res.cookie('access_token', token, {maxAge: 900000, httpOnly: true});
+                response.success(res, {user: user, token})
+            } else {
+                response.unAuthorized(res, "臉書登入失敗");
+            }
+        } catch (error) {
             response.badRequest(res, error);
         }
     }
@@ -48,28 +39,21 @@ router.get('/userInfo', middleware.jwtAuth,
         response.notFound(res, "找不到使用者");
     });
 
+
 router.get('/unReadNotiCount', middleware.jwtAuth,
     async (req, res, next) => {
         if (req.user) {
-            const userNotificationCount = await User.aggregate([
-                {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
-                {$lookup: {from: 'notifications', localField: 'notifications', foreignField: '_id', as: 'notiArr'}},
-                {
-                    $project: {
-                        "count": {
-                            "$size": {
-                                "$filter": {
-                                    "input": "$notiArr",
-                                    "cond": {"$eq": ["$$this.isRead", false]}
-                                }
-                            }
-                        }
-                    }
-                },
-                {$limit: 1}
-            ])
-            const count = userNotificationCount[0]?.count;
-            response.success(res, count);
+            const headers = {
+                'Content-Type': 'text/event-stream',
+                'Connection': 'keep-alive',
+                'Cache-Control': 'no-cache'
+            };
+            res.writeHead(200, headers);
+
+            setInterval(async () => {
+                const count = await userService.notificationCount(req.user._id);
+                res.write("data: " + count + "\n\n")
+            }, 1000 * 10)
         } else {
             response.notFound(res, "找不到使用者");
         }
@@ -78,37 +62,23 @@ router.get('/unReadNotiCount', middleware.jwtAuth,
 
 router.get('/notifications', middleware.jwtAuth, async (req, res, next) => {
     try {
-        let perPage = 9;
-        let pageQuery = parseInt(req.query.page);
-        let pageNumber = pageQuery ? pageQuery : 1;
-
         if (req.user) {
-            let user = await User.findById(req.user._id).populate({
-                path: 'notifications',
-                options: {
-                    skip: (perPage * pageNumber) - perPage,
-                    limit: perPage,
-                    sort: {createdAt: -1}
-                }
-            }).exec();
-
-            const count = req.user.notifications.length;
+            const {perPage, pageNumber} = pagination(req.query.page);
+            const {notifications, count} = await userService.getNotifications(req.user, req.query.page)
 
             response.success(res, {
-                notifications: user.notifications,
+                notifications: notifications,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
             });
 
-            for (let notification of user.notifications) {
+            for await (let notification of notifications) {
                 notification.isRead = true;
                 await notification.save();
             }
-
             return null;
         } else {
             response.notFound(res, "找不到使用者");
-
         }
 
     } catch (error) {
@@ -120,41 +90,12 @@ router.get('/notifications', middleware.jwtAuth, async (req, res, next) => {
 router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
 
     try {
-        let perPage = 9;
-        let pageQuery = parseInt(req.query.page);
-        let pageNumber = pageQuery ? pageQuery : 1;
-
+        const {perPage, pageNumber} = pagination(req.query.page);
         if (req.user) {
-            const foundUser = await User.aggregate([
-                {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
-                {
-                    $lookup: {
-                        from: "stores",
-                        let: {"followedStore": "$followedStore"},
-                        pipeline: [
-                            {$match: {$expr: {$in: ["$_id", "$$followedStore"]}}},
-                            {
-                                $lookup: {
-                                    "from": 'storerelations',
-                                    "localField": '_id',
-                                    "foreignField": 'storeId',
-                                    "as": 'storeRelations'
-                                }
-                            },
-                            {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}},
-                            {$sort: {"updatedAt": -1}}
-                        ],
-                        as: "followedStore"
-                    }
-                },
-                {$project: {followedStore: 1}},
-                {$limit: 1}
-            ])
-
-            const count = req.user.followedStore.length;
+            const {followedStores, count} = await userService.getFollowedStores(req.user, req.query.page)
 
             return response.success(res, {
-                stores: foundUser[0].followedStore,
+                stores: followedStores,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
             });
@@ -170,43 +111,12 @@ router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
 
 
 router.get('/reviewedStore', middleware.jwtAuth, async (req, res, next) => {
-
     try {
-        let perPage = 9;
-        let pageQuery = parseInt(req.query.page);
-        let pageNumber = pageQuery ? pageQuery : 1;
-
+        const {perPage, pageNumber} = pagination(req.query.page);
         if (req.user) {
-            const foundUser = await User.aggregate([
-                {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
-                {
-                    $lookup: {
-                        from: "reviews",
-                        let: {"reviews": "$reviews"},
-                        pipeline: [
-                            {"$match": {"$expr": {"$in": ["$_id", "$$reviews"]}}},
-                            {
-                                "$lookup": {
-                                    "from": 'stores',
-                                    "localField": 'store',
-                                    "foreignField": '_id',
-                                    "as": 'store'
-                                }
-                            },
-                            {"$unwind":{path: "$store", preserveNullAndEmptyArrays: true}},
-                            {"$sort": {"updatedAt": -1}}
-                        ],
-                        "as" : "reviews"
-                    }
-                },
-                {$project: {reviews: 1}},
-                {$limit: 1}
-            ])
-
-            const count = req.user.reviews.length;
-
+            const {reviews, count} = await userService.getReviewedStores(req.user, req.query.page);
             return response.success(res, {
-                reviews: foundUser[0].reviews,
+                reviews: reviews,
                 current: pageNumber,
                 pages: Math.ceil(count / perPage),
             });
@@ -222,24 +132,7 @@ router.get('/reviewedStore', middleware.jwtAuth, async (req, res, next) => {
 
 router.get('/isUserInRamenGroup', passport.authenticate('facebookToken', {session: false}),
     async (req, res) => {
-        let isUserInGroup = false;
-        try {
-            let response = await axios.get(`https://graph.facebook.com/v10.0/${req.user.fbUid}/groups?pretty=0&admin_only=false&limit=10000&access_token=${req.user.fbToken}`)
-            let groupsList;
-            log.info(response.data)
-            if (!response.data.paging.next) {
-                groupsList = response.data.data;
-            }
-
-            if (groupsList.length > 0) {
-                isUserInGroup = groupsList.some(group => {
-                    return group.id === "1694931020757966"
-                })
-            }
-        } catch (err) {
-            log.error(err.message);
-            isUserInGroup = true;
-        }
+        const isUserInGroup = await  userService.isUserInRamenGroup(req.user);
         response.success(res, {isUserInGroup});
     });
 

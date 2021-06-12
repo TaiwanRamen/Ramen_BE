@@ -1,6 +1,6 @@
 const FacebookTokenStrategy = require('passport-facebook-token');
 const JwtStrategy = require('passport-jwt').Strategy;
-const config = require("./golbal-config");
+const config = require("./global-config");
 const log = require('../modules/logger');
 const User = require('../models/user');
 

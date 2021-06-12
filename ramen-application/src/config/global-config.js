@@ -23,6 +23,9 @@ module.exports = {
 
     //set rate limit to 200 times for 1 minute
     RATE_LIMIT_WINDOW: 1000 * 60,
-    RATE_LIMIT: 1000
+    RATE_LIMIT: 1000,
+
+    //pagination
+    PER_PAGE: 9,
 
 };
