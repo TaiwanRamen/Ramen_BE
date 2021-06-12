@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const response = require('../modules/responseMessage');
 const {body, validationResult} = require('express-validator')
+const log = require('../modules/logger');
 
 const dataValidate = {}
 
@@ -15,7 +16,7 @@ dataValidate.registerOrRemoveStoreOwner = async (req, res, next) => {
 
     const {error} = schema.validate(req.body);
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'storeId':
                 response.unprocessableEntity(res, 'valid storeId should be provided!');
@@ -38,7 +39,7 @@ dataValidate.addComment = async (req, res, next) => {
     const {error} = schema.validate(req.body);
 
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'commentId':
                 response.unprocessableEntity(res, 'valid comment should be provided!');
@@ -60,7 +61,7 @@ dataValidate.editComment = async (req, res, next) => {
     const {error} = schema.validate(req.body);
 
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'comment':
                 response.unprocessableEntity(res, 'valid comment should be provided!');
@@ -83,7 +84,7 @@ dataValidate.deleteComment = async (req, res, next) => {
 
     const {error} = schema.validate(req.body);
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'commentId':
                 response.unprocessableEntity(res, 'valid commentId should be provided!');
@@ -109,7 +110,7 @@ dataValidate.addReview = async (req, res, next) => {
     const {error} = schema.validate(req.body);
 
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'storeId':
                 response.unprocessableEntity(res, 'valid storeId should be provided!');
@@ -139,7 +140,7 @@ dataValidate.editReview = async (req, res, next) => {
     const {error} = schema.validate(req.body);
 
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'storeId':
                 response.unprocessableEntity(res, 'valid storeId should be provided!');
@@ -170,7 +171,7 @@ dataValidate.deleteReview = async (req, res, next) => {
     const {error} = schema.validate(req.body);
 
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'storeId':
                 response.unprocessableEntity(res, 'valid storeId should be provided!');
@@ -196,7 +197,7 @@ dataValidate.metro = async (req, res, next) => {
     const {error} = schema.validate(req.query);
 
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'city':
                 response.unprocessableEntity(res, 'valid city should be provided!');
@@ -224,7 +225,7 @@ dataValidate.metroCloseToStore = async (req, res, next) => {
     const {error} = schema.validate(req.query);
 
     if (error) {
-        console.log(error)
+        log.error(error);
         switch (error.details[0].context.key) {
             case 'storeId':
                 response.unprocessableEntity(res, 'valid storeId should be provided!');

@@ -1,5 +1,6 @@
 require('dotenv').config()
 const axios = require("axios");
+const log = require('../modules/logger');
 
 module.exports = function getLonLat(address) {
     return new Promise(async (resolve, reject) => {
@@ -15,7 +16,7 @@ module.exports = function getLonLat(address) {
             location.city = response.data.items[0].address.county;
             location.longitude = response.data.items[0].position.lon;
             location.latitude = response.data.items[0].position.lat;
-            console.log(location);
+            log.error(location);
             resolve(location)
         } catch (error) {
             reject(error)

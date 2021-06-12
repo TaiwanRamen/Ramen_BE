@@ -218,7 +218,7 @@ router.delete('/:storeId', middleware.jwtAuth, middleware.isStoreOwner,
             session.endSession()
             return response.success(res);
         } catch (error) {
-            console.log(error)
+            log.error(error);
             await session.abortTransaction();
             session.endSession();
             return response.internalServerError(res, `無法刪除店家: ${error.message}`)

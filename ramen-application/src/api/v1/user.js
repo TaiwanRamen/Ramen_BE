@@ -8,7 +8,8 @@ const express = require('express'),
     mongoose = require('mongoose'),
     axios = require('axios'),
     middleware = require('../../middleware/checkAuth'),
-    response = require('../../modules/responseMessage');
+    response = require('../../modules/responseMessage'),
+    log = require('../../modules/logger');
 
 
 const signToken = async (user) => {
@@ -34,6 +35,7 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
         }
     }, (error, req, res, next) => {
         if (error) {
+            log.error(error)
             response.badRequest(res, error);
         }
     }
@@ -41,37 +43,47 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
 
 router.get('/userInfo', middleware.jwtAuth,
     async (req, res, next) => {
-        if (req.user) {
-            let {password, __v, ...user} = req.user._doc; //remove password and other sensitive info from user object
-            response.success(res, user);
+        try {
+            if (req.user) {
+                let {password, __v, ...user} = req.user._doc; //remove password and other sensitive info from user object
+                response.success(res, user);
+            }
+            response.notFound(res, "找不到使用者");
+        } catch (error) {
+            log.error(error)
+            return response.internalServerError(res, error.message);
         }
-        response.notFound(res, "找不到使用者");
     });
 
 router.get('/unReadNotiCount', middleware.jwtAuth,
     async (req, res, next) => {
-        if (req.user) {
-            const userNotificationCount = await User.aggregate([
-                {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
-                {$lookup: {from: 'notifications', localField: 'notifications', foreignField: '_id', as: 'notiArr'}},
-                {
-                    $project: {
-                        "count": {
-                            "$size": {
-                                "$filter": {
-                                    "input": "$notiArr",
-                                    "cond": {"$eq": ["$$this.isRead", false]}
+        try {
+            if (req.user) {
+                const userNotificationCount = await User.aggregate([
+                    {$match: {_id: new mongoose.Types.ObjectId(req.user._id)}},
+                    {$lookup: {from: 'notifications', localField: 'notifications', foreignField: '_id', as: 'notiArr'}},
+                    {
+                        $project: {
+                            "count": {
+                                "$size": {
+                                    "$filter": {
+                                        "input": "$notiArr",
+                                        "cond": {"$eq": ["$$this.isRead", false]}
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                {$limit: 1}
-            ])
-            const count = userNotificationCount[0]?.count;
-            response.success(res, count);
-        } else {
-            response.notFound(res, "找不到使用者");
+                    },
+                    {$limit: 1}
+                ])
+                const count = userNotificationCount[0]?.count;
+                response.success(res, count);
+            } else {
+                response.notFound(res, "找不到使用者");
+            }
+        } catch (error) {
+            log.error(error);
+            return response.internalServerError(res, error.message);
         }
     });
 
@@ -108,11 +120,9 @@ router.get('/notifications', middleware.jwtAuth, async (req, res, next) => {
             return null;
         } else {
             response.notFound(res, "找不到使用者");
-
         }
-
     } catch (error) {
-        console.log(error)
+        log.error(error);
         return response.internalServerError(res, error.message);
     }
 });
@@ -163,7 +173,7 @@ router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log(error)
+        log.error(error);
         return response.internalServerError(res, error.message);
     }
 });
@@ -193,10 +203,10 @@ router.get('/reviewedStore', middleware.jwtAuth, async (req, res, next) => {
                                     "as": 'store'
                                 }
                             },
-                            {"$unwind":{path: "$store", preserveNullAndEmptyArrays: true}},
+                            {"$unwind": {path: "$store", preserveNullAndEmptyArrays: true}},
                             {"$sort": {"updatedAt": -1}}
                         ],
-                        "as" : "reviews"
+                        "as": "reviews"
                     }
                 },
                 {$project: {reviews: 1}},
@@ -215,7 +225,7 @@ router.get('/reviewedStore', middleware.jwtAuth, async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log(error)
+        log.error(error);
         return response.internalServerError(res, error.message);
     }
 });
@@ -237,7 +247,7 @@ router.get('/isUserInRamenGroup', passport.authenticate('facebookToken', {sessio
                 })
             }
         } catch (err) {
-            log.error(err.message);
+            log.error(error);
             isUserInGroup = true;
         }
         response.success(res, {isUserInGroup});
