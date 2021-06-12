@@ -124,34 +124,38 @@ router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) 
         const DOMPurify = createDOMPurify(window);
 
         const storeId = req.body.storeId;
-        const authorId = req.user._id;
+        const userId = req.user._id;
         const review = DOMPurify.sanitize(req.body.review);
         const rating = req.body.rating;
         session.startTransaction();
-        const user = req.user;
 
-
-        const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
-        const store = await Store.findById(storeId).session(session);
-
-        if (!storeRelation || !store) {
-            throw new Error("store not found")
-        }
 
         const newReview = await Review.create([{
             rating: rating,
             text: review,
-            author: authorId,
+            author: userId,
             store: storeId
         }], {session: session});
 
-        storeRelation.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
-        await storeRelation.save({session: session});
+        const newReviewId = newReview[0]._id;
 
-        user.reviews.push(new mongoose.mongo.ObjectId(newReview[0]._id));
-        await user.save({session: session});
+        const storeRelation = await StoreRelation.findOneAndUpdate(
+            {'storeId': storeId},
+            {$addToSet: {reviews: new mongoose.Types.ObjectId(newReviewId)}},
+            {session: session}
+        );
 
-        await changeStoreRating(storeId, store, session);
+        const user = await User.findOneAndUpdate(
+            {'_id': userId},
+            {$addToSet: {reviews: new mongoose.Types.ObjectId(newReviewId)}},
+            {session: session}
+        );
+
+        if(!storeRelation || ! user) {
+            throw new Error("store or user not found")
+        }
+
+        await changeStoreRating(storeId, session);
 
         await session.commitTransaction();
         session.endSession();
@@ -185,7 +189,7 @@ router.put('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.edi
         foundReview.rating = updatedRating;
         await foundReview.save({session: session});
 
-        await changeStoreRating(storeId, store, session);
+        await changeStoreRating(storeId, session);
 
         await session.commitTransaction();
         await session.endSession();
@@ -208,26 +212,27 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
             session.startTransaction();
             const reviewId = req.body?.reviewId;
             const storeId = req.body?.storeId;
+            const userId = req.user._id;
 
+            await Review.findByIdAndRemove(reviewId).session(session);
 
-            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
-            const store = await Store.findById(storeId).session(session);
+            const storeRelation = await StoreRelation.findOneAndUpdate(
+                {'storeId': storeId},
+                {$pull: {reviews: new mongoose.Types.ObjectId(reviewId)}},
+                {multi: false, session: session}
+            );
 
-            if (!storeRelation || !store) {
+            if (!storeRelation) {
                 throw new Error("store not found")
             }
 
-            await Review.findByIdAndRemove(reviewId).session(session);
-            storeRelation.reviews = storeRelation.reviews.filter(item => item.toString() !== reviewId);
+            await User.findOneAndUpdate(
+                {'_id': userId},
+                {$pull: {reviews: new mongoose.Types.ObjectId(reviewId)}},
+                {multi: false, session: session}
+            );
 
-            await storeRelation.save({session: session});
-
-            const user = req.user;
-            user.reviews = user.reviews.filter(item => item.toString() !== reviewId);
-
-            await user.save({session: session});
-
-            await changeStoreRating(storeId, store, session);
+            await changeStoreRating(storeId, session);
 
             await session.commitTransaction();
             session.endSession();
@@ -241,14 +246,18 @@ router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.
         }
     })
 
-const changeStoreRating = async (storeId, store, session) => {
+const changeStoreRating = async (storeId, session) => {
     const avgRating = await StoreRelation.aggregate([
         {$match: {storeId: new mongoose.Types.ObjectId(storeId)}},
         {$lookup: {from: 'reviews', localField: 'reviews', foreignField: '_id', as: 'reviewObjs'}},
         {$project: {average: {$avg: "$reviewObjs.rating"}}},
         {$limit: 1}
     ]).session(session);
-    store.rating = avgRating[0].average;
-    await store.save({session: session});
+
+    await Store.findOneAndUpdate(
+        {'_id': storeId},
+        {rating: avgRating[0].average},
+        {multi: false, session: session}
+    );
 }
 module.exports = router

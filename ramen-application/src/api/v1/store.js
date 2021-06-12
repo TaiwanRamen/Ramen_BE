@@ -122,21 +122,22 @@ router.get('/:storeId/isUserFollowing', middleware.jwtAuth, async (req, res) => 
 router.put('/:storeId/follow', middleware.jwtAuth, async (req, res) => {
     let storeId = req.params.storeId;
     let userId = req.user._id;
-    let user = req.user;
 
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
-        let storeIndex = storeRelation.followers.indexOf(userId);
-        let userIndex = user.followedStore.indexOf(storeId);
-        if (storeIndex > -1 || userIndex > -1) {
-            throw new Error("user already follow store");
-        }
-        storeRelation.followers.push(userId);
-        await storeRelation.save({session: session});
-        user.followedStore.push(storeId);
-        await user.save({session: session});
+
+        await StoreRelation.findOneAndUpdate(
+            {'storeId': storeId},
+            {$addToSet: {followers: new mongoose.Types.ObjectId(userId)}},
+            {session: session}
+        );
+
+        await User.findOneAndUpdate(
+            {'_id': userId},
+            {$addToSet: {followedStore: new mongoose.Types.ObjectId(storeId)}},
+            {session: session}
+        );
 
         await session.commitTransaction();
         session.endSession();
@@ -153,24 +154,23 @@ router.put('/:storeId/follow', middleware.jwtAuth, async (req, res) => {
 router.put('/:storeId/unfollow', middleware.jwtAuth, async (req, res) => {
     let storeId = req.params.storeId;
     let userId = req.user._id;
-    let user = req.user;
 
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
 
-        let storeIndex = storeRelation.followers.indexOf(userId);
-        if (storeIndex > -1) {
-            storeRelation.followers.splice(storeIndex, 1);
-            await storeRelation.save({session: session});
-        }
-        let userIndex = user.followedStore.indexOf(storeId);
+        await StoreRelation.findOneAndUpdate(
+            {'storeId': storeId},
+            {$pull: {followers: new mongoose.Types.ObjectId(userId)}},
+            {multi: false, session: session}
+        );
 
-        if (userIndex > -1) {
-            user.followedStore.splice(userIndex, 1);
-            await user.save({session: session});
-        }
+        await User.findOneAndUpdate(
+            {'_id': userId},
+            {$pull: {followedStore: new mongoose.Types.ObjectId(storeId)}},
+            {multi: false, session: session}
+        );
+
         await session.commitTransaction();
         session.endSession();
         return response.success(res, "success unfollowing: " + storeId);

@@ -23,6 +23,11 @@ router.post('/registerStoreOwner', middleware.jwtAuth, middleware.isAdmin, dataV
 
             if (!storeRelation || !user) throw new Error("找不到使用者或是店家")
 
+            //add to set
+            // db.inventory.update(
+            //     { _id: 1 },
+            //     { $addToSet: { tags: "accessories" } }
+            // )
             if (!storeRelation.owners.includes(storeOwnerId) && !user.hasStore.includes(storeId)) {
                 storeRelation.owners.push(storeOwnerId);
                 user.hasStore.push(storeId);
