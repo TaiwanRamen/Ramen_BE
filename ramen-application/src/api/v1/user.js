@@ -39,7 +39,6 @@ router.get('/userInfo', middleware.jwtAuth,
         response.notFound(res, "找不到使用者");
     });
 
-
 router.get('/unReadNotiCount', middleware.jwtAuth,
     async (req, res, next) => {
         if (req.user) {
@@ -80,9 +79,8 @@ router.get('/notifications', middleware.jwtAuth, async (req, res, next) => {
         } else {
             response.notFound(res, "找不到使用者");
         }
-
     } catch (error) {
-        console.log(error)
+        log.error(error);
         return response.internalServerError(res, error.message);
     }
 });
@@ -104,7 +102,7 @@ router.get('/followedStore', middleware.jwtAuth, async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log(error)
+        log.error(error);
         return response.internalServerError(res, error.message);
     }
 });
@@ -123,8 +121,9 @@ router.get('/reviewedStore', middleware.jwtAuth, async (req, res, next) => {
         } else {
             return response.notFound(res, "找不到使用者");
         }
+
     } catch (error) {
-        console.log(error)
+        log.error(error);
         return response.internalServerError(res, error.message);
     }
 });

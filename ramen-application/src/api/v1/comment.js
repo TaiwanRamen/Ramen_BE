@@ -78,20 +78,25 @@ router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().esca
 
             const storeId = req.body?.storeId;
             const comment = req.body?.comment;
-
-            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
-
-            if (!storeRelation) throw new Error("找不到店家");
+            const userId = req.user._id;
 
             const newComment = await Comment.create([{
                 text: comment,
-                authorId: req.user._id,
+                authorId: userId,
                 storeId: storeId
             }], {session: session});
 
-            storeRelation.comments.push(new mongoose.mongo.ObjectId(newComment[0]._id));
+            const newCommentId = newComment[0]._id;
 
-            await storeRelation.save({session: session});
+            const storeRelation = await StoreRelation.findOneAndUpdate(
+                {'storeId': storeId},
+                {$addToSet: {comments: new mongoose.Types.ObjectId(newCommentId)}},
+                {session: session}
+            );
+
+            if(!storeRelation) {
+                throw new Error("store not found")
+            }
 
             await session.commitTransaction();
             session.endSession();
@@ -131,14 +136,17 @@ router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidation
             const commentId = req.body?.commentId;
             const storeId = req.body?.storeId;
 
-            const storeRelation = await StoreRelation.findOne({'storeId': storeId}).session(session);
-            if (!storeRelation) {
-                throw new Error("店家不存在");
-            }
-
             await Comment.findByIdAndRemove(commentId).session(session);
-            storeRelation.comments = storeRelation.comments.filter(item => item.toString() !== commentId);
-            await storeRelation.save({session: session});
+
+            const storeRelation = await StoreRelation.findOneAndUpdate(
+                {'storeId': storeId},
+                {$pull: {reviews: new mongoose.Types.ObjectId(commentId)}},
+                {multi: false, session: session}
+            );
+
+            if (!storeRelation) {
+                throw new Error("store not found")
+            }
 
 
             await session.commitTransaction();

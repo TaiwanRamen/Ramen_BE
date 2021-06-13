@@ -1,4 +1,5 @@
 const multer = require('multer'),
+    log = require('../modules/logger'),
     fs = require('fs'),
     uploadImageUrl = require('../utils/image-uploader/imgur-uploader');
 
@@ -12,9 +13,8 @@ const storage = multer.diskStorage({
     }
 });
 let imageFilter = function (req, file, cb) {
-    console.log(file)
     if (!file.originalname.match(/\.(jpeg)$/i)) {
-        console.log("error!")
+        log.error("error!")
         return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);

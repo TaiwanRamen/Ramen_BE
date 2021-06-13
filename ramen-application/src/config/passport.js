@@ -16,8 +16,6 @@ module.exports = (passport) => {
                 return done(null, user);
             } else {
                 log.info("new user: "+ profile.id);
-                console.log(token);
-                console.log(refreshToken);
                 let newUser = new User();
                 updateUserInfoWhenLogin(newUser, profile, token, refreshToken);
                 newUser.isVerified = false;
