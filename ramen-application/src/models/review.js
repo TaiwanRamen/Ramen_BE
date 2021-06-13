@@ -1,6 +1,4 @@
-const mongoose = require("mongoose"),
-    User = require('./user'),
-    Store = require('./store')
+const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema({
     rating: {

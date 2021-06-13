@@ -105,5 +105,22 @@ userRepository.getUserFollowedStores = async (userId, page) => {
 }
 
 
+userRepository.addUserFollowedStores = async (userId, storeId, session) => {
+    return User.findOneAndUpdate(
+        {'_id': userId},
+        {$addToSet: {followedStore: new mongoose.Types.ObjectId(storeId)}},
+        {session: session}
+    );
+}
+
+userRepository.removeUserFollowedStores = async (userId, storeId, session) => {
+    return User.findOneAndUpdate(
+        {'_id': userId},
+        {$pull: {followedStore: new mongoose.Types.ObjectId(storeId)}},
+        {multi: false, session: session}
+    );
+}
+
+
 
 module.exports = userRepository;

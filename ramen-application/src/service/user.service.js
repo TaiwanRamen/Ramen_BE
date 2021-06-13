@@ -85,6 +85,22 @@ userService.isUserInRamenGroup = async (user) => {
 }
 
 
+userService.addUserFollowedStores = async (userId, storeId, session) => {
+    try {
+        return await userRepository.addUserFollowedStores(userId, storeId, session)
+    } catch (error) {
+        log.error(error);
+        throw new Error()
+    }
+}
 
+userService.removeUserFollowedStores = async (userId, storeId, session) => {
+    try {
+        return await userRepository.removeUserFollowedStores(userId, storeId, session);
+    } catch (error) {
+        log.error(error);
+        throw new Error()
+    }
+}
 
 module.exports = userService;
