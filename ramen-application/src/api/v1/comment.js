@@ -2,13 +2,13 @@
 const express = require('express'),
     {body} = require('express-validator'),
     router = express.Router(),
-    dataValidation = require('../../middleware/dataValidate'),
+    dataValidate = require('../../middleware/dataValidate'),
     response = require('../../modules/responseMessage'),
     commentService = require('../../service/comment.service'),
     middleware = require('../../middleware/checkAuth');
 
 
-router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().escape(), dataValidation.addComment,
+router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().escape(), dataValidate.addComment,
     async (req, res) => {
         try {
             const storeId = req.body?.storeId;
@@ -22,7 +22,7 @@ router.post('/', middleware.jwtAuth, body('comment').not().isEmpty().trim().esca
     })
 
 
-router.put('/', middleware.jwtAuth, middleware.isCommentOwner, body('comment').not().isEmpty().trim().escape(), dataValidation.editComment,
+router.put('/', middleware.jwtAuth, middleware.isCommentOwner, body('comment').not().isEmpty().trim().escape(), dataValidate.editComment,
     async (req, res) => {
         try {
 
@@ -37,7 +37,7 @@ router.put('/', middleware.jwtAuth, middleware.isCommentOwner, body('comment').n
 
     })
 
-router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidation.deleteComment,
+router.delete('/', middleware.jwtAuth, middleware.isCommentOwner, dataValidate.deleteComment,
     async (req, res) => {
         try {
             const commentId = req.body?.commentId;

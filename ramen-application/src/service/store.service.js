@@ -34,6 +34,15 @@ storeService.getStoresWithSearchAndPagination = async (search, page) => {
     }
 }
 
+storeService.getStoreById = async (storeId) => {
+    try {
+        return await storeRepository.getStoreById(storeId);
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
 storeService.getStoreDetailById = async (storeId) => {
     try {
         let store = await storeRepository.getStoreDetailById(storeId, null);
@@ -214,8 +223,6 @@ storeService.deleteStore = async (storeId) => {
     }
 }
 
-
-
 storeService.changeStoreRating = async (storeId, session) => {
     try {
         const avgRating = await storeRepository.getAvgRating(storeId, session)
@@ -226,5 +233,28 @@ storeService.changeStoreRating = async (storeId, session) => {
         throw new Error()
     }
 }
+
+storeService.getStoresByDistance = async (coordinates, maxDistance) => {
+    try {
+        return await storeRepository.getStoresByDistance(coordinates, maxDistance)
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
+storeService.getStoresInMapBound = async (mapBound, regex) => {
+    try {
+        if (regex) {
+            return await storeRepository.getStoresInMapBoundWithSearch(mapBound, regex)
+        } else {
+            return await storeRepository.getStoresInMapBound(mapBound)
+        }
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
 
 module.exports = storeService;

@@ -35,8 +35,10 @@ app.use(cookieParser());
 app.use(helmet({contentSecurityPolicy: isProduction ? undefined : false}));
 require('./config/passport')(passport);
 require("./db/connectDB");
+require('./models/registerModel');
 require("./db/connectRedis");
 require("./config/smtp");
+
 
 
 

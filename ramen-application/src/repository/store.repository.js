@@ -95,8 +95,11 @@ storeRepository.getStoreDetailById = async (storeId, session) => {
             {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
         ]);
     }
-
 }
+storeRepository.getStoreById = async (storeId) => {
+    return Store.findById(storeId);
+}
+
 
 storeRepository.addStoreFollower = async (userId, storeId, session) => {
     return StoreRelation.findOneAndUpdate(
@@ -168,6 +171,37 @@ storeRepository.updateStoreRating = async (storeId, rating, session) => {
         {rating: rating},
         {multi: false, session: session}
     );
+}
+
+storeRepository.getStoresByDistance = async (coordinates, maxDistance) => {
+    return Store.aggregate([{
+        '$geoNear': {
+            'near': {
+                'type': 'Point',
+                'coordinates': coordinates
+            },
+            'spherical': true, 'distanceField': "distance",
+            "distanceMultiplier": 0.001,
+            'maxDistance': parseFloat(maxDistance)
+        }
+    }]);
+}
+
+storeRepository.getStoresInMapBound = async (mapBound) => {
+    return await Store.aggregate([
+        {$match: {'location': {$geoWithin: {$geometry: mapBound}}}},
+        {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
+        {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
+    ]);
+}
+
+storeRepository.getStoresInMapBoundWithSearch = async (mapBound, regex) => {
+    return await  Store.aggregate([
+        {$match: {$or: [{name: regex}, {city: regex}, {descriptionText: regex}]}},
+        {$match: {'location': {$geoWithin: {$geometry: mapBound}}}},
+        {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
+        {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
+    ]);
 }
 
 module.exports = storeRepository

@@ -186,7 +186,7 @@ dataValidate.deleteReview = async (req, res, next) => {
 }
 
 
-dataValidate.metro = async (req, res, next) => {
+dataValidate.getStoresNearMetro = async (req, res, next) => {
 
     const schema = Joi.object({
         city: Joi.string().allow("taipei", "kaohsiung", "taichung"),
@@ -231,6 +231,42 @@ dataValidate.metroCloseToStore = async (req, res, next) => {
                 response.unprocessableEntity(res, 'valid storeId should be provided!');
                 break;
             case 'maxDistance':
+                response.unprocessableEntity(res, 'valid maxDistance should be provided!');
+                break
+        }
+    } else {
+        next()
+    }
+}
+
+dataValidate.getStoresInMapBound = async (req, res, next) => {
+
+    const schema = Joi.object({
+        N: Joi.number().min(-90).max(90),
+        S: Joi.number().min(-90).max(90),
+        E: Joi.number().min(-180).max(180),
+        W: Joi.number().min(-180).max(180),
+        search: Joi.string()
+    });
+
+    const {error} = schema.validate(req.query);
+
+    if (error) {
+        log.error(error);
+        switch (error.details[0].context.key) {
+            case 'N':
+                response.unprocessableEntity(res, 'valid North should be provided!');
+                break;
+            case 'S':
+                response.unprocessableEntity(res, 'valid South should be provided!');
+                break
+            case 'E':
+                response.unprocessableEntity(res, 'valid East should be provided!');
+                break
+            case 'W':
+                response.unprocessableEntity(res, 'valid West should be provided!');
+                break
+            case 'search':
                 response.unprocessableEntity(res, 'valid maxDistance should be provided!');
                 break
         }

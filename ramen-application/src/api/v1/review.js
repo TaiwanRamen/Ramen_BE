@@ -3,7 +3,7 @@
 const express = require('express'),
     router = express.Router(),
     middleware = require('../../middleware/checkAuth'),
-    dataValidation = require('../../middleware/dataValidate'),
+    dataValidate = require('../../middleware/dataValidate'),
     uploadImage = require('../../modules/uploadImage'),
     response = require('../../modules/responseMessage'),
     createDOMPurify = require('dompurify'),
@@ -38,7 +38,7 @@ router.post('/image', middleware.jwtAuth, uploadImage, async (req, res) => {
 })
 
 
-router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) => {
+router.post('/', middleware.jwtAuth, dataValidate.addReview, async (req, res) => {
     try {
         const window = new JSDOM('').window;
         const DOMPurify = createDOMPurify(window);
@@ -56,7 +56,7 @@ router.post('/', middleware.jwtAuth, dataValidation.addReview, async (req, res) 
 
 })
 
-router.put('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.editReview, async (req, res) => {
+router.put('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidate.editReview, async (req, res) => {
     try {
         const newText = req.body.review;
         const newRating = req.body.rating;
@@ -70,7 +70,7 @@ router.put('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.edi
 })
 
 
-router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidation.deleteReview,
+router.delete('/', middleware.jwtAuth, middleware.isReviewOwner, dataValidate.deleteReview,
     async (req, res) => {
         try {
             const reviewId = req.body?.reviewId;

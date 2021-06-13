@@ -1,4 +1,4 @@
-const userRepository = require('../repository/notification.repository'),
+const notificationRepository = require('../repository/notification.repository'),
     log = require('../modules/logger');
 
 const notificationService = {}
