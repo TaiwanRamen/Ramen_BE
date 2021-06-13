@@ -2,12 +2,6 @@
 
 const express = require('express'),
     router = express.Router(),
-    Store = require('../../models/store'),
-    StoreRelation = require('../../models/storeRelation'),
-    Comment = require('../../models/comment'),
-    User = require('../../models/user'),
-    Review = require("../../models/review"),
-    mongoose = require('mongoose'),
     response = require('../../modules/responseMessage'),
     middleware = require('../../middleware/checkAuth'),
     log = require('../../modules/logger'),
@@ -33,7 +27,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-//get store
 router.get('/:storeId', async (req, res) => {
     try {
         const storeId = req.params.storeId;
@@ -71,6 +64,46 @@ router.get('/:storeId/isUserFollowing', middleware.jwtAuth, async (req, res) => 
     }
 
 })
+
+router.get('/:storeId/getComments', middleware.jwtAuth, async (req, res) => {
+    try {
+        const storeId = req.params.storeId;
+        const {perPage, pageNumber} = pagination(req.query.page);
+        const {comments, count} = await storeService.getCommentsWithPagination(storeId, pageNumber);
+
+
+        return response.success(res, {
+            comments: comments,
+            current: pageNumber,
+            pages: Math.ceil(count / perPage),
+        });
+
+    }  catch (error) {
+        log.error(error);
+        return response.internalServerError(res, `無法取得店家留言`);
+    }
+
+})
+
+router.get('/:storeId/getReviews', middleware.jwtAuth, async (req, res) => {
+    try {
+        const storeId = req.params.storeId;
+        const {perPage, pageNumber} = pagination(req.query.page);
+        const {reviews, count} = await storeService.getReviewsWithPagination(storeId, pageNumber);
+
+
+        return response.success(res, {
+            comments: reviews,
+            current: pageNumber,
+            pages: Math.ceil(count / perPage),
+        });
+
+    }  catch (error) {
+        log.error(error);
+        return response.internalServerError(res, `無法取得店家留言`);
+    }
+})
+
 
 router.put('/:storeId/follow', middleware.jwtAuth, async (req, res) => {
     let storeId = req.params.storeId;

@@ -1,9 +1,5 @@
 const mongoose = require("mongoose"),
-    userRole = require("../enums/user-role"),
-    Store = require('./store'),
-    Notification = require('./notification'),
-    Review = require('./review')
-
+    userRole = require("../enums/user-role");
 
 const UserSchema = new mongoose.Schema({
     username: {

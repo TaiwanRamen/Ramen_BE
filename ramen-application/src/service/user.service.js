@@ -5,6 +5,31 @@ const JWT = require('jsonwebtoken'),
 
 const userService = {}
 
+userService.getUserById = async (userId) => {
+    try {
+        return await userRepository.getUserById(userId)
+    } catch (error) {
+        log.error(error);
+        throw new Error()
+    }
+}
+
+userService.getFilteredUserById = async (userId) => {
+    try {
+        const user = await userRepository.getUserById(userId)
+        return {
+            _id: userId,
+            username: user.username,
+            email: user.email,
+            avatar: user.avatar,
+        }
+    } catch (error) {
+        log.error(error);
+        throw new Error()
+    }
+}
+
+
 userService.signToken = async (user) => {
     return await JWT.sign({
         iss: 'Taiwan Ramen-Club',

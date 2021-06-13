@@ -4,6 +4,11 @@ const User = require('../models/user'),
 
 const userRepository = {}
 
+
+userRepository.getUserById = async (userId) => {
+    return User.findById(userId);
+}
+
 userRepository.getUserNotificationCount = async (userId) => {
     const userNotificationCount = await User.aggregate([
         {$match: {_id: new mongoose.Types.ObjectId(userId)}},

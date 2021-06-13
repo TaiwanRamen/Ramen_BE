@@ -1,7 +1,5 @@
 const storeRepository = require('../repository/store.repository'),
     userService = require('../service/user.service'),
-    reviewService = require('../service/review.service'),
-    commentService = require('../service/comment.service'),
     log = require('../modules/logger'),
     Store = require('../models/store'),
     mongoose = require('mongoose');
@@ -45,7 +43,35 @@ storeService.getStoreDetailById = async (storeId) => {
         throw new Error()
     }
 }
+storeService.getCommentsWithPagination = async (storeId, page) => {
+    try {
+        const commentData = await storeRepository.getCommentsWithPagination(storeId, page);
+        const count = await storeRepository.getCommentCount(storeId);
+        const comments = []
+        if (commentData) {
+            for await (const comment of commentData) {
+                const author = await userService.getFilteredUserById(comment.authorId);
+                comments.push({
+                    _id: comment._id,
+                    createdAt: comment.createdAt,
+                    rating: comment.rating,
+                    text: comment.text,
+                    author: author
+                })
+            }
+        }
 
+        return {comments, count}
+
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
+storeService.getReviewsWithPagination = async (storeId, page) => {
+
+}
 storeService.isUserFollowing = async (userId, storeId) => {
     try {
         const storeRelation = await storeRepository.findOneRelation(storeId)
@@ -54,6 +80,42 @@ storeService.isUserFollowing = async (userId, storeId) => {
             isUserFollowing = storeRelation.followers.includes(userId);
         }
         return isUserFollowing;
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+storeService.addStoreComment = async (storeId, commentId, session) => {
+    try {
+        return storeRepository.addStoreComment(storeId, commentId, session)
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
+storeService.removeStoreComment = async (storeId, commentId, session) => {
+    try {
+        return storeRepository.removeStoreComment(storeId, commentId, session)
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
+storeService.addStoreReview = async (storeId, reviewId, session) => {
+    try {
+        return storeRepository.addStoreReview(storeId, reviewId, session)
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
+
+storeService.removeStoreReview = async (storeId, reviewId, session) => {
+    try {
+        return storeRepository.removeStoreReview(storeId, reviewId, session)
     } catch (error) {
         log.error(error)
         throw new Error()
@@ -106,7 +168,7 @@ storeService.deleteStore = async (storeId) => {
     try {
         session.startTransaction();
 
-        const  store = await storeRepository.getStoreDetailById(storeId, session);
+        const store = await storeRepository.getStoreDetailById(storeId, session);
         const storeRelations = store[0].storeRelations;
         console.log(storeRelations)
 
@@ -114,6 +176,9 @@ storeService.deleteStore = async (storeId) => {
         if (!store || !storeRelations) {
             throw new Error("店家不存在");
         }
+
+        const reviewService = require('../service/review.service');
+        const commentService = require('../service/comment.service');
 
         await reviewService.deleteMany(storeRelations.reviews, session);
 
@@ -133,4 +198,4 @@ storeService.deleteStore = async (storeId) => {
 }
 
 
-module.exports = storeService
+module.exports = storeService;
