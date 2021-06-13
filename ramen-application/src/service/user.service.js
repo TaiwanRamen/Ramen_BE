@@ -18,7 +18,8 @@ userService.notificationCount = async (userId) => {
     try {
         return await userRepository.getUserNotificationCount(userId)
     } catch (error) {
-        log.error(error)
+        log.error(error);
+        throw new Error()
     }
 }
 
@@ -29,6 +30,7 @@ userService.getNotifications = async (user, page) => {
         return {notifications, count}
     } catch (error) {
         log.error(error)
+        throw new Error()
     }
 }
 
@@ -38,7 +40,7 @@ userService.getFollowedStores = async (user, page) => {
         const count = user.followedStore.length;
         return {followedStores, count}
     } catch (error) {
-        log.error(error)
+        throw new Error()
     }
 }
 
@@ -49,7 +51,17 @@ userService.getReviewedStores = async (user, page) => {
         return {reviews, count}
     } catch (error) {
         log.error(error)
+        throw new Error()
     }
+}
+
+
+userService.isUserStoreOwner = (user, storeId) => {
+    let isStoreOwner = false;
+    if (user && user.hasStore.includes(storeId)) {
+        isStoreOwner = true;
+    }
+    return isStoreOwner;
 }
 
 userService.isUserInRamenGroup = async (user) => {
@@ -67,8 +79,8 @@ userService.isUserInRamenGroup = async (user) => {
         }
         return isUserInGroup;
     } catch (error) {
-        log.error(error)
-        return isUserInGroup;
+        log.error(error);
+        throw new Error()
     }
 }
 

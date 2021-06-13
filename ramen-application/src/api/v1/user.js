@@ -123,7 +123,6 @@ router.get('/reviewedStore', middleware.jwtAuth, async (req, res, next) => {
         } else {
             return response.notFound(res, "找不到使用者");
         }
-
     } catch (error) {
         console.log(error)
         return response.internalServerError(res, error.message);
