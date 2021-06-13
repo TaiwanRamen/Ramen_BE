@@ -43,6 +43,13 @@ userRepository.getUserNotifications = async (userId, page) => {
     return user.notifications;
 }
 
+userRepository.getUserReviews = async (userId) => {
+    let user = await User.findById(userId).populate({
+        path: 'reviews'
+    });
+    return user.reviews
+}
+
 userRepository.getUserFollowedStores = async (userId, page) => {
     const {perPage, pageNumber} = pagination(page)
     const foundUser = await User.aggregate([
@@ -76,7 +83,7 @@ userRepository.getUserFollowedStores = async (userId, page) => {
     return foundUser[0].followedStore;
 }
 
-userRepository.getUserFollowedStores = async (userId, page) => {
+userRepository.getUserReviewedStores = async (userId, page) => {
     const {perPage, pageNumber} = pagination(page)
     const foundUser = await User.aggregate([
         {$match: {_id: new mongoose.Types.ObjectId(userId)}},
@@ -125,7 +132,20 @@ userRepository.removeUserFollowedStores = async (userId, storeId, session) => {
         {multi: false, session: session}
     );
 }
+userRepository.addUserReview = async (userId, reviewId, session) => {
+    return User.findOneAndUpdate(
+        {'_id': userId},
+        {$addToSet: {reviews: new mongoose.Types.ObjectId(reviewId)}},
+        {session: session}
+    );
+}
 
-
+userRepository.removeUserReview= async (userId, reviewId, session) => {
+    return User.findOneAndUpdate(
+        {'_id': userId},
+        {$pull: {reviews: new mongoose.Types.ObjectId(reviewId)}},
+        {multi: false, session: session}
+    );
+}
 
 module.exports = userRepository;

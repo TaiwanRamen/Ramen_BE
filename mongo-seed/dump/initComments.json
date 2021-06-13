@@ -8,7 +8,10 @@
     },
     "text": "good\r\n",
     "__v": 0,
-    "authorId": {
+    "store": {
+      "$oid": "5f477e32ee24401e3c8d200f"
+    },
+    "author": {
       "$oid": "5f547ead0ffce00017b38cb7"
     }
   },
@@ -21,7 +24,10 @@
     },
     "text": "豪雌噎！",
     "__v": 0,
-    "authorId": {
+    "store": {
+      "$oid": "5f477e32ee24401e3c8d200f"
+    },
+    "author": {
       "$oid": "5f547ead0ffce00017b38cb7"
     }
   },
@@ -34,7 +40,10 @@
     },
     "text": "豪豪雌，這家拉麵的溏心蛋真的一絕！！！",
     "__v": 0,
-    "authorId": {
+    "store": {
+      "$oid": "5f477e32ee24401e3c8d200f"
+    },
+    "author": {
       "$oid": "5f547ead0ffce00017b38cb7"
     }
   }

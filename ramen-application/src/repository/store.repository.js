@@ -47,6 +47,28 @@ storeRepository.getCommentCount = async (storeId) => {
     return countComment[0]?.count;
 }
 
+storeRepository.getReviewsWithPagination = async (storeId, page) => {
+    const {perPage, pageNumber} = pagination(page)
+    const foundStoreRelation = await StoreRelation.findOne({'storeId': storeId}).populate({
+        path: "reviews",
+        options: {
+            skip: (perPage * pageNumber) - perPage,
+            limit: perPage,
+            sort: {createdAt: -1}
+        }
+    })
+    return foundStoreRelation?.reviews
+}
+
+storeRepository.getReviewCount = async (storeId) => {
+    const countReview = await StoreRelation.aggregate([
+        {$match: {storeId: new mongoose.Types.ObjectId(storeId)}},
+        {$project: {count: {$size: '$reviews'}}},
+        {$limit: 1}
+    ])
+    return countReview[0]?.count;
+}
+
 storeRepository.countStoresWithRegex = async (regex) => {
     return Store.countDocuments({
         $or: [
@@ -130,5 +152,22 @@ storeRepository.deleteOne = async (storeId, session) => {
     await StoreRelation.findOneAndDelete({"storeId": storeId}, {session: session})
 }
 
+storeRepository.getAvgRating = async (storeId, session) => {
+    const avgRating = await StoreRelation.aggregate([
+        {$match: {storeId: new mongoose.Types.ObjectId(storeId)}},
+        {$lookup: {from: 'reviews', localField: 'reviews', foreignField: '_id', as: 'reviewObjs'}},
+        {$project: {average: {$avg: "$reviewObjs.rating"}}},
+        {$limit: 1}
+    ]).session(session);
+    return avgRating[0].average;
+}
+
+storeRepository.updateStoreRating = async (storeId, rating, session) => {
+    return Store.findOneAndUpdate(
+        {'_id': storeId},
+        {rating: rating},
+        {multi: false, session: session}
+    );
+}
 
 module.exports = storeRepository

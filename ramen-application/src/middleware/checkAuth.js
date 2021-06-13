@@ -64,7 +64,7 @@ middlewareObj.isCommentOwner = async (req, res, next) => {
         let foundComment = await Comment.findById(commentId);
         if (!foundComment) return response.notFound(res, "找不到留言")
 
-        if (req.user._id.equals(foundComment.authorId)) {
+        if (req.user._id.equals(foundComment.author)) {
             res.locals.foundComment = foundComment;
             next()
         } else {

@@ -91,9 +91,8 @@ router.get('/:storeId/getReviews', middleware.jwtAuth, async (req, res) => {
         const {perPage, pageNumber} = pagination(req.query.page);
         const {reviews, count} = await storeService.getReviewsWithPagination(storeId, pageNumber);
 
-
         return response.success(res, {
-            comments: reviews,
+            reviews: reviews,
             current: pageNumber,
             pages: Math.ceil(count / perPage),
         });

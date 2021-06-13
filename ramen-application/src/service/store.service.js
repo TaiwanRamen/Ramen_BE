@@ -50,7 +50,7 @@ storeService.getCommentsWithPagination = async (storeId, page) => {
         const comments = []
         if (commentData) {
             for await (const comment of commentData) {
-                const author = await userService.getFilteredUserById(comment.authorId);
+                const author = await userService.getFilteredUserById(comment.author);
                 comments.push({
                     _id: comment._id,
                     createdAt: comment.createdAt,
@@ -60,7 +60,6 @@ storeService.getCommentsWithPagination = async (storeId, page) => {
                 })
             }
         }
-
         return {comments, count}
 
     } catch (error) {
@@ -70,7 +69,27 @@ storeService.getCommentsWithPagination = async (storeId, page) => {
 }
 
 storeService.getReviewsWithPagination = async (storeId, page) => {
-
+    try {
+        const reviewData = await storeRepository.getReviewsWithPagination(storeId, page);
+        const count = await storeRepository.getReviewCount(storeId);
+        const reviews = []
+        if (reviewData) {
+            for await (const review of reviewData) {
+                const author = await userService.getFilteredUserById(review.author);
+                reviews.push({
+                    _id: review._id,
+                    createdAt: review.createdAt,
+                    rating: review.rating,
+                    text: review.text,
+                    author: author
+                })
+            }
+        }
+        return {reviews, count}
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
 }
 storeService.isUserFollowing = async (userId, storeId) => {
     try {
@@ -170,8 +189,6 @@ storeService.deleteStore = async (storeId) => {
 
         const store = await storeRepository.getStoreDetailById(storeId, session);
         const storeRelations = store[0].storeRelations;
-        console.log(storeRelations)
-
 
         if (!store || !storeRelations) {
             throw new Error("店家不存在");
@@ -197,5 +214,17 @@ storeService.deleteStore = async (storeId) => {
     }
 }
 
+
+
+storeService.changeStoreRating = async (storeId, session) => {
+    try {
+        const avgRating = await storeRepository.getAvgRating(storeId, session)
+        await storeRepository.updateStoreRating(storeId, avgRating, session);
+
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
 
 module.exports = storeService;

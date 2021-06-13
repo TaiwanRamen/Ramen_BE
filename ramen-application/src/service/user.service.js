@@ -71,9 +71,19 @@ userService.getFollowedStores = async (user, page) => {
 
 userService.getReviewedStores = async (user, page) => {
     try {
-        const reviews = await userRepository.getUserFollowedStores(user._id, page);
+        const reviews = await userRepository.getUserReviewedStores(user._id, page);
         const count = user.reviews.length;
         return {reviews, count}
+    } catch (error) {
+        log.error(error)
+        throw new Error()
+    }
+}
+
+
+userService.getUserReviews = async (userId) => {
+    try {
+        return await userRepository.getUserReviews(userId);
     } catch (error) {
         log.error(error)
         throw new Error()
@@ -122,6 +132,24 @@ userService.addUserFollowedStores = async (userId, storeId, session) => {
 userService.removeUserFollowedStores = async (userId, storeId, session) => {
     try {
         return await userRepository.removeUserFollowedStores(userId, storeId, session);
+    } catch (error) {
+        log.error(error);
+        throw new Error()
+    }
+}
+
+userService.addUserReview = async (userId, reviewId, session) => {
+    try {
+        return await userRepository.addUserReview(userId, reviewId, session)
+    } catch (error) {
+        log.error(error);
+        throw new Error()
+    }
+}
+
+userService.removeUserReview = async (userId, reviewId, session) => {
+    try {
+        return await userRepository.removeUserReview(userId, reviewId, session)
     } catch (error) {
         log.error(error);
         throw new Error()

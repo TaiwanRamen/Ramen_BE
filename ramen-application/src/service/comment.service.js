@@ -13,8 +13,8 @@ commentService.addComment = async (storeId, commentText, userId) => {
 
         const newComment = await commentRepository.addComment({
             text: commentText,
-            authorId: userId,
-            storeId: storeId
+            author: userId,
+            store: storeId
         }, session);
 
         const newCommentId = newComment[0]._id;
