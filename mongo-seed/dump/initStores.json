@@ -1,0 +1,471 @@
+[
+  {
+    "_id": {
+      "$oid": "5f477e38ee24401e3c8d2014"
+    },
+    "name": "裕手串·拉麵(六月開幕)",
+    "region": "三個月內新開幕",
+    "descriptionHTML": "▎特色：<br>此店於2020年6月29日開業，是屬於居酒屋類型的店家，湯頭以雞湯為主，詳情可察看下方網友食記。<br><br>▎營業時間：<br>18:30~26:00<br><br>▎鄰近地標或大眾運輸：<br>蝦蝦拉麵元氣屋<br><br>▎社團內參考食記：<br>吳錫恩 -&nbsp;干貝雞白湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/39ncwTu\">https://bit.ly/39ncwTu</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #串燒 #居酒屋<br>",
+    "descriptionText": "▎特色：\n此店於2020年6月29日開業，是屬於居酒屋類型的店家，湯頭以雞湯為主，詳情可察看下方網友食記。\n\n▎營業時間：\n18:30~26:00\n\n▎鄰近地標或大眾運輸：\n蝦蝦拉麵元氣屋\n\n▎社團內參考食記：\n吳錫恩 - 干貝雞白湯拉麵\nhttps://bit.ly/39ncwTu\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #串燒 #居酒屋\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.66028849999998,
+        24.1520405
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:34:48.300Z"
+    },
+    "__v": 2,
+    "address": "403台中市西區中美街382號",
+    "city": "台中市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipMNy4XzMRdn5j6qy-YO9Q80zNZ9E_FtPkdafizH=s1536",
+      "https://lh3.ggpht.com/p/AF1QipP5CSwjs8cShzkN1dGX-y6RDfcdCEY5DDFdneUp=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipMbzitwu3pZ87fUzjpQJ45AC79Nz1mrxkBETbZm=s512",
+      "https://lh3.ggpht.com/p/AF1QipNU3KbKkq1G6P-WsA8pBiGc7i1mS8b3Rgh-HljZ=s512",
+      "https://lh3.ggpht.com/p/AF1QipORN2BKw_IwJz2TIbFw0IdfUVdGE1rIIyG2kRpV=s512",
+      "https://lh3.ggpht.com/p/AF1QipMNy4XzMRdn5j6qy-YO9Q80zNZ9E_FtPkdafizH=s512",
+      "https://lh3.ggpht.com/p/AF1QipP5CSwjs8cShzkN1dGX-y6RDfcdCEY5DDFdneUp=s512",
+      "https://lh3.ggpht.com/p/AF1QipPcy9Mgg9G4BT_J1EM1k711rlqEelwz5H9yq0hm=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e58ee24401e3c8d2033"
+    },
+    "name": "山嵐拉麵-大安店",
+    "region": "台北、基隆",
+    "descriptionHTML": "▎特色：<br>於2019年11月開幕，店內所售品項分為白湯(豚骨)、赤湯(加辣)、海湯(加魚粉)，三種口味也各有沾麵與蔥爆、叉燒版本，均為特色與水準之作，柔嫩的叉燒與風味十足的風味油更是在吃時讓人相當喜愛，沾湯內的高麗菜滋味十足，湯頭內的豬背脂油而不膩讓人回味再三。<br><br>本店目前的期間限定為濃厚番茄拉麵、海鮮咖哩沾麵。<br><br>▎營業時間：<br>11:30-14:30、17:15-20:45<br>週一 公休<br><br>▎鄰近地標或大眾運輸：<br>瑞安街 / 捷運大安站步行3分<br><br>▎社團內參考食記：<br>魏琬軒 - 原味豚骨拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3gvgufB\">https://bit.ly/3gvgufB</a><br>陳彥穎 - 濃厚番茄拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2Y8X8qe\">https://bit.ly/2Y8X8qe</a><br>狄倫-海湯豐盛拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2W0hFe4\">https://bit.ly/2W0hFe4</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #豚骨 #豚骨魚介 #蕃茄 #咖哩 #2019金賞<br>",
+    "descriptionText": "▎特色：\n於2019年11月開幕，店內所售品項分為白湯(豚骨)、赤湯(加辣)、海湯(加魚粉)，三種口味也各有沾麵與蔥爆、叉燒版本，均為特色與水準之作，柔嫩的叉燒與風味十足的風味油更是在吃時讓人相當喜愛，沾湯內的高麗菜滋味十足，湯頭內的豬背脂油而不膩讓人回味再三。\n\n本店目前的期間限定為濃厚番茄拉麵、海鮮咖哩沾麵。\n\n▎營業時間：\n11:30-14:30、17:15-20:45\n週一 公休\n\n▎鄰近地標或大眾運輸：\n瑞安街 / 捷運大安站步行3分\n\n▎社團內參考食記：\n魏琬軒 - 原味豚骨拉麵\nhttps://bit.ly/3gvgufB\n陳彥穎 - 濃厚番茄拉麵\nhttps://bit.ly/2Y8X8qe\n狄倫-海湯豐盛拉麵\nhttps://bit.ly/2W0hFe4\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #豚骨 #豚骨魚介 #蕃茄 #咖哩 #2019金賞\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.54328500000001,
+        25.030858000000002
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:35:20.678Z"
+    },
+    "__v": 2,
+    "address": "106台北市大安區復興南路二段",
+    "city": "台北市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipNKQIeNt7M24W3T4rOdEOYekMpPSBsbMK2cYSq6=s1536",
+      "https://lh3.ggpht.com/p/AF1QipOfg1127uv_I_uB2PEkkkCLIrgshXzbWfgn30bN=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipNKQIeNt7M24W3T4rOdEOYekMpPSBsbMK2cYSq6=s512",
+      "https://lh3.ggpht.com/p/AF1QipNlY1BRhZLp48r59fOyh-PoQ6LwguePzREg2ox2=s512",
+      "https://lh3.ggpht.com/p/AF1QipNUs9v2ILFDHhxKYieiX58BHPiYuHSud_c7NSW8=s512",
+      "https://lh3.ggpht.com/p/AF1QipOwK4IsxyG2B1HSNHDtr3_UyWj8OI4znykppqxB=s512",
+      "https://lh3.ggpht.com/p/AF1QipMG1SgO23KQpA9-L0orudBmg1DdaZ9j8o0poclk=s512",
+      "https://lh3.ggpht.com/p/AF1QipOfg1127uv_I_uB2PEkkkCLIrgshXzbWfgn30bN=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e31ee24401e3c8d200e"
+    },
+    "name": "白露拉麵 bailu ramen(五月開幕)",
+    "region": "三個月內新開幕",
+    "descriptionHTML": "▎特色：<br>店址前身為麵屋列，於2020年5月試營運，店主是女性，,以薩索雞湯為主軸，詳情請見下方食記。<br><br>▎營業時間：<br>週五、日 11:30~14:00，17:30~20:00<br>週六 17:30~20:00<br>週一~四 公休<br><br>▎鄰近地標或大眾運輸：<br>城隍街<br><br>▎社團內參考食記：<br>Huang Wei - 薩索雞清湯醬油拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3gd9aEK\">https://bit.ly/3gd9aEK</a><br>柯學良 - 薩索雞白湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3gCptfq\">https://bit.ly/3gCptfq</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #薩索雞<br>",
+    "descriptionText": "▎特色：\n店址前身為麵屋列，於2020年5月試營運，店主是女性，,以薩索雞湯為主軸，詳情請見下方食記。\n\n▎營業時間：\n週五、日 11:30~14:00，17:30~20:00\n週六 17:30~20:00\n週一~四 公休\n\n▎鄰近地標或大眾運輸：\n城隍街\n\n▎社團內參考食記：\nHuang Wei - 薩索雞清湯醬油拉麵\nhttps://bit.ly/3gd9aEK\n柯學良 - 薩索雞白湯拉麵\nhttps://bit.ly/3gCptfq\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #薩索雞\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2082038,
+        22.989886000000002
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:34:41.994Z"
+    },
+    "__v": 2,
+    "address": "700台南市中西區城隍街50號",
+    "city": "台南市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipPRw4179fELz6EX1qOHcDHLiKGJGHzackj_B9as=s1536",
+      "https://lh3.ggpht.com/p/AF1QipN-mCZ-iuqmTiz58jkVuemj568XM1xi8Ou8E7Ea=s1536",
+      "https://lh3.ggpht.com/p/AF1QipO-71WQiChVqAZeQudnjLQmSSMlLM2CjekiZiaX=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipPRw4179fELz6EX1qOHcDHLiKGJGHzackj_B9as=s512",
+      "https://lh3.ggpht.com/p/AF1QipN-mCZ-iuqmTiz58jkVuemj568XM1xi8Ou8E7Ea=s512",
+      "https://lh3.ggpht.com/p/AF1QipOWtkQsLxB-wr80H1l-i-ZG1eukMJRhwwabGUcY=s512",
+      "https://lh3.ggpht.com/p/AF1QipNMOixhqA9I-9457TNb8wA0YrEWnHNBNYe6sxUR=s512",
+      "https://lh3.ggpht.com/p/AF1QipPPcLlWYGIlf1rswnGzIM2iNy11I9nBjlPL7zqN=s512",
+      "https://lh3.ggpht.com/p/AF1QipO-71WQiChVqAZeQudnjLQmSSMlLM2CjekiZiaX=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e5bee24401e3c8d2036"
+    },
+    "name": "麵屋壹の穴 ICHI",
+    "region": "台北、基隆",
+    "descriptionHTML": "▎特色：<br>老闆號稱180，除了招牌的魚介湯頭外，亦開發了豚骨、雞湯、煮干、醬油等湯頭，也有日式擔擔麵，是少數可以品嚐到多種拉麵的店家。除了這些之外，壹之穴也有推出大份量的二郎系拉麵，分成壹之二郎與痛風二郎兩種，份量相當大。除此之外，壹之穴除了日式擔擔麵以外都可以免費加細麵一次，份量與價格皆相當實在。<br><br>除了多樣化的拉麵外，其他副食則有相當受到好評的叉燒飯、唐揚雞塊、醃漬小番茄可供選擇。配料的部分叉燒和溏心蛋皆可以做追加，中午用餐時段也有優惠的套餐組合。<br><br>▎營業時間：<br>11:30~15:00，17:30~21:00<br>週一公休<br><br>▎鄰近地標或大眾運輸：<br>華視／捷運國父紀念館站-1號出口<br><br>▎社團內參考食記：<br>劉孟誠 - 干貝醬油拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/38Mi0H4\">https://bit.ly/38Mi0H4</a><br>Stars Yang - 秋刀魚醬油干貝醬拉麵+堅果拌麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/31u1fyQ\">https://bit.ly/31u1fyQ</a><br>Zhanyao Zhang - 秋刀魚醬油拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2z1e4Vt\">https://bit.ly/2z1e4Vt</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #油拌麵 #豚骨 #豚骨魚介 #二郎風 #限定 #變化 #2019金賞",
+    "descriptionText": "▎特色：\n老闆號稱180，除了招牌的魚介湯頭外，亦開發了豚骨、雞湯、煮干、醬油等湯頭，也有日式擔擔麵，是少數可以品嚐到多種拉麵的店家。除了這些之外，壹之穴也有推出大份量的二郎系拉麵，分成壹之二郎與痛風二郎兩種，份量相當大。除此之外，壹之穴除了日式擔擔麵以外都可以免費加細麵一次，份量與價格皆相當實在。\n\n除了多樣化的拉麵外，其他副食則有相當受到好評的叉燒飯、唐揚雞塊、醃漬小番茄可供選擇。配料的部分叉燒和溏心蛋皆可以做追加，中午用餐時段也有優惠的套餐組合。\n\n▎營業時間：\n11:30~15:00，17:30~21:00\n週一公休\n\n▎鄰近地標或大眾運輸：\n華視／捷運國父紀念館站-1號出口\n\n▎社團內參考食記：\n劉孟誠 - 干貝醬油拉麵\nhttps://bit.ly/38Mi0H4\nStars Yang - 秋刀魚醬油干貝醬拉麵+堅果拌麵\nhttps://bit.ly/31u1fyQ\nZhanyao Zhang - 秋刀魚醬油拉麵\nhttps://bit.ly/2z1e4Vt\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #油拌麵 #豚骨 #豚骨魚介 #二郎風 #限定 #變化 #2019金賞",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.55526300000002,
+        25.04192450000001
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:35:23.831Z"
+    },
+    "__v": 2,
+    "address": "106台北市大安區延吉街137巷22號",
+    "city": "台北市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipPq_FPd82uqGTntjWg93yGuMr8wXKXMpNgTjoOb=s1536",
+      "https://lh3.ggpht.com/p/AF1QipPPPNIHx55C93aWBJzIZZPeIM2Zo61ZZav0bBFa=s1536",
+      "https://lh3.ggpht.com/p/AF1QipN-NpfaNokEstttrlTs_OyBd8OuNN7HtH_lHtwr=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipPq_FPd82uqGTntjWg93yGuMr8wXKXMpNgTjoOb=s512",
+      "https://lh3.ggpht.com/p/AF1QipOfUvgNy5-M-qaNfaJIuImQ3kxFHGlW3QjsICyZ=s512",
+      "https://lh3.ggpht.com/p/AF1QipPPPNIHx55C93aWBJzIZZPeIM2Zo61ZZav0bBFa=s512",
+      "https://lh3.ggpht.com/p/AF1QipPvg40Au3JEoCGIyNnU_r9Siu3ceSyNQkZxelmK=s512",
+      "https://lh3.ggpht.com/p/AF1QipPPtUiATAovUIuNjuooFljKJgCkS7COh1Qu8Dq3=s512",
+      "https://lh3.ggpht.com/p/AF1QipN-NpfaNokEstttrlTs_OyBd8OuNN7HtH_lHtwr=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e5aee24401e3c8d2035"
+    },
+    "name": "麵屋壹慶",
+    "region": "台北、基隆",
+    "descriptionHTML": "▎特色：<br>開業於2018年9月，台灣首間以泡系為主題的店家，豚骨醬油、豚骨塩味、清湯醬油以上三種味道都有其特色，目前新推出的泡系雞白湯，湯溫心暖醇郁順口，亦有不錯的好評，詳情可察看下方網友食記。<br><br>▎營業時間：<br>17:00–21:00<br>星期一、日 公休<br><br>▎鄰近地標或大眾運輸：<br>欣葉台菜餐廳<br><br>▎社團內參考食記：<br>李雋恩 - 特盛醬油拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3eADd8A\">https://bit.ly/3eADd8A</a><br>Alicia Yang - 雞白湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"http://bit.ly/38DVHm9\">http://bit.ly/38DVHm9</a><br>Stars Yang -醬油清湯<br><a rel=\"nofollow\" target=\"_blank\" href=\"http://bit.ly/30kVUHH\">http://bit.ly/30kVUHH</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #豚骨 #泡系 #醬油 #2019金賞<br>",
+    "descriptionText": "▎特色：\n開業於2018年9月，台灣首間以泡系為主題的店家，豚骨醬油、豚骨塩味、清湯醬油以上三種味道都有其特色，目前新推出的泡系雞白湯，湯溫心暖醇郁順口，亦有不錯的好評，詳情可察看下方網友食記。\n\n▎營業時間：\n17:00–21:00\n星期一、日 公休\n\n▎鄰近地標或大眾運輸：\n欣葉台菜餐廳\n\n▎社團內參考食記：\n李雋恩 - 特盛醬油拉麵\nhttps://bit.ly/3eADd8A\nAlicia Yang - 雞白湯拉麵\nhttp://bit.ly/38DVHm9\nStars Yang -醬油清湯\nhttp://bit.ly/30kVUHH\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #豚骨 #泡系 #醬油 #2019金賞\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.52425280000001,
+        25.066209600000025
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:35:22.750Z"
+    },
+    "__v": 2,
+    "address": "10491台北市中山区雙城街32巷2號1 1c號",
+    "city": "台北市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipOJiH6H3XzHX5roAp7Z5X-136PLskEO3lS40HmP=s1536",
+      "https://lh3.ggpht.com/p/AF1QipOJfJRQTjWjvORLKZPpqEGYODIeYPzUPS9xhemS=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipOJiH6H3XzHX5roAp7Z5X-136PLskEO3lS40HmP=s512",
+      "https://lh3.ggpht.com/p/AF1QipOhehLH0QE1PCKMqbhyZVwypwxHgLSQKt4dnz8z=s512",
+      "https://lh3.ggpht.com/p/AF1QipP5RYffIM73YL2-20tfoli3LmEunPZ-Xd2pb4E=s512",
+      "https://lh3.ggpht.com/p/AF1QipNF-fdtvKWkX3ze71JH9HnzR0OgjkU3KMD22S4M=s512",
+      "https://lh3.ggpht.com/p/AF1QipOnkly9qr6hB7AM5UIrpyg8i0xFnDErrcY311UV=s512",
+      "https://lh3.ggpht.com/p/AF1QipOJfJRQTjWjvORLKZPpqEGYODIeYPzUPS9xhemS=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e43ee24401e3c8d201f"
+    },
+    "name": "麵匠川上(八月開幕)",
+    "region": "三個月內新開幕",
+    "descriptionHTML": "▎特色：<br>開幕於2020年8月12日，本店為和食川上，是以雞湯為主軸的拉麵店，詳情可察看下方網友食記。<br><br>▎營業時間：<br>週三~六 11:30~14:00，18:00~24:00<br>週日 11:00~21:00<br>週一、二 休息<br><br>▎鄰近地標或大眾運輸：<br>世界街<br><br>▎社團內參考食記：<br>Chia Hang Liang - 雞清湯鹽味拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3iWKTUP\">https://bit.ly/3iWKTUP</a><br>Jimmy Lai - 雞白湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/30HEOFD\">https://bit.ly/30HEOFD</a><br>林佳萱 - 鹽味雞清湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3gZjTTM\">https://bit.ly/3gZjTTM</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #雞清 #雞白<br>",
+    "descriptionText": "▎特色：\n開幕於2020年8月12日，本店為和食川上，是以雞湯為主軸的拉麵店，詳情可察看下方網友食記。\n\n▎營業時間：\n週三~六 11:30~14:00，18:00~24:00\n週日 11:00~21:00\n週一、二 休息\n\n▎鄰近地標或大眾運輸：\n世界街\n\n▎社團內參考食記：\nChia Hang Liang - 雞清湯鹽味拉麵\nhttps://bit.ly/3iWKTUP\nJimmy Lai - 雞白湯拉麵\nhttps://bit.ly/30HEOFD\n林佳萱 - 鹽味雞清湯拉麵\nhttps://bit.ly/3gZjTTM\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #雞清 #雞白\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.96740199999999,
+        24.807740000000006
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:34:59.826Z"
+    },
+    "__v": 2,
+    "address": "300新竹市北區世界街114號",
+    "city": "新竹市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipP6zgx6Vy_ae0d5CjYItb2w4XKxa8vDewgWtXlz=s1536",
+      "https://lh3.ggpht.com/p/AF1QipOj6GzEckr0VhDmbdUrylcxrZ3Ia-pCmxkEAdLY=s1536",
+      "https://lh3.ggpht.com/p/AF1QipM-JZnPpnoV1IZRV6qumMkkkyZnlnpA75YGUmqB=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipP6zgx6Vy_ae0d5CjYItb2w4XKxa8vDewgWtXlz=s512",
+      "https://lh3.ggpht.com/p/AF1QipOj6GzEckr0VhDmbdUrylcxrZ3Ia-pCmxkEAdLY=s512",
+      "https://lh3.ggpht.com/p/AF1QipPaDAJi1OUzwi2Sye5NFu4JDvznNJJTa1ONPfz1=s512",
+      "https://lh3.ggpht.com/p/AF1QipO5Qp8Kklgb-YybfwQFcsr7FHN-eyaYPoLeuJE=s512",
+      "https://lh3.ggpht.com/p/AF1QipNVHbdEbL8xPdXCiOg2VuZ9ZiN882o39NZxfN4K=s512",
+      "https://lh3.ggpht.com/p/AF1QipM-JZnPpnoV1IZRV6qumMkkkyZnlnpA75YGUmqB=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e59ee24401e3c8d2034"
+    },
+    "name": "拉麵公子",
+    "region": "台北、基隆",
+    "descriptionHTML": "▎特色：<br>開業於2019年12月3日，此店為知名拉麵部落客，品嘗各地拉麵吃出心得，轉而開店的範例之一，本店是以雞湯與進階型煮干為主軸的店家，雞湯甘美香醇，煮干苦鮮醇厚，詳情可察看下方網友食記。<br><br>▎營業時間：<br>11:30~13:30、17:30~20:30<br>無公休 不定休<br><br>▎鄰近地標或大眾運輸：<br>中崙大潤發<br><br>▎社團內參考食記：<br>谷祖豪 - 限定蘭姆酒濃厚咖哩拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3hfgsJ0\">https://bit.ly/3hfgsJ0</a><br>Haruto Kiru - 柚子味噌雞白湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3aaWpca\">https://bit.ly/3aaWpca</a><br>鄭念祖 - 濃厚煮干 + 鯷魚醬油<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/31iqyCf\">https://bit.ly/31iqyCf</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #雞清 #煮干<br>",
+    "descriptionText": "▎特色：\n開業於2019年12月3日，此店為知名拉麵部落客，品嘗各地拉麵吃出心得，轉而開店的範例之一，本店是以雞湯與進階型煮干為主軸的店家，雞湯甘美香醇，煮干苦鮮醇厚，詳情可察看下方網友食記。\n\n▎營業時間：\n11:30~13:30、17:30~20:30\n無公休 不定休\n\n▎鄰近地標或大眾運輸：\n中崙大潤發\n\n▎社團內參考食記：\n谷祖豪 - 限定蘭姆酒濃厚咖哩拉麵\nhttps://bit.ly/3hfgsJ0\nHaruto Kiru - 柚子味噌雞白湯拉麵\nhttps://bit.ly/3aaWpca\n鄭念祖 - 濃厚煮干 + 鯷魚醬油\nhttps://bit.ly/31iqyCf\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #雞白 #雞清 #煮干\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.541745,
+        25.0472268
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:35:21.744Z"
+    },
+    "__v": 2,
+    "address": "104台北市中山區八德路二段279號",
+    "city": "台北市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipNTPm3SPQr6k1DUfgDfT2xT3UYRwJpRD-ti0Vpx=s1536",
+      "https://lh3.ggpht.com/p/AF1QipPyBWm5U0OIcNZ1FxFBKQUdW5d2kku3n2iBRY7I=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipNTPm3SPQr6k1DUfgDfT2xT3UYRwJpRD-ti0Vpx=s512",
+      "https://lh3.ggpht.com/p/AF1QipP9LZYmNhz5CQQAyJyp8ASmWj3pBeGbCwpnOMl5=s512",
+      "https://lh3.ggpht.com/p/AF1QipOGFsRA8-RMtY7OqoO5KCmDm4QvPdISdldnScBu=s512",
+      "https://lh3.ggpht.com/p/AF1QipNqaQuqqp8hBXbfzh860rMAd7oCGk18zKkD0M1R=s512",
+      "https://lh3.ggpht.com/p/AF1QipONurVWd1-rJgjVbiuoGely4ENtpQkJqGZo-R5f=s512",
+      "https://lh3.ggpht.com/p/AF1QipPyBWm5U0OIcNZ1FxFBKQUdW5d2kku3n2iBRY7I=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e42ee24401e3c8d201e"
+    },
+    "name": "麵屋百味(七月開幕)",
+    "region": "三個月內新開幕",
+    "descriptionHTML": "▎特色：<br>開業於2020年7月，以素食為主軸，訴求平價美味，詳情可察看下方網友食記。<br><br>▎營業時間：<br>11:30~15:00、17:00~20:00<br><br>▎鄰近地標或大眾運輸：<br>橘郡社區<br><br>▎社團內參考食記：<br>大頭小寶 - 元祖豆乳拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2C4jq43\">https://bit.ly/2C4jq43</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #素食",
+    "descriptionText": "▎特色：\n開業於2020年7月，以素食為主軸，訴求平價美味，詳情可察看下方網友食記。\n\n▎營業時間：\n11:30~15:00、17:00~20:00\n\n▎鄰近地標或大眾運輸：\n橘郡社區\n\n▎社團內參考食記：\n大頭小寶 - 元祖豆乳拉麵\nhttps://bit.ly/2C4jq43\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #素食",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.72174099999997,
+        25.120750600000044
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:34:58.813Z"
+    },
+    "__v": 2,
+    "address": "204基隆市安樂區麥金路199號1",
+    "city": "基隆市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipORm2OAkkGM27pjNbYEfNEK5UsTUSthJ69O0qco=s1536",
+      "https://lh3.ggpht.com/p/AF1QipOi6PdDiCZmQmtUaWcg7Z358QMfVMxviY0qyGDe=s1536",
+      "https://lh3.ggpht.com/p/AF1QipOZu5_5X5nATHURt6Pl7qa-z09EGoX9mbcyBUK4=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipORm2OAkkGM27pjNbYEfNEK5UsTUSthJ69O0qco=s512",
+      "https://lh3.ggpht.com/p/AF1QipOi6PdDiCZmQmtUaWcg7Z358QMfVMxviY0qyGDe=s512",
+      "https://lh3.ggpht.com/p/AF1QipP4OF8cWj7Gg7_ta6rnslEdw2C4lvefXxYknI_I=s512",
+      "https://lh3.ggpht.com/p/AF1QipN0U7duxt6Jhg_sXG3c5TqBwBNLJgZl4K5CA7Pt=s512",
+      "https://lh3.ggpht.com/p/AF1QipMkJdaiZ1SYzHy6ddn3lW-SY81U-FfE8YG3on8R=s512",
+      "https://lh3.ggpht.com/p/AF1QipOZu5_5X5nATHURt6Pl7qa-z09EGoX9mbcyBUK4=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e50ee24401e3c8d202b"
+    },
+    "name": "雞吉君拉麵とりよしくんラーメン雞白湯專門店",
+    "region": "台北、基隆",
+    "descriptionHTML": "▎特色：<br>雞吉君是雞湯愛好者必朝聖的一間店，口味上從清淡到濃厚分別是淡麗-&gt;濃厚-&gt;特濃，三種口味各有千秋，可以按照自己的喜好做選擇。<br><br>目前於中午時段販售品項如下：<br>星期二、三、五、六 販售<br>塩味鷄清湯拉麵<br>塩味鷄白湯拉麵<br>鷄吉君手揉拌麵<br><br>星期四、日，販售<br>塩味鷄清湯拉麵<br>濃厚煮干鷄拉麵<br><br>叉燒飯則有分大小，唯一須注意是店內無廁所，請留心。<br><br>▎營業時間：<br>中午11點30~售完為止<br>晚上17點30~售完為止<br>定休日：<br>每週一<br>逢每月起始日，雙數週休(一)、(二)<br><br>▎鄰近地標或大眾運輸：<br>西湖國小／捷運西湖站<br><br>▎社團內參考食記：<br>Zhanyao Zhang - 濃厚煮干雞拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/329FL9i\">https://bit.ly/329FL9i</a><br>侯懿純 - 鹽味雞清湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/32mpcsu\">https://bit.ly/32mpcsu</a><br>朱禾 - 鹽味雞湯拉麵+手柔拌麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2P6o44s\">https://bit.ly/2P6o44s</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #油拌麵 #淡麗 #雞白 #雞濃 #雞清 #煮干&nbsp;#2019金賞<br>",
+    "descriptionText": "▎特色：\n雞吉君是雞湯愛好者必朝聖的一間店，口味上從清淡到濃厚分別是淡麗->濃厚->特濃，三種口味各有千秋，可以按照自己的喜好做選擇。\n\n目前於中午時段販售品項如下：\n星期二、三、五、六 販售\n塩味鷄清湯拉麵\n塩味鷄白湯拉麵\n鷄吉君手揉拌麵\n\n星期四、日，販售\n塩味鷄清湯拉麵\n濃厚煮干鷄拉麵\n\n叉燒飯則有分大小，唯一須注意是店內無廁所，請留心。\n\n▎營業時間：\n中午11點30~售完為止\n晚上17點30~售完為止\n定休日：\n每週一\n逢每月起始日，雙數週休(一)、(二)\n\n▎鄰近地標或大眾運輸：\n西湖國小／捷運西湖站\n\n▎社團內參考食記：\nZhanyao Zhang - 濃厚煮干雞拉麵\nhttps://bit.ly/329FL9i\n侯懿純 - 鹽味雞清湯拉麵\nhttps://bit.ly/32mpcsu\n朱禾 - 鹽味雞湯拉麵+手柔拌麵\nhttps://bit.ly/2P6o44s\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #油拌麵 #淡麗 #雞白 #雞濃 #雞清 #煮干 #2019金賞\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.56700069999998,
+        25.086192499999985
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:35:12.352Z"
+    },
+    "__v": 2,
+    "address": "114台北市內湖區環山路一段33號",
+    "city": "台北市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipMW-Sgv4EW_zx6O4B-9hkiIc4J8RwLTLU6mJLdl=s1536",
+      "https://lh3.ggpht.com/p/AF1QipOZEyMXMABETUbsGMXyxvUOPRTOiO62QNY7Ffsi=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipMW-Sgv4EW_zx6O4B-9hkiIc4J8RwLTLU6mJLdl=s512",
+      "https://lh3.ggpht.com/p/AF1QipNXmjr5AGKQVN8lksBizKKci6NyZxSUmVqWr09I=s512",
+      "https://lh3.ggpht.com/p/AF1QipMle0A2JLrtpl_f2NLEEaXKsX0EoN0cVADjDTZM=s512",
+      "https://lh3.ggpht.com/p/AF1QipOERVogpTqFOwTyhqsbz3F_vvczcVEgGf_81IC1=s512",
+      "https://lh3.ggpht.com/p/AF1QipOUZOtZ79s1v39V_g-9X9lNVNFiKbNo7FlWl1gC=s512",
+      "https://lh3.ggpht.com/p/AF1QipOZEyMXMABETUbsGMXyxvUOPRTOiO62QNY7Ffsi=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e54ee24401e3c8d202f"
+    },
+    "name": "隱家拉麵-士林店",
+    "region": "台北、基隆",
+    "descriptionHTML": "▎特色：<br>開業於2019年10月，本店的風格為多樣化的湯頭，目前提供雞湯與豚骨湯二種湯頭，以及濃厚蝦沾麵的品項。店主對於拉麵的專精與與人為善的熱情，造就本店的自信美味，但店主想在此店傳達除了美味之外，更在乎店家與食客之間心的連繫，因此創立了隱家拉麵，希望可以與食客一起分享美食與生活。詳情可察看下方網友食記。<br><br>▎營業時間：<br>11:30~14:30、16:30~22:00<br><br>▎鄰近地標或大眾運輸：<br>捷運士林站<br><br>▎社團內參考食記：<br>彭浩齊 - 濃厚海老沾麵、辛豚骨拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/39XLh0p\">https://bit.ly/39XLh0p</a><br>Elvis Hsu - 黃金雞湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2vNnum4\">https://bit.ly/2vNnum4</a><br>Stars Yang - 黃金雞湯麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"http://bit.ly/3d8e0Ti\">http://bit.ly/3d8e0Ti</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #豚骨 #雞清 #豚骨蝦 #限定 #加麵一球免費<br>",
+    "descriptionText": "▎特色：\n開業於2019年10月，本店的風格為多樣化的湯頭，目前提供雞湯與豚骨湯二種湯頭，以及濃厚蝦沾麵的品項。店主對於拉麵的專精與與人為善的熱情，造就本店的自信美味，但店主想在此店傳達除了美味之外，更在乎店家與食客之間心的連繫，因此創立了隱家拉麵，希望可以與食客一起分享美食與生活。詳情可察看下方網友食記。\n\n▎營業時間：\n11:30~14:30、16:30~22:00\n\n▎鄰近地標或大眾運輸：\n捷運士林站\n\n▎社團內參考食記：\n彭浩齊 - 濃厚海老沾麵、辛豚骨拉麵\nhttps://bit.ly/39XLh0p\nElvis Hsu - 黃金雞湯拉麵\nhttps://bit.ly/2vNnum4\nStars Yang - 黃金雞湯麵\nhttp://bit.ly/3d8e0Ti\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #豚骨 #雞清 #豚骨蝦 #限定 #加麵一球免費\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.52747840000008,
+        25.0932886
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:35:16.562Z"
+    },
+    "__v": 2,
+    "address": "111台北市士林區中山北路五段505巷1號",
+    "city": "台北市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipPDiT0mkFUgZNdfK0hHyBQ-F4XArIhV2Sz74Ed7=s1536",
+      "https://lh3.ggpht.com/p/AF1QipNE8i7-_G0-_QvItXeFr0ApEBdcK1tMKtmbYZdS=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipPDiT0mkFUgZNdfK0hHyBQ-F4XArIhV2Sz74Ed7=s512",
+      "https://lh3.ggpht.com/p/AF1QipO699hGYPuJMuIp3VoV3_QnNvqgjl_c53g6YfCo=s512",
+      "https://lh3.ggpht.com/p/AF1QipMlhjcGnNzctcRgHlK5MSrpPpzm7xjwfc1pUkg2=s512",
+      "https://lh3.ggpht.com/p/AF1QipPREJoxrLcmXl4K72jDvGkKsD0fyplCmyI8eWqr=s512",
+      "https://lh3.ggpht.com/p/AF1QipP9z-q9QNI8NhGyhAxclzBGKs4-N5-bBCL1fjFM=s512",
+      "https://lh3.ggpht.com/p/AF1QipNE8i7-_G0-_QvItXeFr0ApEBdcK1tMKtmbYZdS=s512"
+    ],
+    "rating": 0
+  },
+  {
+    "_id": {
+      "$oid": "5f477e32ee24401e3c8d200f"
+    },
+    "name": "道樂商店(五月開幕)",
+    "region": "三個月內新開幕",
+    "descriptionHTML": "▎特色：<br>於2020年5月開幕，本店為道樂四店，主打平民小吃，屋台風情，店內的豪華豚骨、蛤蜊豚骨、海老豚骨拉麵都有其愛好者，不定時出現的限定餐點，也受到麵友們的喜愛，詳情可察看下方網友食記。<br><br>▎營業時間：<br>12:00~14:00、17:00~21:00<br>週一 公休<br><br>▎鄰近地標或大眾運輸：<br>美觀園／捷運西門站6號出口<br><br>▎社團內參考食記：<br>TinAn Chen - 雞白湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3gCIH3H\">https://bit.ly/3gCIH3H</a><br>鄭傑瑞 - 味玉雞白湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2BHvyHy\">https://bit.ly/2BHvyHy</a><br>Sam Huang - 豪華叉燒拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3dHUPQw\">https://bit.ly/3dHUPQw</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #豚骨 #雞白 #家系 #限定 #變化 #加麵一球免費<br>",
+    "descriptionText": "▎特色：\n於2020年5月開幕，本店為道樂四店，主打平民小吃，屋台風情，店內的豪華豚骨、蛤蜊豚骨、海老豚骨拉麵都有其愛好者，不定時出現的限定餐點，也受到麵友們的喜愛，詳情可察看下方網友食記。\n\n▎營業時間：\n12:00~14:00、17:00~21:00\n週一 公休\n\n▎鄰近地標或大眾運輸：\n美觀園／捷運西門站6號出口\n\n▎社團內參考食記：\nTinAn Chen - 雞白湯拉麵\nhttps://bit.ly/3gCIH3H\n鄭傑瑞 - 味玉雞白湯拉麵\nhttps://bit.ly/2BHvyHy\nSam Huang - 豪華叉燒拉麵\nhttps://bit.ly/3dHUPQw\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #豚骨 #雞白 #家系 #限定 #變化 #加麵一球免費\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.50682979999999,
+        25.04330829999999
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:34:42.980Z"
+    },
+    "__v": 10,
+    "address": "108台北市萬華區成都路27巷12號",
+    "city": "台北市",
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipO5eMH6ZlBe-i4uMRhrsjBAohMS_A0KzZ8s4pOc=s1536",
+      "https://lh3.ggpht.com/p/AF1QipMk39iTH0yGtYFyEPXpfNwiDZTdX-8YooQk2rLF=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipO5eMH6ZlBe-i4uMRhrsjBAohMS_A0KzZ8s4pOc=s512",
+      "https://lh3.ggpht.com/p/AF1QipOVwTGaL5whbb6qg5KgjHUOvpTFJQVnL0T6HCnU=s512",
+      "https://lh3.ggpht.com/p/AF1QipNI21vVGf4ZdyzH9YmV1O1OKCexIxRpyKyhvAZH=s512",
+      "https://lh3.ggpht.com/p/AF1QipO5jYt-i1zPtrsQCSldcUW9V_r3dtFVrJKHVQJR=s512",
+      "https://lh3.ggpht.com/p/AF1QipMk39iTH0yGtYFyEPXpfNwiDZTdX-8YooQk2rLF=s512",
+      "https://lh3.ggpht.com/p/AF1QipNbH7F7DNEFHJxQiFL3sbplEBk8rrULNqzdkxTX=s512"
+    ],
+    "rating": 4,
+    "updatedAt": {
+      "$date": "2021-05-25T16:12:12.655Z"
+    },
+    "tags": []
+  },
+  {
+    "_id": {
+      "$oid": "5f477e2dee24401e3c8d200a"
+    },
+    "name": "Le Ming 麵食精釀餐酒館-中山店(五月開幕)",
+    "region": "三個月內新開幕",
+    "descriptionHTML": "▎特色：<br>開業於2020年5月，店主插旗中山拉麵戰區，本店的湯體是使用西式手法調理並以干貝雞湯為主體，是目前少見以魚介雞湯系為主的拉麵店，店內亦有販售沾麵及啤酒，詳情可察看下方網友食記。<br><br>▎營業時間：<br>17:30~22:00<br><br>▎鄰近地標或大眾運輸：<br>屯京拉麵<br><br>▎社團內參考食記：<br>CiaoXuan Lin - 松露干貝雞湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2YOc5OQ\">https://bit.ly/2YOc5OQ</a><br>Yiwen Peng - 原味雞湯拉麵、松露干貝雞湯拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2YQXqCn\">https://bit.ly/2YQXqCn</a><br>Hank Wu - 松露干貝雞拉麵、海老魚介沾麵、黑咖哩牛肋沾麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3clMG2S\">https://bit.ly/3clMG2S</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #干貝雞<br>",
+    "descriptionText": "▎特色：\n開業於2020年5月，店主插旗中山拉麵戰區，本店的湯體是使用西式手法調理並以干貝雞湯為主體，是目前少見以魚介雞湯系為主的拉麵店，店內亦有販售沾麵及啤酒，詳情可察看下方網友食記。\n\n▎營業時間：\n17:30~22:00\n\n▎鄰近地標或大眾運輸：\n屯京拉麵\n\n▎社團內參考食記：\nCiaoXuan Lin - 松露干貝雞湯拉麵\nhttps://bit.ly/2YOc5OQ\nYiwen Peng - 原味雞湯拉麵、松露干貝雞湯拉麵\nhttps://bit.ly/2YQXqCn\nHank Wu - 松露干貝雞拉麵、海老魚介沾麵、黑咖哩牛肋沾麵\nhttps://bit.ly/3clMG2S\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #干貝雞\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.5230943,
+        25.051707299999997
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:34:37.515Z"
+    },
+    "__v": 8,
+    "address": "104台北市中山區中山北路一段135巷1號",
+    "city": "台北市",
+    "image": [],
+    "rating": 0,
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipPbb2uCy4L7V2XvwL5vCsrXE1DF1Vs5rfzloCQU=s1536",
+      "https://lh3.ggpht.com/p/AF1QipPkcJd_yq7ClV2gFFqudl8-hGmskSEnZ6CPxQ-h=s1536",
+      "https://lh3.ggpht.com/p/AF1QipNHaYFiwWvDEHcuE0tOpQE2sqByrzNPIM_5to8i=s1536",
+      "https://lh3.ggpht.com/p/AF1QipObdNFDjh8sTyW80P8OKKPMLLU8sxl7ZBBpKmLE=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipPbb2uCy4L7V2XvwL5vCsrXE1DF1Vs5rfzloCQU=s512",
+      "https://lh3.ggpht.com/p/AF1QipPkcJd_yq7ClV2gFFqudl8-hGmskSEnZ6CPxQ-h=s512",
+      "https://lh3.ggpht.com/p/AF1QipOMnmozgBWtpZT02Xtr4Awc1WUrFqMCbG__uFDC=s512",
+      "https://lh3.ggpht.com/p/AF1QipNTknZVfJqudsdeW9vW9nJbJcr4hRgZcORx_Zvo=s512",
+      "https://lh3.ggpht.com/p/AF1QipNHaYFiwWvDEHcuE0tOpQE2sqByrzNPIM_5to8i=s512",
+      "https://lh3.ggpht.com/p/AF1QipObdNFDjh8sTyW80P8OKKPMLLU8sxl7ZBBpKmLE=s512"
+    ],
+    "updatedAt": {
+      "$date": "2020-09-04T11:58:49.623Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5f477e2eee24401e3c8d200b"
+    },
+    "name": "山形心心拉麵-高雄五福店(五月開幕)",
+    "region": "三個月內新開幕",
+    "descriptionHTML": "▎特色：<br>此店位於五福二路、林森一路交叉口。<br>將製麵者的心跟客人的心連繫在一起，為紀念此願景日本山形總店取名為心心，在台灣也希望能用此日本傳統精神將日本跟台灣人的心彼此更加靠近，故與日本總店取同名。<br><br>▎營業時間：<br>週二~四 16:30~22:00<br>週五~日 16:00~26:00<br>週一 公休<br><br>▎鄰近地標或大眾運輸：<br>新崛江<br><br>▎社團內參考食記：<br>寒沐蝶 - 豚野郎<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/3fmnf2A\">https://bit.ly/3fmnf2A</a><br>楊德輝 - 辛味噌拉麵<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2MOnHdw\">https://bit.ly/2MOnHdw</a><br>林小逼 - 魚豚野郎(中)<br><a rel=\"nofollow\" target=\"_blank\" href=\"https://bit.ly/2MrYVBz\">https://bit.ly/2MrYVBz</a><br><br>▎標籤：<br>#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #豚骨 #二郎風<br>",
+    "descriptionText": "▎特色：\n此店位於五福二路、林森一路交叉口。\n將製麵者的心跟客人的心連繫在一起，為紀念此願景日本山形總店取名為心心，在台灣也希望能用此日本傳統精神將日本跟台灣人的心彼此更加靠近，故與日本總店取同名。\n\n▎營業時間：\n週二~四 16:30~22:00\n週五~日 16:00~26:00\n週一 公休\n\n▎鄰近地標或大眾運輸：\n新崛江\n\n▎社團內參考食記：\n寒沐蝶 - 豚野郎\nhttps://bit.ly/3fmnf2A\n楊德輝 - 辛味噌拉麵\nhttps://bit.ly/2MOnHdw\n林小逼 - 魚豚野郎(中)\nhttps://bit.ly/2MrYVBz\n\n▎標籤：\n#ramentw #台灣拉麵愛好會 #拉麵 #沾麵 #豚骨 #二郎風\n",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.30517140000003,
+        22.624837700000022
+      ]
+    },
+    "createdAt": {
+      "$date": "2020-08-27T09:34:38.620Z"
+    },
+    "__v": 7,
+    "address": "800高雄市新興區五福二路194號",
+    "city": "高雄市",
+    "image": [],
+    "rating": 0,
+    "imageLarge": [
+      "https://lh3.ggpht.com/p/AF1QipPdi_-ZO0vvAhkv_y0j8o1AGnaxSsm8pT_7ApXD=s1536"
+    ],
+    "imageSmall": [
+      "https://lh3.ggpht.com/p/AF1QipOopYu0aqPCbPSvQfZBsESLOhPuOQIYwACocl7w=s512",
+      "https://lh3.ggpht.com/p/AF1QipP2NfETRDkdFFfillSYFyXr7ppoaOqHAf_nwdmo=s512",
+      "https://lh3.ggpht.com/p/AF1QipNghsRDGXk3i7kfse5rWjuYl6VIcYSNRBRMjQ3f=s512",
+      "https://lh3.ggpht.com/p/AF1QipN6jX6CffRF_EcsVGG8W5lArh_35R9RYbDmlk9L=s512",
+      "https://lh3.ggpht.com/p/AF1QipOKLxV0aGopLuunzdXw2wP_g5GNMfqdO4Ra9wCV=s512",
+      "https://lh3.ggpht.com/p/AF1QipPdi_-ZO0vvAhkv_y0j8o1AGnaxSsm8pT_7ApXD=s512"
+    ]
+  }
+]

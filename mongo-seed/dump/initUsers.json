@@ -1,0 +1,89 @@
+[
+  {
+    "_id": {
+      "$oid": "5f547ead0ffce00017b38cb7"
+    },
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    "isVerified": true,
+    "notifications": [
+      {
+        "$oid": "5f60efc984a42700173ba3bc"
+      },
+      {
+        "$oid": "5f60f02584a42700173ba3c0"
+      },
+      {
+        "$oid": "5f617a43a55a9600176c483e"
+      },
+      {
+        "$oid": "5f618221a55a9600176c4841"
+      },
+      {
+        "$oid": "5f618dd3a55a9600176c4846"
+      },
+      {
+        "$oid": "5f7da7d9927b560017123a68"
+      },
+      {
+        "$oid": "6023eb731e485b00177f3550"
+      }
+    ],
+    "followers": [],
+    "reviews": [],
+    "fbUid": "3694320833893415",
+    "username": "Handsome Julian",
+    "createdAt": {
+      "$date": "2021-06-09T11:23:44.906Z"
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1612966771826"
+      }
+    },
+    "__v": 0,
+    "followedStore": []
+  },
+  {
+    "_id": {
+      "$oid": "5f584414766fed00170ad2f2"
+    },
+    "avatar": "https://imgur.com/ypEN9cK",
+    "notifications": [],
+    "followers": [],
+    "reviews": [],
+    "username": "juju123",
+    "email": "mepowenlin@gmail.com",
+    "createdAt": {
+      "$date": "2020-09-09T02:55:16.847Z"
+    },
+    "updatedAt": {
+      "$date": "2020-09-09T02:55:16.847Z"
+    },
+    "__v": 0,
+    "hasStore": [],
+    "isVerified": true,
+    "userRole": 1
+  },
+  {
+    "_id": {
+      "$oid": "60c0a37e2b4e700a341b9b75"
+    },
+    "avatar": "https://graph.facebook.com/v2.6/3694920833893412/picture?type=large",
+    "isVerified": false,
+    "userRole": 4,
+    "hasStore": [],
+    "notifications": [],
+    "followedStore": [],
+    "reviews": [],
+    "fbUid": "3694920833893412",
+    "username": "Lin Julian",
+    "email": "sres3416@gmail.com",
+    "createdAt": {
+      "$date": "2021-06-09T11:18:22.538Z"
+    },
+    "updatedAt": {
+      "$date": "2021-06-09T11:23:44.906Z"
+    },
+    "__v": 0
+  }
+]

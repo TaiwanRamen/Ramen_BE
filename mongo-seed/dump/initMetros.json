@@ -1,0 +1,3484 @@
+[
+  {
+    "city": "taipei",
+    "stationCode": "BR01",
+    "name": "動物園",
+    "nameEn": "Taipei Zoo",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.579338,
+        24.998197
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR02",
+    "name": "木柵",
+    "nameEn": "Muzha",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.573145,
+        24.998241
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR03",
+    "name": "萬芳社區",
+    "nameEn": "Wanfang Community",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.568102,
+        24.998585
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR04",
+    "name": "萬芳醫院",
+    "nameEn": "Wanfang Hospital",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.558152,
+        24.999386
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR05",
+    "name": "辛亥",
+    "nameEn": "Xinhai",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.557107,
+        25.005475
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR06",
+    "name": "麟光",
+    "nameEn": "Linguang",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.558791,
+        25.018535
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR07",
+    "name": "六張犁",
+    "nameEn": "Liuzhangli",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.553115,
+        25.023777
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR08",
+    "name": "科技大樓",
+    "nameEn": "Technology Building",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.543437,
+        25.026125
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR12",
+    "name": "中山國中",
+    "nameEn": "Zhongshan Junior High School",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.544227,
+        25.060849
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR13",
+    "name": "松山機場",
+    "nameEn": "Songshan Airport",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.551996,
+        25.063
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR14",
+    "name": "大直",
+    "nameEn": "Dazhi",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.546895,
+        25.079477
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR15",
+    "name": "劍南路",
+    "nameEn": "Jiannan Rd.",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.555592,
+        25.084853
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR16",
+    "name": "西湖",
+    "nameEn": "Xihu",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.567213,
+        25.082133
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR17",
+    "name": "港墘",
+    "nameEn": "Gangqian",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.575081,
+        25.080028
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR18",
+    "name": "文德",
+    "nameEn": "Wende",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.584761,
+        25.078532
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR19",
+    "name": "內湖",
+    "nameEn": "Neihu",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.594408,
+        25.083661
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR20",
+    "name": "大湖公園",
+    "nameEn": "Dahu Park",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.602141,
+        25.083845
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR21",
+    "name": "葫洲",
+    "nameEn": "Huzhou",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.607158,
+        25.072701
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR22",
+    "name": "東湖",
+    "nameEn": "Donghu",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.611445,
+        25.067147
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BR23",
+    "name": "南港軟體園區",
+    "nameEn": "Nangang Software Park",
+    "lineCode": [
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.615953,
+        25.059905
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R02",
+    "name": "象山",
+    "nameEn": "Xiangshan",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.569576,
+        25.03283
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R03",
+    "name": "台北101/世貿",
+    "nameEn": "Taipei 101/World Trade Center",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.563292,
+        25.033102
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R04",
+    "name": "信義安和",
+    "nameEn": "Xinyi Anhe",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.553526,
+        25.033326
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R05 BR09",
+    "name": "大安",
+    "nameEn": "Daan",
+    "lineCode": [
+      "R",
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.543551,
+        25.032943
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R06",
+    "name": "大安森林公園",
+    "nameEn": "Daan Park",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.534882,
+        25.033396
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R07 O06",
+    "name": "東門",
+    "nameEn": "Dongmen",
+    "lineCode": [
+      "R",
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.528739,
+        25.033847
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R09",
+    "name": "台大醫院",
+    "nameEn": "NTU Hospital",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.51604,
+        25.041256
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R12",
+    "name": "雙連",
+    "nameEn": "Shuanglian",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.520627,
+        25.057805
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R14",
+    "name": "圓山",
+    "nameEn": "Yuanshan",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.520118,
+        25.071353
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R15",
+    "name": "劍潭",
+    "nameEn": "Jiantan",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.525078,
+        25.084873
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R16",
+    "name": "士林",
+    "nameEn": "Shilin",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.52623,
+        25.093535
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R17",
+    "name": "芝山",
+    "nameEn": "Zhishan",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.522514,
+        25.10306
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R18",
+    "name": "明德",
+    "nameEn": "Mingde",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.518848,
+        25.109721
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R19",
+    "name": "石牌",
+    "nameEn": "Shipai",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.515559,
+        25.114523
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R20",
+    "name": "唭哩岸",
+    "nameEn": "Qilian",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.506252,
+        25.120872
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R21",
+    "name": "奇岩",
+    "nameEn": "Qiyan",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.501132,
+        25.125491
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R22",
+    "name": "北投",
+    "nameEn": "Beitou",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.498633,
+        25.131841
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R22A",
+    "name": "新北投",
+    "nameEn": "Xinbeitou",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.50253,
+        25.136933
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R23",
+    "name": "復興崗",
+    "nameEn": "Fuxinggang",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.485444,
+        25.137474
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R24",
+    "name": "忠義",
+    "nameEn": "Zhongyi",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.47341,
+        25.130969
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R25",
+    "name": "關渡",
+    "nameEn": "Guandu",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.467102,
+        25.125633
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R26",
+    "name": "竹圍",
+    "nameEn": "Zhuwei",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.459479,
+        25.13694
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R27",
+    "name": "紅樹林",
+    "nameEn": "Hongshulin",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.458872,
+        25.154042
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "R28",
+    "name": "淡水",
+    "nameEn": "Tamsui",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.445561,
+        25.167818
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G01",
+    "name": "新店",
+    "nameEn": "Xindian",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.537584,
+        24.957855
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G02",
+    "name": "新店區公所",
+    "nameEn": "Xindian District Office",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.54131,
+        24.967393
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G03",
+    "name": "七張",
+    "nameEn": "Qizhang",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.542942,
+        24.975169
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G03A",
+    "name": "小碧潭",
+    "nameEn": "Xiaobitan",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.530339,
+        24.971907
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G05",
+    "name": "景美",
+    "nameEn": "Jingmei",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.5406037,
+        24.9921276
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G06",
+    "name": "萬隆",
+    "nameEn": "Wanlong",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.539051,
+        25.001853
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G07",
+    "name": "公館",
+    "nameEn": "Gongguan",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.534216,
+        25.014908
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G08",
+    "name": "台電大樓",
+    "nameEn": "Taipower Building",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.528168,
+        25.020725
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G09 O05",
+    "name": "古亭",
+    "nameEn": "Guting",
+    "lineCode": [
+      "G",
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.522873,
+        25.026357
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G10 R08",
+    "name": "中正紀念堂",
+    "nameEn": "Chiang Kai-Shek Memorial Hall",
+    "lineCode": [
+      "G",
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.51827,
+        25.032729
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G11",
+    "name": "小南門",
+    "nameEn": "Xiaonanmen",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.510857,
+        25.035547
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL11 G12",
+    "name": "西門",
+    "nameEn": "Ximen",
+    "lineCode": [
+      "G",
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.508303,
+        25.04209
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G13",
+    "name": "北門",
+    "nameEn": "Beimen",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.510184,
+        25.049554
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G14 R11",
+    "name": "中山",
+    "nameEn": "Zhongshan",
+    "lineCode": [
+      "G",
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.520392,
+        25.052685
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G15 O08",
+    "name": "松江南京",
+    "nameEn": "Songjiang Nanjing",
+    "lineCode": [
+      "G",
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.533075,
+        25.052015
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G16 BR11",
+    "name": "南京復興",
+    "nameEn": "Nanjing Fuxing",
+    "lineCode": [
+      "G",
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.544011,
+        25.052319
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G17",
+    "name": "台北小巨蛋",
+    "nameEn": "Taipei Arena",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.55153,
+        25.051836
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G18",
+    "name": "南京三民",
+    "nameEn": "Nanjing Sanmin",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.564708,
+        25.051652
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "G19",
+    "name": "松山",
+    "nameEn": "Songshan",
+    "lineCode": [
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.577706,
+        25.050118
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O01",
+    "name": "南勢角",
+    "nameEn": "Nanshijiao",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.509237,
+        24.990045
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O03",
+    "name": "永安市場",
+    "nameEn": "Yongan Market",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.511231,
+        25.002876
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O04",
+    "name": "頂溪",
+    "nameEn": "Dingxi",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.515485,
+        25.013821
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O09",
+    "name": "行天宮",
+    "nameEn": "Xingtian Temple",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.533185,
+        25.059718
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O10",
+    "name": "中山國小",
+    "nameEn": "Zhongshan Elementary School",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.526419,
+        25.062694
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O11 R13",
+    "name": "民權西路",
+    "nameEn": "Minquan W. Rd.",
+    "lineCode": [
+      "O",
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.51932,
+        25.062905
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O12",
+    "name": "大橋頭",
+    "nameEn": "Daqiaotou",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.51272,
+        25.063256
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O13",
+    "name": "台北橋",
+    "nameEn": "Taipei Bridge",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.500762,
+        25.063274
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O14",
+    "name": "菜寮",
+    "nameEn": "Cailiao",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.492156,
+        25.060274
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O15",
+    "name": "三重",
+    "nameEn": "Sanchong",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.484725,
+        25.055791
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O16",
+    "name": "先嗇宮",
+    "nameEn": "Xianse Temple",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.471916,
+        25.046493
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O18",
+    "name": "新莊",
+    "nameEn": "Xinzhuang",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.452468,
+        25.036125
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O19",
+    "name": "輔大",
+    "nameEn": "Fu Jen University",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.43547,
+        25.032718
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O20",
+    "name": "丹鳳",
+    "nameEn": "Danfeng",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4227079,
+        25.0288671
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O21",
+    "name": "迴龍",
+    "nameEn": "Huilong",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.41127,
+        25.021862
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O50",
+    "name": "三重國小",
+    "nameEn": "Sanchong Elementary School",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.496904,
+        25.070319
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O51",
+    "name": "三和國中",
+    "nameEn": "Sanhe Junior High School",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.486347,
+        25.076859
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O52",
+    "name": "徐匯中學",
+    "nameEn": "St. Ignatius High School",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.479673,
+        25.080728
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O53",
+    "name": "三民高中",
+    "nameEn": "Sanmin Senior High School",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.473389,
+        25.085456
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "O54",
+    "name": "蘆洲",
+    "nameEn": "Luzhou",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.464471,
+        25.091554
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL01",
+    "name": "頂埔",
+    "nameEn": "Dingpu",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4205,
+        24.96012
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL02",
+    "name": "永寧",
+    "nameEn": "Yongning",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.436072,
+        24.966726
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL03",
+    "name": "土城",
+    "nameEn": "Tucheng",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.444362,
+        24.973094
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL04",
+    "name": "海山",
+    "nameEn": "Haishan",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.448786,
+        24.985339
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL05",
+    "name": "亞東醫院",
+    "nameEn": "Far Eastern Hospital",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.452514,
+        24.998037
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL06",
+    "name": "府中",
+    "nameEn": "Fuzhong",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.459409,
+        25.008619
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL07",
+    "name": "板橋",
+    "nameEn": "Banqiao",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.462302,
+        25.013618
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL08",
+    "name": "新埔",
+    "nameEn": "Xinpu",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.468361,
+        25.023738
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL09",
+    "name": "江子翠",
+    "nameEn": "Jianzicui",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.47239,
+        25.03001
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL10",
+    "name": "龍山寺",
+    "nameEn": "Longshan Temple",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.499826,
+        25.03528
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL12 R10",
+    "name": "台北車站",
+    "nameEn": "Taipei Main Station",
+    "lineCode": [
+      "BL",
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.517532,
+        25.046255
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL13",
+    "name": "善導寺",
+    "nameEn": "Shandao Temple",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.523208,
+        25.044823
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL14 O07",
+    "name": "忠孝新生",
+    "nameEn": "Zhongxiao Xinsheng",
+    "lineCode": [
+      "BL",
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.532905,
+        25.042356
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL15 BR10",
+    "name": "忠孝復興",
+    "nameEn": "Zhongxiao Fuxing",
+    "lineCode": [
+      "BL",
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.543767,
+        25.041629
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL16",
+    "name": "忠孝敦化",
+    "nameEn": "Zhongxiao Dunhua",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.551098,
+        25.041478
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL17",
+    "name": "國父紀念館",
+    "nameEn": "Sun Yat-Sen Memorial Hall",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.557802,
+        25.041349
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL18",
+    "name": "市政府",
+    "nameEn": "Taipei City Hall",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.565228,
+        25.041171
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL19",
+    "name": "永春",
+    "nameEn": "Yongchun",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.576293,
+        25.040859
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL20",
+    "name": "後山埤",
+    "nameEn": "Houshanpi",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.582522,
+        25.045055
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL21",
+    "name": "昆陽",
+    "nameEn": "Kunyang",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.593268,
+        25.050461
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL22",
+    "name": "南港",
+    "nameEn": "Nangang",
+    "lineCode": [
+      "BL"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.606686,
+        25.052116
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "BL23 BR24",
+    "name": "南港展覽館",
+    "nameEn": "Taipei Nangang Exhibition Center",
+    "lineCode": [
+      "BL",
+      "BR"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.6175001,
+        25.055288
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y07 G04",
+    "name": "大坪林",
+    "nameEn": "Dapinglin",
+    "lineCode": [
+      "Y",
+      "G"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.541352,
+        24.982899
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y08",
+    "name": "十四張",
+    "nameEn": "Shisizhang",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.5340099,
+        24.9829302
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y09",
+    "name": "秀朗橋",
+    "nameEn": "Xiulang Bridge",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.5250505,
+        24.9905493
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y10",
+    "name": "景平",
+    "nameEn": "Jingping",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.5165532,
+        24.9919681
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y11 O02",
+    "name": "景安",
+    "nameEn": "Jingan",
+    "lineCode": [
+      "Y",
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.505113,
+        24.993905
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y12",
+    "name": "中和",
+    "nameEn": "Zhonghe",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4960519,
+        25.0019806
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y13",
+    "name": "橋和",
+    "nameEn": "Qiaohe",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4904608,
+        25.0044131
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y14",
+    "name": "中原",
+    "nameEn": "Zhongyuan",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4841593,
+        25.0084104
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y15",
+    "name": "板新",
+    "nameEn": "Banxin",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4722124,
+        25.0144914
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y16",
+    "name": "板橋",
+    "nameEn": "Banqiao",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.464825,
+        25.015156
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y17",
+    "name": "新埔民生",
+    "nameEn": "Xinpu Minsheng",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.466839,
+        25.026125
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y18 O17",
+    "name": "頭前庄",
+    "nameEn": "Touqianzhuang",
+    "lineCode": [
+      "Y",
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.461655,
+        25.039735
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y19",
+    "name": "幸福",
+    "nameEn": "Xingfu",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.460216,
+        25.050282
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "Y20",
+    "name": "新北產業園區",
+    "nameEn": "New Taipei Industrial Park",
+    "lineCode": [
+      "Y"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4599257,
+        25.0615483
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A1",
+    "name": "台北車站",
+    "nameEn": "Taipei Main Station",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.515245,
+        25.0491868
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A2",
+    "name": "三重",
+    "nameEn": "Sanchong",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4813901,
+        25.0552963
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A3",
+    "name": "新北產業園區",
+    "nameEn": "New Taipei Industrial Park",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4567028,
+        25.061716
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A4",
+    "name": "新莊副都心",
+    "nameEn": "Xinzhuang Fuduxin",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4434732,
+        25.0591305
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A5",
+    "name": "泰山",
+    "nameEn": "Taishan",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4373407,
+        25.0532726
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A6",
+    "name": "泰山貴和",
+    "nameEn": "Taishan Guihe",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.4201443,
+        25.0334752
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A7",
+    "name": "體育大學",
+    "nameEn": "National Taiwan Sport University",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.3832453,
+        25.041246
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A8",
+    "name": "長庚醫院",
+    "nameEn": "Chang Gung Memorial Hospital",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.3679403,
+        25.0604363
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A9",
+    "name": "林口",
+    "nameEn": "Linkou",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.3590943,
+        25.0665023
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A10",
+    "name": "山鼻",
+    "nameEn": "Shanbi",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2834868,
+        25.0803514
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A11",
+    "name": "坑口",
+    "nameEn": "Kengkou",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2642601,
+        25.086516
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A12",
+    "name": "機場第一航廈",
+    "nameEn": "Airport Terminal 1",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2353293,
+        25.081385
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A13",
+    "name": "機場第二航廈",
+    "nameEn": "Airport Terminal 2",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.230063,
+        25.0772703
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A14a",
+    "name": "機場旅館",
+    "nameEn": "Airport Hotel",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2187503,
+        25.0692598
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A15",
+    "name": "大園",
+    "nameEn": "Dayuan",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2082923,
+        25.0560465
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A16",
+    "name": "橫山",
+    "nameEn": "Hengshan",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2045017,
+        25.0460284
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A17",
+    "name": "領航",
+    "nameEn": "Linghang",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2136874,
+        25.0189695
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A18",
+    "name": "高鐵桃園站",
+    "nameEn": "Taoyuan HSR Station",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2119733,
+        25.013762
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A19",
+    "name": "桃園體育園區",
+    "nameEn": "Taoyuan Sports Park",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2013063,
+        25.001996
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A20",
+    "name": "興南",
+    "nameEn": "Xingnan",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2140726,
+        24.9802492
+      ]
+    }
+  },
+  {
+    "city": "taipei",
+    "stationCode": "A21",
+    "name": "環北",
+    "nameEn": "Huanbei",
+    "lineCode": [
+      "A"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.2197492,
+        24.967381
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "103",
+    "name": "舊社",
+    "nameEn": "Jiushe",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.7053448,
+        24.1825081
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "104",
+    "name": "松竹",
+    "nameEn": "Songzhu",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6993853,
+        24.1806113
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "105",
+    "name": "四維國小",
+    "nameEn": "Sihwei Elementary School",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6910906,
+        24.1710429
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "106",
+    "name": "文心崇德",
+    "nameEn": "Wenxin Chongde",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6828659,
+        24.1720421
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "107",
+    "name": "文心中清",
+    "nameEn": "Wenxin Zhongqing",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6690186,
+        24.173486
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "108",
+    "name": "文華高中",
+    "nameEn": "Wenhua Senior High School",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.506252,
+        25.120872
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "109",
+    "name": "文心櫻花",
+    "nameEn": "Wenxin Yinghua",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.658611,
+        24.1717221
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "110",
+    "name": "市政府",
+    "nameEn": "Taichung City Hall",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.648951,
+        24.1615361
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "111",
+    "name": "水安宮",
+    "nameEn": "Shui-an Temple",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6466952,
+        24.1535495
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "112",
+    "name": "文心森林公園",
+    "nameEn": "Wenxin Forest Park",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6466227,
+        24.1452152
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "113",
+    "name": "南屯",
+    "nameEn": "Nantun",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6472521,
+        24.1400858
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "114",
+    "name": "豐樂公園",
+    "nameEn": "Feng-le Park",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6465293,
+        24.1323284
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "115",
+    "name": "大慶",
+    "nameEn": "Daqing",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6477314,
+        4.1190632
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "116",
+    "name": "九張犁",
+    "nameEn": "Jiuzhangli",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6399123,
+        24.1144097
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "117",
+    "name": "九德",
+    "nameEn": "Jiude",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        121.506252,
+        25.120872
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "118",
+    "name": "烏日",
+    "nameEn": "Wuri",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6251348,
+        24.1087917
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "119",
+    "name": "高鐵臺中站",
+    "nameEn": "HSR Taichung Station",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.6140892,
+        24.1098171
+      ]
+    }
+  },
+  {
+    "city": "taichung",
+    "stationCode": "103a",
+    "name": "北屯總站",
+    "nameEn": "Beitun Main Station",
+    "lineCode": [
+      "1"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.7085741,
+        24.1885126
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R24",
+    "name": "南岡山",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3012719,
+        22.780464
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R23",
+    "name": "橋頭火車站",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.310934,
+        22.760451
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R22A",
+    "name": "橋頭糖廠",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.314556,
+        22.753423
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R22",
+    "name": "青埔",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.317693,
+        22.744686
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R21",
+    "name": "都會公園",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.321029,
+        22.729331
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R20",
+    "name": "後勁",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.31633,
+        22.722353
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R19",
+    "name": "楠梓加工區",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.307216,
+        22.718701
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R18",
+    "name": "油廠國小",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.302325,
+        22.708479
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R17",
+    "name": "世運",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.302526,
+        22.701622
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R16",
+    "name": "左營",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.309178,
+        22.688033
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R15",
+    "name": "生態園區",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.306692,
+        22.676836
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R14",
+    "name": "巨蛋",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.303336,
+        22.666249
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R13",
+    "name": "凹子底",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.303083,
+        22.657233
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R12",
+    "name": "後驛",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.303351,
+        22.648317
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R11",
+    "name": "高雄車站",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.302688,
+        22.639672
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R10",
+    "name": "美麗島",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.301957,
+        22.631387
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R9",
+    "name": "中央公園",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.301191,
+        22.62464
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R8",
+    "name": "三多商圈",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.30464,
+        22.61385
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R7",
+    "name": "獅甲",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.307479,
+        22.606235
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R6",
+    "name": "凱旋",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.315132,
+        22.596852
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R5",
+    "name": "前鎮高中",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.321759,
+        22.588328
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R4A",
+    "name": "草衙",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.328443,
+        22.580363
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R4",
+    "name": "高雄國際機場",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.342144,
+        22.570124
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "R3",
+    "name": "小港",
+    "lineCode": [
+      "R"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.35384,
+        22.564822
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O1",
+    "name": "西子灣",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.274541,
+        22.621544
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O2",
+    "name": "鹽埕埔",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.283753,
+        22.62352
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O4",
+    "name": "市議會",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.294886,
+        22.629002
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O5",
+    "name": "美麗島",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.301957,
+        22.631387
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O6",
+    "name": "信義國小",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.311622,
+        22.630745
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O7",
+    "name": "文化中心",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3176,
+        22.630304
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O8",
+    "name": "五塊厝",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.327701,
+        22.629562
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O9",
+    "name": "技擊館",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.334588,
+        22.627309
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O10",
+    "name": "衛武營",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.341061,
+        22.625132
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O11",
+    "name": "鳳山西站",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.348331,
+        22.625343
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O12",
+    "name": "鳳山",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.35537,
+        22.626001
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O13",
+    "name": "大東",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.363398,
+        22.625273
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "O14",
+    "name": "鳳山國中",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.372482,
+        22.624907
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "OT1",
+    "name": "大寮",
+    "lineCode": [
+      "O"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.389773,
+        22.622423
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C1",
+    "name": "籬仔內",
+    "nameEn": "Lizihnei",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3246512,
+        22.6046547
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C2",
+    "name": "凱旋瑞田",
+    "nameEn": "Kaisyuan Rueitian",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3197511,
+        22.5995071
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C3",
+    "name": "前鎮之星",
+    "nameEn": "Cianjhen Star",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3153478,
+        22.5954767
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C4",
+    "name": "凱旋中華",
+    "nameEn": "Kaisyuan Jhonghua",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.310496,
+        22.5936295
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C5",
+    "name": "夢時代",
+    "nameEn": "Dream Mall",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3049849,
+        22.5948593
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C6",
+    "name": "經貿園區",
+    "nameEn": "Commerce and Trade Park",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3026403,
+        22.6009345
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C7",
+    "name": "軟體園區",
+    "nameEn": "Software Technology Park",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.3008122,
+        22.6056585
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C8",
+    "name": "高雄展覽館",
+    "nameEn": "Kaohsiung Exhibition Center",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2980026,
+        22.6101078
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C9",
+    "name": "旅運中心",
+    "nameEn": "Cruise Terminal",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2934187,
+        22.6115998
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C10",
+    "name": "光榮碼頭",
+    "nameEn": "Glory Pier",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2931869,
+        22.6167276
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C11",
+    "name": "真愛碼頭",
+    "nameEn": "Love Pier",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2894459,
+        22.61929
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C12",
+    "name": "駁二大義",
+    "nameEn": "Dayi Pier-2",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2841808,
+        22.6185377
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C13",
+    "name": "駁二蓬萊",
+    "nameEn": "Penglai Pier-2",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2799125,
+        22.6204699
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C14",
+    "name": "哈瑪星",
+    "nameEn": "Hamasen",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2758292,
+        22.6215919
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C15",
+    "name": "壽山公園",
+    "nameEn": "Shoushan Park",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2786,
+        22.62654
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C16",
+    "name": "文武聖殿",
+    "nameEn": "Wenwu Temple",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2807,
+        22.62959
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C17",
+    "name": "鼓山區公所",
+    "nameEn": "Gushan District Office",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.2826,
+        22.6359
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C32",
+    "name": "凱旋公園",
+    "nameEn": "Kaisyuan Park",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.32283,
+        22.62945
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C33",
+    "name": "衛生局",
+    "nameEn": "Department of Health",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.32368,
+        22.6252
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C34",
+    "name": "五權國小",
+    "nameEn": "Wucyuan Elementary School",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.32519,
+        22.62121
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C35",
+    "name": "凱旋武昌",
+    "nameEn": "Kaisyuan Wuchang",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.32685,
+        22.616931
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C36",
+    "name": "凱旋二聖",
+    "nameEn": "Kaisyuan Ersheng",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.327175,
+        22.612526
+      ]
+    }
+  },
+  {
+    "city": "kaohsiung",
+    "stationCode": "C37",
+    "name": "輕軌機廠",
+    "nameEn": "LRT Depot",
+    "lineCode": [
+      "C"
+    ],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        120.326069,
+        22.608503
+      ]
+    }
+  }
+]

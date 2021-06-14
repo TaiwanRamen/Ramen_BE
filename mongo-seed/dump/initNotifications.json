@@ -1,0 +1,8 @@
+[
+  {"_id":{"$oid":"5f60efc984a42700173ba3bc"},"isRead":true,"storeId":"5f477f0dee24401e3c8d20e6","storeName":"泰拉風泰式拉麵","createdAt":{"$date":{"$numberLong":"1600188361804"}},"updatedAt":{"$date":{"$numberLong":"1600223837114"}},"__v":{"$numberInt":"0"}},
+  {"_id":{"$oid":"5f60f02584a42700173ba3c0"},"isRead":true,"storeId":"5f477e32ee24401e3c8d200f","storeName":"道樂商店(五月開幕)","createdAt":{"$date":{"$numberLong":"1600188453169"}},"updatedAt":{"$date":{"$numberLong":"1600223832371"}},"__v":{"$numberInt":"0"}},
+  {"_id":{"$oid":"5f617a43a55a9600176c483e"},"isRead":true,"storeId":"5f477e3aee24401e3c8d2016","storeName":"三元堂拉麵專門店(七月開幕)","createdAt":{"$date":{"$numberLong":"1600223811437"}},"updatedAt":{"$date":{"$numberLong":"1600223819276"}},"__v":{"$numberInt":"0"}},
+  {"_id":{"$oid":"5f618221a55a9600176c4841"},"isRead":true,"storeId":"5f477e8cee24401e3c8d2066","storeName":"東京油組總本店","createdAt":{"$date":{"$numberLong":"1600225825967"}},"updatedAt":{"$date":{"$numberLong":"1600225831062"}},"__v":{"$numberInt":"0"}},
+  {"_id":{"$oid":"5f7da7d9927b560017123a68"},"isRead":true,"storeId":"5f477e78ee24401e3c8d2052","storeName":"博多幸龍総本店","createdAt":{"$date":{"$numberLong":"1602070489662"}},"updatedAt":{"$date":{"$numberLong":"1602070496157"}},"__v":{"$numberInt":"0"}},
+  {"_id":{"$oid":"6023eb731e485b00177f3550"},"isRead":true,"storeId":"5f477f20ee24401e3c8d20f8","storeName":"麵屋浩Hiroshi","createdAt":{"$date":{"$numberLong":"1612966771809"}},"updatedAt":{"$date":{"$numberLong":"1612966775443"}},"__v":{"$numberInt":"0"}}
+]

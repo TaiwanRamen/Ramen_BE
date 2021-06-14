@@ -1,0 +1,156 @@
+[
+  {
+    "storeId": {
+      "$oid": "5f477e38ee24401e3c8d2014"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e58ee24401e3c8d2033"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e31ee24401e3c8d200e"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e5bee24401e3c8d2036"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e5aee24401e3c8d2035"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e43ee24401e3c8d201f"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e59ee24401e3c8d2034"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e42ee24401e3c8d201e"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e50ee24401e3c8d202b"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e54ee24401e3c8d202f"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e32ee24401e3c8d200f"
+    },
+    "comments": [
+      {
+        "$oid": "5f55dc993ea7e80017a7bcc6"
+      },
+      {
+        "$oid": "60ad21cd6b844782735438bd"
+      },
+      {
+        "$oid": "60ad21dc6b844782735438be"
+      }
+    ],
+    "reviews": [
+      {
+        "$oid": "5f60f00684a42700173ba3ad"
+      },
+      {
+        "$oid": "5f60f00684a42700173ba3be"
+      }
+    ],
+    "followers": [
+      {
+        "$oid": "5f547ead0ffce00017b38cb7"
+      },
+      {
+        "$oid": "5f584414766fed00170ad2f2"
+      }
+    ],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e2dee24401e3c8d200a"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  },
+  {
+    "storeId": {
+      "$oid": "5f477e2eee24401e3c8d200b"
+    },
+    "comments": [],
+    "reviews": [],
+    "followers": [],
+    "owners": [],
+    "author": null
+  }
+]

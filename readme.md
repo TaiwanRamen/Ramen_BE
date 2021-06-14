@@ -90,7 +90,6 @@ and more...
 * [mongoDB](https://www.mongodb.com/)
 * [mongoose](http://mongoosejs.com/)
 * [async](http://caolan.github.io/async/)
-* [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 * [passport](http://www.passportjs.org/)
 * [passport-local](https://github.com/jaredhanson/passport-local#passport-local)
 * [passport-facebook](https://github.com/jaredhanson/passport-facebook)
@@ -100,7 +99,6 @@ and more...
 * [moment](https://momentjs.com/)
 * [imgur](https://api.imgur.com/)
 * [here-geocoder](https://developer.here.com/)
-* [connect-flash](https://github.com/jaredhanson/connect-flash#connect-flash)
 
 ### Database
 
@@ -147,6 +145,22 @@ v  add new store proximity search($near)
 *  store unsent review inside browser sessionStorage or localStorage? https://www.w3schools.com/html/html5_webstorage.asp
 v  find store througe navigating through map
 * 
+
+2021/04/04
+* reddis session
+* passport fb token
+* api seperation
+* fb get group: /v.10.0/{userFbId}/groups?pretty=0&limit=25000
+* find nearest store
+* subway image map
+
+* 加入index預先顯示灰色的block，
+
+2021/06/03
+* add data validation
+* use replica set to achieve transactional
+* finish comment
+
 ## License
 
 #### [MIT](./LICENSE)
