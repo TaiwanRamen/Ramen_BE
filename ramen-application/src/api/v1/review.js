@@ -1,5 +1,5 @@
 //========  /api/vi/reviews
-
+const multer = require('multer');
 const express = require('express'),
     router = express.Router(),
     middleware = require('../../middleware/checkAuth'),
@@ -36,7 +36,6 @@ router.post('/image', middleware.jwtAuth, getImage, async (req, res) => {
         return response.internalServerError(res, "上傳圖片失敗")
     }
 })
-
 
 
 router.post('/', middleware.jwtAuth, dataValidate.addReview, async (req, res) => {

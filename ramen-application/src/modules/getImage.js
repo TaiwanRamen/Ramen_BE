@@ -1,14 +1,15 @@
 const multer = require('multer'),
-    log = require('../modules/logger'),
-    fs = require('fs'),
-    uploadImageUrl = require('../utils/image-uploader/imgur-uploader');
+    fs = require("fs"),
+    log = require('../modules/logger');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './tmp');
+        const path = `./tmp`
+        fs.mkdirSync(path, { recursive: true })
+        return cb(null, path)
     },
     filename: function (req, file, cb) {
-        cb(null, `${Date.now()}_${req.user._id}.jpg`);
+        return cb(null, `${Date.now()}_${req.user._id}.jpg`);
     }
 });
 let imageFilter = function (req, file, cb) {
@@ -23,5 +24,6 @@ let upload = multer({
     storage: storage,
     fileFilter: imageFilter
 }).single('upload_image')
+
 
 module.exports = upload
