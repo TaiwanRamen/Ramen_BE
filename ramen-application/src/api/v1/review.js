@@ -1,10 +1,10 @@
-//========  /api/vi/review
+//========  /api/vi/reviews
 
 const express = require('express'),
     router = express.Router(),
     middleware = require('../../middleware/checkAuth'),
     dataValidate = require('../../middleware/dataValidate'),
-    uploadImage = require('../../modules/uploadImage'),
+    getImage = require('../../modules/getImage'),
     response = require('../../modules/responseMessage'),
     createDOMPurify = require('dompurify'),
     log = require('../../modules/logger'),
@@ -27,7 +27,7 @@ router.get('/userReview/:storeId', middleware.jwtAuth, async (req, res) => {
     }
 });
 
-router.post('/image', middleware.jwtAuth, uploadImage, async (req, res) => {
+router.post('/image', middleware.jwtAuth, getImage, async (req, res) => {
     try {
         let imgurURL = await uploadImageUrl(req.file.path);
         return response.success(res, {imageUrl: imgurURL})
@@ -36,6 +36,7 @@ router.post('/image', middleware.jwtAuth, uploadImage, async (req, res) => {
         return response.internalServerError(res, "上傳圖片失敗")
     }
 })
+
 
 
 router.post('/', middleware.jwtAuth, dataValidate.addReview, async (req, res) => {

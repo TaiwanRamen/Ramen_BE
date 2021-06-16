@@ -16,7 +16,7 @@ reviewService.getUserReviewForStore = async (user, storeId) => {
             return null
         }
         userReview = JSON.parse(JSON.stringify(userReview));
-        userReview.author = {id: user._id, avatar: user.avatar, username: user.username};
+        userReview.author = {_id: user._id, avatar: user.avatar, username: user.username};
 
         return userReview;
     } catch (err) {

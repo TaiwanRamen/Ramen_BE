@@ -7,7 +7,8 @@ const express = require('express'),
     log = require('../../modules/logger'),
     storeService = require('../../service/store.service'),
     userService = require('../../service/user.service'),
-    pagination = require('../../utils/pagination')
+    pagination = require('../../utils/pagination'),
+    dataValidate = require('../../middleware/dataValidate')
 
 
 router.get('/', async (req, res) => {
@@ -27,7 +28,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:storeId', async (req, res) => {
+router.get('/:storeId', middleware.jwtAuth, dataValidate.storeId,  async (req, res) => {
     try {
         const storeId = req.params.storeId;
 

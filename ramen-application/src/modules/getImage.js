@@ -3,7 +3,6 @@ const multer = require('multer'),
     fs = require('fs'),
     uploadImageUrl = require('../utils/image-uploader/imgur-uploader');
 
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './tmp');

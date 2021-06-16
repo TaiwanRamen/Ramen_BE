@@ -275,4 +275,25 @@ dataValidate.getStoresInMapBound = async (req, res, next) => {
     }
 }
 
+
+dataValidate.storeId = async (req, res, next) => {
+
+    const schema = Joi.object({
+        storeId: idFormat
+    });
+
+    const {error} = schema.validate(req.params);
+
+    if (error) {
+        log.error(error);
+        switch (error.details[0].context.key) {
+            case 'storeId':
+                response.unprocessableEntity(res, 'valid storeId should be provided!');
+                break
+        }
+    } else {
+        next()
+    }
+}
+
 module.exports = dataValidate;

@@ -18,7 +18,7 @@ router.get('/getStoresInMapBound', middleware.jwtAuth, dataValidate.getStoresInM
         response.success(res, foundStores);
     } catch (err) {
         log.info(err)
-        response.notFound(res, err.message);
+        response.internalServerError(res, "在地圖尋找店家發生錯誤！");
     }
 })
 
