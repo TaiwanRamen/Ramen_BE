@@ -2,7 +2,7 @@ require('dotenv').config();
 module.exports = {
 
     // sessions will last for 30 minutes
-    SESSION_DURATION: 1000 * 60 * 10,
+    SESSION_MAX_AGE: 24 * 60 * 60 * 1000, // 24 hours
 
     // sessions will be extended by 10 minutes if the user is active
     SESSION_EXTENSION_DURATION: 1000 * 60 * 10,

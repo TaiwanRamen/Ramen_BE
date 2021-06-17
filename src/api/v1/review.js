@@ -1,5 +1,4 @@
 //========  /api/vi/reviews
-const multer = require('multer');
 const express = require('express'),
     router = express.Router(),
     middleware = require('../../middleware/checkAuth'),

@@ -7,7 +7,7 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     passport = require('passport'),
     config = require('./config/global-config'),
-    session = require('express-session'),
+    cookieSession = require('cookie-session'),
     helmet = require('helmet'),
     rateLimit = require('express-rate-limit'),
     log = require('./modules/logger'),
@@ -30,6 +30,7 @@ const corsOptions = {
     optionSuccessStatus: 200
 }
 app.use(cors(corsOptions));
+
 app.use(cookieParser());
 app.use(helmet({contentSecurityPolicy: isProduction ? undefined : false}));
 require('./config/passport')(passport);
@@ -38,21 +39,18 @@ require('./models/registerModel');
 require("./db/connectRedis");
 require("./config/smtp");
 
+app.set('trust proxy', 1) // trust first proxy
 
-//PASSPORT CONFIGURATION
-app.use(session({
-    cookieName: "connect.sid",
-    secret: process.env.SESSION_SECRET_KEY,
-    resave: true,
-    saveUninitialized: true,
-    duration: config.SESSION_DURATION,
-    activeDuration: config.SESSION_EXTENSION_DURATION,
-    cookie: {
-        httpOnly: true,
-        ephemeral: config.SESSION_EPHEMERAL_COOKIES,
-        secure: config.SESSION_SECURE_COOKIES,
-    },
-}));
+app.use(cookieSession({
+    name: 'connect.sid',
+    keys: [process.env.SESSION_SECRET_KEY],
+    maxAge: config.SESSION_MAX_AGE // 24 hours
+}))
+
+app.use((req, res, next) => {
+    req.session.nowInMinutes = Math.floor(Date.now() / 60e3)
+    next()
+})
 
 //Passport Middleware init local strategy
 app.use(passport.initialize());
@@ -92,7 +90,7 @@ app.get('/:else', (req, res) => {
 })
 
 //handle http server and socket io
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || process.env.DOKKU_DOCKERFILE_PORTS;
 
 const server = app.listen(PORT, log.info(`Server started on port ${PORT}`));
 const io = socket(server);

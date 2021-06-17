@@ -1,14 +1,12 @@
 const express = require('express'),
     router = express.Router(),
     log = require('../../modules/logger'),
-    User = require('../../models/user'),
     passport = require('passport'),
-    mongoose = require('mongoose'),
-    axios = require('axios'),
     middleware = require('../../middleware/checkAuth'),
     response = require('../../modules/responseMessage'),
     userService = require('../../service/user.service'),
-    pagination = require('../../utils/pagination')
+    pagination = require('../../utils/pagination'),
+    config = require("../../config/global-config");
 
 
 router.post('/oauth/facebook', passport.authenticate('facebookToken'),
@@ -19,7 +17,10 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
                 response.unAuthorized(res, req.user.err.message);
             } else if (user) {
                 const token = await userService.signToken(user);
-                res.cookie('access_token', token, {maxAge: 900000, httpOnly: true});
+                res.cookie('access_token', token, {
+                    domain: '.taiwanramen.club',
+                    maxAge: config.SESSION_MAX_AGE,
+                    httpOnly: true});
                 response.success(res, {user: user, token})
             } else {
                 response.unAuthorized(res, "臉書登入失敗");
