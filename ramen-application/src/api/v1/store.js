@@ -42,7 +42,6 @@ router.get('/:storeId', middleware.jwtAuth, dataValidate.storeId,  async (req, r
 
 
         return response.success(res, {
-            mapboxAccessToken: process.env.MAPBOT_ACCESS_TOKEN,
             store: store,
             isStoreOwner: isStoreOwner
         })

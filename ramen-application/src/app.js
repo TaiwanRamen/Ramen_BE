@@ -6,7 +6,6 @@ const express = require('express'),
     socket = require('socket.io'),
     bodyParser = require('body-parser'),
     passport = require('passport'),
-    User = require('./models/user'),
     config = require('./config/global-config'),
     session = require('express-session'),
     helmet = require('helmet'),
@@ -38,8 +37,6 @@ require("./db/connectDB");
 require('./models/registerModel');
 require("./db/connectRedis");
 require("./config/smtp");
-
-
 
 
 //PASSPORT CONFIGURATION
@@ -100,5 +97,5 @@ const PORT = process.env.PORT;
 const server = app.listen(PORT, log.info(`Server started on port ${PORT}`));
 const io = socket(server);
 io.on('connection', (socket) => {
-    console.log('socket connection on', socket.id);
+    log.info('socket connection on', socket.id);
 })
