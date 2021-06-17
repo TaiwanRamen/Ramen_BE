@@ -19,7 +19,10 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
                 const token = await userService.signToken(user);
                 res.cookie('access_token', token, {
                     maxAge: config.SESSION_MAX_AGE,
-                    httpOnly: true});
+                    httpOnly: true,
+                    sameSite: "none",
+                    secure: true
+                });
                 res.header("Access-Control-Allow-Origin", "*");
                 res.header('Access-Control-Allow-Credentials', true);
                 res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
