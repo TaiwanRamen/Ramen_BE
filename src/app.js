@@ -42,7 +42,7 @@ require("./config/smtp");
 //PASSPORT CONFIGURATION
 app.use(session({
     cookieName: "connect.sid",
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET_KEY,
     resave: true,
     saveUninitialized: true,
     duration: config.SESSION_DURATION,
