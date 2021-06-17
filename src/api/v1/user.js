@@ -17,15 +17,6 @@ router.post('/oauth/facebook', passport.authenticate('facebookToken'),
                 response.unAuthorized(res, req.user.err.message);
             } else if (user) {
                 const token = await userService.signToken(user);
-                res.cookie('access_token', token, {
-                    maxAge: config.SESSION_MAX_AGE,
-                    httpOnly: true,
-                    sameSite: "none",
-                    secure: true
-                });
-                res.header("Access-Control-Allow-Origin", "*");
-                res.header('Access-Control-Allow-Credentials', true);
-                res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
                 response.success(res, {user: user, token})
             } else {
                 response.unAuthorized(res, "臉書登入失敗");
