@@ -1,6 +1,4 @@
-const pagination = require('../utils/pagination'),
-    Comment = require('../models/comment'),
-    mongoose = require('mongoose');
+const  Comment = require('../models/comment');
 
 
 const commentRepository = {}

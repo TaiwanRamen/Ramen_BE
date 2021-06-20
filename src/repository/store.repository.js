@@ -20,7 +20,7 @@ storeRepository.getStoresWithSearchAndPagination = async (regex, page) => {
         {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}
     ]
     if (regex) {
-        pipeline.unshift({$match: {$or: [{name: regex}, {city: regex}, {descriptionText: regex}]}})
+        pipeline.unshift({$match: {$or: [{name: regex}, {city: regex}, {descriptionHTML: regex}]}})
     }
     return Store.aggregate(pipeline);
 }
@@ -74,7 +74,7 @@ storeRepository.countStoresWithRegex = async (regex) => {
         $or: [
             {name: regex},
             {city: regex},
-            {descriptionText: regex},
+            {descriptionHTML: regex},
         ],
     });
 }
@@ -197,7 +197,7 @@ storeRepository.getStoresInMapBound = async (mapBound) => {
 
 storeRepository.getStoresInMapBoundWithSearch = async (mapBound, regex) => {
     return await  Store.aggregate([
-        {$match: {$or: [{name: regex}, {city: regex}, {descriptionText: regex}]}},
+        {$match: {$or: [{name: regex}, {city: regex}, {descriptionHTML: regex}]}},
         {$match: {'location': {$geoWithin: {$geometry: mapBound}}}},
         {$lookup: {from: 'storerelations', localField: '_id', foreignField: 'storeId', as: 'storeRelations'}},
         {$unwind: {path: "$storeRelations", preserveNullAndEmptyArrays: true}}

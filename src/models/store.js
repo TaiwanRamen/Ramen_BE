@@ -6,10 +6,7 @@ const storeSchema = new mongoose.Schema({
         required: [true, 'Please add a store name'],
         unique: true,
     },
-    imageLarge: [{
-        type: String
-    }],
-    imageSmall: [{
+    googleImages: [{
         type: String
     }],
     region: {
@@ -19,9 +16,6 @@ const storeSchema = new mongoose.Schema({
         type: String
     },
     descriptionHTML: {
-        type: String
-    },
-    descriptionText: {
         type: String
     },
     address: String,
@@ -46,8 +40,22 @@ const storeSchema = new mongoose.Schema({
     tags: [{
         type: String
     }],
-    stillOpen: Boolean,
-    openAt: String,
+    phoneNumber: "",
+    openPeriod: [{
+        close: {
+            day: {type: Number},
+            time: {type: String},
+        },
+        open: {
+            day: {type: Number},
+            time: {type: String},
+        }
+    }],
+    openPeriodText: [{
+        type: String
+    }],
+    googleUrl: {type: String},
+    storeUrl: {type: String}
 }, {timestamps: true});
 
 
