@@ -41,19 +41,16 @@ const storeSchema = new mongoose.Schema({
         type: String
     }],
     phoneNumber: "",
-    openPeriod: [{
-        close: {
-            day: {type: Number},
-            time: {type: String},
-        },
-        open: {
-            day: {type: Number},
-            time: {type: String},
+    //openPeriod[0-6].period[0-].open
+    openPeriod: [
+        {
+            period: [{
+                open: String,
+                close: String
+            }]
         }
-    }],
-    openPeriodText: [{
-        type: String
-    }],
+    ],
+    openPeriodText: {type: String},
     googleUrl: {type: String},
     storeUrl: {type: String}
 }, {timestamps: true});

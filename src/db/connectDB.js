@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'),
     log = require('../modules/logger');
 
-const connectMongo = async () => {
+const connectDB = async () => {
     try{
         await mongoose.connect(process.env.DATABASE_URL_RS, {
             useNewUrlParser: true,
@@ -17,4 +17,4 @@ const connectMongo = async () => {
 
 }
 
-module.exports = connectMongo();
+module.exports = connectDB();
